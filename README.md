@@ -37,7 +37,7 @@ e-mail: hean1103@naver.com
 e-mail: eunju1215@kookmin.ac.kr 
 역할: AI & APP
 ```
-![tmddo](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/ghkdtmddo.png)
+![seungae](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/ghkdtmddo.png)
 ### 황승애
 ```
 e-mail: ghkdtmddo01@naver.com
