@@ -6,6 +6,7 @@
 
 ## 2. 소개 영상
 https://youtu.be/u1_oJqWSfaQ
+[![계획서](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/계획서발표영상ppt.png)](https://youtu.be/u1_oJqWSfaQ)
 
 ## 3. 팀 소개
 
