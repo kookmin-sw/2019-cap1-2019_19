@@ -23,7 +23,7 @@ e-mail: dltnwls8751@gmail.com
 e-mail: eomjeongho1@naver.com
 역할: BOARD & WEB
 ```
-![hean](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/hean.png)
+![hean](/2019-cap1-2019_19/blob/master/images/hean.png)
 
 ### 경혜안
 ```
