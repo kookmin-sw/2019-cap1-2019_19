@@ -9,35 +9,35 @@ https://youtu.be/u1_oJqWSfaQ
 
 ## 3. 팀 소개
 
-![sujin](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/sujin.png)
+![sujin](./images/sujin.png)
 
 ### 이수진(팀장)
 ```
 e-mail: dltnwls8751@gmail.com
 역할: AI & APP
 ```
-![jeongho](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/jeongho.png)
+![jeongho](./images/jeongho.png)
 
 ### 엄정호
 ```
 e-mail: eomjeongho1@naver.com
 역할: BOARD & WEB
 ```
-![hean](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/hean.png)
+![hean](./images/hean.png)
 
 ### 경혜안
 ```
 e-mail: hean1103@naver.com 
 역할: AI & APP
 ```
-![eunju](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/eunju.png)
+![eunju](./images/eunju.png)
 
 ### 최은주
 ```
 e-mail: eunju1215@kookmin.ac.kr 
 역할: AI & APP
 ```
-![seungae](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/ghkdtmddo.png)
+![seungae](./images/ghkdtmddo.png)
 ### 황승애
 ```
 e-mail: ghkdtmddo01@naver.com
