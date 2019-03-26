@@ -6,7 +6,7 @@
 </head>
 <body>
 <?php
-	include "./conn.php";
+	include "./db.php";
 
 	$id = $_POST['id'];
 	$pw = $_POST['pw'];
