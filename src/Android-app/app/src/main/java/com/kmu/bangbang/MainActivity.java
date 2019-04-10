@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
         mTextMessage = (TextView) findViewById(R.id.message);
 
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
+        navigation.setSelectedItemId(R.id.navigation_home);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+
         navigation.setOnNavigationItemSelectedListener(BottomNavigationSelectedListener);
 
         setting_button = (ImageButton) findViewById(R.id.setting);
