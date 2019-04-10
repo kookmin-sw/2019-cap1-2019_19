@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">BangBang</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_enroll">Enroll</string>
+    <string name="title_manage">Manage</string>
+    <string name="title_home">Home</string>
+    <string name="title_record">Record</string>
+    <string name="title_streaming">Streaming</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
