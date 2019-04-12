@@ -4,10 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingFragment">
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="setting" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:text="프로필 관리"
+            android:textColor="@color/colorBlack" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:divider="#000000"/>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="푸시 알림 설정" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:divider="#000000"/>
+
+        <TextView
+            android:id="@+id/notif"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:text="문의하기"
+            android:textColor="@color/colorBlack" />
+
+
+    </LinearLayout>
+
 
 </FrameLayout>
