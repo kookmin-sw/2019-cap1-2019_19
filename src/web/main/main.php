@@ -56,22 +56,22 @@ if($check != "Y"){
         text-align: right;
         z-index: 3;
     }
-</style>
+    </style>
 </head>
 <body>
     <div class="header">
       Smart Interphone
-  </div>
-  <div class="content">
-      <div class="opt" style="float: left; background-color: #E4F7BA;" onclick="location.href='./streaming.php'">
-        <br><br><br>Streaming
     </div>
-    <div class="opt" style="float: right; background-color: #CEFBC9;" onclick="location.href='./history.php'">
-        <br><br><br>History
+    <div class="content">
+        <div class="opt" style="float: left; background-color: #E4F7BA;" onclick="location.href='./streaming.php'">
+            <br><br><br>Streaming
+        </div>
+        <div class="opt" style="float: right; background-color: #CEFBC9;" onclick="location.href='./history.php'">
+            <br><br><br>History
+        </div>
     </div>
-</div>
-<div class="footer">
-  2019 캡스톤 디자인 I - 19조(5정호)
-</div>
+    <div class="footer">
+        2019 캡스톤 디자인 I - 19조(5정호)
+    </div>
 </body>
 </html>
