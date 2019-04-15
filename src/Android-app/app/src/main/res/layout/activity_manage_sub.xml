@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordSubActivity">
+    tools:context=".ManageSubActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,14 +34,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="REDORD"
+            android:text="MANAGE"
             android:textColor="#ffffff"
             android:textSize="30sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="164dp"
             tools:layout_editor_absoluteY="15dp" />
     </android.support.v7.widget.Toolbar>
-
 
 
 </android.support.constraint.ConstraintLayout>

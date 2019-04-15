@@ -21,7 +21,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecordSubActivity"></activity>
+        <activity android:name=".RecordSubActivity" />
+        <activity android:name=".ManageSubActivity"></activity>
     </application>
 
 </manifest>

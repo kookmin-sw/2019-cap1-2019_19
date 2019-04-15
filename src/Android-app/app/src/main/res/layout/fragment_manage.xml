@@ -5,9 +5,15 @@
     android:layout_height="match_parent"
     tools:context=".ManageFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="manage" />
+        android:orientation="vertical">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/not_stranger_list"/>
+    </LinearLayout>
 
 </FrameLayout>
