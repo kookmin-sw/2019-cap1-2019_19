@@ -1,13 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="home" />
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="190dp">
+
+            <ImageView
+                android:id="@+id/view_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_state"
+                android:paddingLeft="-10dp"
+                android:paddingRight="-10dp"/>
+
+            <TextView
+                android:id="@+id/a_bus_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:layout_alignBottom="@id/view_state"
+                android:layout_alignLeft="@id/view_state"
+                android:layout_alignRight="@id/view_state"
+                android:layout_alignTop="@id/view_state"
+
+                android:gravity="center"
+                android:paddingBottom="30dp"
+                android:text="오늘은 2명이\n 방문했습니다!"
+                android:textColor="#3c3645"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_guest"
+                android:paddingLeft="-20dp"
+                android:paddingRight="-20dp"
+                />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_guest"
+                android:paddingLeft="-20dp"
+                android:paddingRight="-20dp"/>
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_guest"
+                android:paddingLeft="-20dp"
+                android:paddingRight="-20dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
