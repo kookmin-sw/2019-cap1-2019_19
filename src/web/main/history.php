@@ -14,11 +14,7 @@
 				min-height: 300px;
 				min-width: 300px;
 				overflow: scroll;
-
 			}
-/*			body::-webkit-scrollbar{width: 5px;}
-				::-webkit-scrollbar-thumb {background-color:#D4F4FA;}
-				::-webkit-scrollbar-thumb:hover {background: #f1ef79;}*/
 			a:link { color: red; text-decoration: none;}
  			a:visited { color: black; text-decoration: none;}
  			a:hover { color: darkgrey; text-decoration:underline;}
@@ -83,9 +79,9 @@
 			}
 			.container{
 				float: left;
-				margin: 66px;
+				margin: 5px;
 				width: 300px;
-				height: 300px;
+				height: 50%;
 			}
 			.page{
 				float: left;
@@ -128,58 +124,54 @@
 		</div>
 		<div class="history">
 			<div class="container">
-				<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+				<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
-						<li> 2019-03-29 </li>
-						<li> 21:17 </li>
-						<li> "황승애 방문" </li>
-			</div>
-						<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="250" height="250" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
 						<li> "황승애 방문" </li>
+			</div>
+
 			</div>
 			<div class="page">
 				<ol>
