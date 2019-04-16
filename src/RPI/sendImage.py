@@ -51,22 +51,23 @@ while True:
 					break
 				print(str(i)+"번째 사진 저장")
 
-				# 사진 전송
-				for j in range(1, 4):
-					print(str(j)+"번째 사진 전송")
-					# 사진 읽어 오기 및 인코딩
-					img = open('tempImage/image_'+str(j)+'.jpg', 'rb')
-					b = base64.b64encode(img.read())
+		# 사진 전송
+		for j in range(1, 4):
+			print(str(j)+"번째 사진 전송")
+			# 사진 읽어 오기 및 인코딩
+			img = open('tempImage/image_'+str(j)+'.jpg', 'rb')
+			b = base64.b64encode(img.read())
 
-					# 사진 스트링 길이 전송
-					len_b= str(len(b))
-					s.send(len_b.encode('utf-8'))
-					time.sleep(0.5)
+			# 사진 스트링 길이 전송
+			len_b= str(len(b))
+			s.send(len_b.encode('utf-8'))
+			time.sleep(0.5)
 
-					# 사진 스트링 전송
-					s.sendall(b)
-					time.sleep(1)
+			# 사진 스트링 전송
+			s.sendall(b)
+			time.sleep(1)
 
-					img.close()
+			img.close()
+
 camera.close()
 s.close()
