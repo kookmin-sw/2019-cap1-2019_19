@@ -49,7 +49,7 @@ while True:
 				time.sleep(1)
 				if fd.detection(i) == 1:
 					break
-				print(str(i)+"번째 사진 저장")
+			print(str(i)+"번째 사진 저장")
 
 		# 사진 전송
 		for j in range(1, 4):
