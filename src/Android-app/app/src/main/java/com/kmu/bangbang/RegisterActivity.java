@@ -38,7 +38,6 @@ public class RegisterActivity extends Activity {
 
         final EditText idText = (EditText) findViewById(R.id.idText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
-        final EditText ipText = (EditText) findViewById(R.id.ipText);
         final EditText numberText = (EditText) findViewById(R.id.numberText);
 
         TextView backButton = (TextView)findViewById(R.id.backButton);
@@ -65,7 +64,7 @@ public class RegisterActivity extends Activity {
                 //ID 값을 입력하지 않았다면
                 if (userID.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("ID is empty")
+                    dialog = builder.setMessage("아이디를 입력해주세요.")
                             .setPositiveButton("OK", null)
                             .create();
                     dialog.show();
@@ -85,7 +84,7 @@ public class RegisterActivity extends Activity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {//사용할 수 있는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("you can use ID")
+                                dialog = builder.setMessage("사용할 수 있는 아이디입니다.")
                                         .setPositiveButton("OK", null)
                                         .create();
                                 dialog.show();
@@ -95,7 +94,7 @@ public class RegisterActivity extends Activity {
                                 validateButton.setBackgroundColor(getResources().getColor(R.color.colorGray));
                             } else {//사용할 수 없는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("alreay used ID")
+                                dialog = builder.setMessage("이미 존재하는 아이디입니다.")
                                         .setNegativeButton("OK", null)
                                         .create();
                                 dialog.show();
@@ -122,13 +121,12 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                 String userID = idText.getText().toString();
                 String userPassword = passwordText.getText().toString();
-                String userIP = ipText.getText().toString();
                 String userNum = numberText.getText().toString();
 
                 //ID 중복체크를 했는지 확인함
                 if (!validate) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("First Check ID plz")
+                    dialog = builder.setMessage("아이디 중복확인을 해주세요.")
                             .setNegativeButton("OK", null)
                             .create();
                     dialog.show();
@@ -136,9 +134,9 @@ public class RegisterActivity extends Activity {
                 }
 
                 //한칸이라도 빠뜨렸을 경우
-                if (userID.equals("") || userPassword.equals("") || userIP.equals("") || userNum.equals("")) {
+                if (userID.equals("") || userPassword.equals("") || userNum.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    dialog = builder.setMessage("Empty text exist")
+                    dialog = builder.setMessage("빈칸을 모두 채워주세요.")
                             .setNegativeButton("OK", null)
                             .create();
                     dialog.show();
@@ -155,14 +153,14 @@ public class RegisterActivity extends Activity {
                             boolean success = jsonResponse.getBoolean("success");
                             if (success) {//사용할 수 있는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("Register Your ID")
+                                dialog = builder.setMessage("등록에 성공하였습니다.")
                                         .setPositiveButton("OK", null)
                                         .create();
                                 dialog.show();
                                 finish();//액티비티를 종료시킴(회원등록 창을 닫음)
                             } else {//사용할 수 없는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                dialog = builder.setMessage("Register fail")
+                                dialog = builder.setMessage("등록에 실패하였습니다.")
                                         .setNegativeButton("OK", null)
                                         .create();
                                 dialog.show();
@@ -175,7 +173,7 @@ public class RegisterActivity extends Activity {
                 };//Response.Listener 완료
 
                 //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-                RegisterRequest registerRequest = new RegisterRequest(userID, userPassword, userIP, userNum, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userID, userPassword, userNum, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 
