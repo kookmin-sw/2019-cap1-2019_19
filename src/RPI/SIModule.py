@@ -36,6 +36,7 @@ def init():
 def saveImg():
 	# 스트리밍 서버 Off
 	soo.streamingOff()
+	time.sleep(0.5)
 
 	# Camera
 	camera = PiCamera()
