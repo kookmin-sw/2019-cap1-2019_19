@@ -6,6 +6,7 @@ import io
 import os
 import RPi.GPIO as GPIO
 import faceDetection as fd
+import streamingOnOff as soo
 import time
 import cv2
 from PIL import Image
@@ -22,10 +23,8 @@ def init():
 	global HOST
 	global PORT
 	
-	HOST= '52.78.219.61'
-	PORT = 3078
-	#HOST = '3.18.202.129'
-	#PORT = 3333
+	HOST = '###.###.###.###'
+	PORT = ####
 
 	# PIR 센서 설정
 	global pirPin
@@ -35,6 +34,9 @@ def init():
 	print("PIR 센서 설정 완료")
 
 def saveImg():
+	# 스트리밍 서버 Off
+	soo.streamingOff()
+
 	# Camera
 	camera = PiCamera()
 	print("카메라 생성")
@@ -48,6 +50,9 @@ def saveImg():
 				break
 			print(str(i)+"번째 사진 저장")
 	camera.close()
+
+	# 스트리밍 서버 On
+	soo.streamingOn()
 
 def sendImg():
 	# socket 생성 및 연결
