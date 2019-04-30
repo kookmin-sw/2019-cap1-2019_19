@@ -34,26 +34,21 @@ def init():
 	print("PIR 센서 설정 완료")
 
 def saveImg():
-	# 스트리밍 서버 Off
-	soo.streamingOff()
-	time.sleep(0.5)
+	# 스트리밍 서버에서 영상가져오기
+	camera = cv2.VideoCapture("http://localhost:8080/stream/video.mjpeg")
 
-	# Camera
-	camera = PiCamera()
-	print("카메라 생성")
-
+	# 사진 저장후 얼굴 인식하여 인식된 사진만 3장 저장
 	for i in range(1, 4):
 		while True:
-			# 사진 저장후 얼굴 인식하여 인식된 사진만 3장 저장
-			camera.capture('tempImage/image_%s.jpg'%i)
-			time.sleep(1)
-			if fd.detection(i) == 1:
-				break
-			print(str(i)+"번째 사진 저장")
-	camera.close()
+			# 사진 읽어와 저장
+			ret, frame = camera.read()
+			cv2.imwrite('tempImage/image_%s.jpg'%i, frame)
 
-	# 스트리밍 서버 On
-	soo.streamingOn()
+			# 얼굴이 검출되면 루프 탈출
+			if fd.detection(i) > 0:
+				break
+		print(str(i)+"번째 사진 저장")
+	del(camera)
 
 def sendImg():
 	# socket 생성 및 연결
