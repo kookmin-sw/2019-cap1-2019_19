@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 
 public class LoginActivity extends AppCompatActivity {
     private AlertDialog dialog;
@@ -36,13 +42,14 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                 LoginActivity.this.startActivity(mainIntent);
-                /*
-                String userID = idText.getText().toString();
-                String userPassword = passwordText.getText().toString();
+                */
+                String id = idText.getText().toString();
+                String pw = passwordText.getText().toString();
 
-                Response.Listener<String> responseLisner = new Response.Listener<String>(){
+                Response.Listener<String> responseListener = new Response.Listener<String>(){
 
                     @Override
                     public void onResponse(String response) {
@@ -52,10 +59,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             if(success){
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                /*로그인 성공 시 알림 없이 바로 메인화면으로 이동
                                 dialog = builder.setMessage("로그인에 성공했습니다")
                                         .setPositiveButton("확인", null)
                                         .create();
                                 dialog.show();
+                                */
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 LoginActivity.this.startActivity(intent);
                                 finish();
@@ -65,9 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                                         .setNegativeButton("다시시도", null)
                                         .create();
                                 dialog.show();
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                LoginActivity.this.startActivity(intent);
-                                finish();
                             }
 
                         }catch (Exception e){
@@ -76,10 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseLisner);
+                LoginRequest loginRequest = new LoginRequest(id, pw, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
-              */
+
             }
         });
 

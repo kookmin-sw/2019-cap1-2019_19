@@ -40,4 +40,5 @@
             android:name=".CameraActivity"></activity>
     </application>
 
+
 </manifest>
