@@ -58,11 +58,12 @@ while 1:
     #print(img)
     #        print(i)
 
-    with open('/root/openface/temp/test_'+str(i)+'.jpeg', 'wb') as f:
-        f.write(base64.b64decode(img))
-        time.sleep(0.1)
-for j in range(1,4):
-    subprocess.call(['/root/openface/demos/classifier_test.py infer /root/openface/embedding/us/classifier.pkl /root/openface/temp/test_'+str(j)+'.jpeg'], shell=True)
+        with open('/root/openface/temp/test_'+str(i)+'.jpeg', 'wb') as f:
+            f.write(base64.b64decode(img))
+            time.sleep(0.1)
+    for j in range(1,4):
+        res = subprocess.check_output(['/root/openface/demos/classifier_test.py infer /root/openface/embedding/us/classifier.pkl /root/openface/temp/test_'+str(j)+'.jpeg'], universal_newlines=True,shell=True)
+        print("res: {}".format(res))
 #    break
 conn.close()
 s.close()
