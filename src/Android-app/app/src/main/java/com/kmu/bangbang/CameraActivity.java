@@ -1,92 +1,191 @@
 package com.kmu.bangbang;
-
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Environment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Toast;
-//import android.view.Menu;
-//import android.view.MenuItem;
+import android.widget.Button;
 
-import java.io.IOException;
+public class CameraActivity extends Activity implements SurfaceHolder.Callback{
 
+    private final static String TAG = "CameraActivity";
 
-public class CameraActivity extends AppCompatActivity{
+    MediaRecorder mRecorder = null;
+    String mPath = null;
 
-    SurfaceView surfaceView;
-    SurfaceHolder holder;
-    MediaRecorder recorder;
+    MediaPlayer mPlayer = null;
 
+    boolean isRecording = false;
+    boolean isPlaying = false;
+    boolean hasVideo = false;
 
-    String path ="/sdcard/recorded_video.mp4";
+    Button mBtRecord = null;
+    Button mBtPlay = null;
+    Button mBtCamcording = null;
+
+    SurfaceView mSurface = null;
+    SurfaceHolder mSurfaceHolder = null;
+
+    Camera mCamera = null;
+
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
-        surfaceView = (SurfaceView) findViewById(R.id.surfaceview);
+        mBtRecord = (Button) findViewById(R.id.bt_record);
+        mBtRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hasVideo = false;
+                if (isRecording == false) {
+                    initAudioRecorder();
+                    mRecorder.start();
 
-        holder = surfaceView.getHolder();
+                    isRecording = true;
+                    mBtRecord.setText("Stop Recording");
+                } else {
+                    mRecorder.stop();
+                    isRecording = false;
+                    mBtRecord.setText("Start Recording");
+                }
+            }
+        });
 
+
+        mBtCamcording = (Button)findViewById(R.id.bt_camcording);
+        mBtCamcording.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                hasVideo = true;
+                initVideoRecorder();
+                startVideoRecorder();
+            }
+        });
+
+        mSurface = (SurfaceView)findViewById(R.id.sv);
 
     }
-    public void onButtonClicked(View v){
 
+    void initVideoRecorder() {
+        mCamera = Camera.open();
+        mCamera.setDisplayOrientation(90);
+        mSurfaceHolder = mSurface.getHolder();
+        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    }
+
+
+    void initAudioRecorder() {
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+
+        mPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/record.aac";
+        Log.d(TAG, "file path is " + mPath);
+        mRecorder.setOutputFile(mPath);
         try {
-            if (recorder != null) {
-                recorder.stop();
-                recorder.release();
-                recorder = null;
-            }
-
-
-            recorder = new MediaRecorder();
-
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            recorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-            recorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-
-            recorder.setOutputFile(path);
-            recorder.setPreviewDisplay(holder.getSurface());
-            recorder.prepare();
-            recorder.start();
-
-            Toast.makeText(getApplicationContext(),"녹화를 시작합니다.",Toast.LENGTH_LONG).show();
-
-        }catch (IOException e){
+            mRecorder.prepare();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void onButton2Clicked(View v){
-        if(recorder!=null){
-            recorder.stop();
-            recorder.release();
-            recorder = null;
+    void startVideoRecorder() {
+        if(isRecording) {
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
+
+            mCamera.lock();
+            isRecording = false;
+
+            mBtCamcording.setText("Start Camcording");
+        }
+        else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mRecorder = new MediaRecorder();
+                    mCamera.unlock();
+                    mRecorder.setCamera(mCamera);
+                    mRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+                    mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+                    mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                    mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+                    mRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+                    mRecorder.setOrientationHint(90);
+
+                    mPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/record.mp4";
+                    Log.d(TAG, "file path is " + mPath);
+                    mRecorder.setOutputFile(mPath);
+
+                    mRecorder.setPreviewDisplay(mSurfaceHolder.getSurface());
+                    try {
+                        mRecorder.prepare();
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    mRecorder.start();
+                    isRecording = true;
+
+                    mBtCamcording.setText("Stop Camcording");
+                }
+            });
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(mPlayer != null) {
+            mPlayer.release();
+            mPlayer = null;
         }
 
-        Toast.makeText(getApplicationContext(),"녹화를 중지합니다.",Toast.LENGTH_LONG).show();
+        if(mRecorder != null) {
+            mRecorder.release();
+            mRecorder = null;
+        }
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+
+        if (mCamera == null) {
+            try {
+                mCamera.setPreviewDisplay(mSurfaceHolder);
+                mCamera.startPreview();
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        mCamera.stopPreview();
+
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu){
-//        getMenuInflater().inflate(R.menu.menu_main,menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        int id = item.getItemId();
-//        if(id==R.id.action_settings){
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
 
+    }
 }
-
