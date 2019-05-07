@@ -1,12 +1,9 @@
 package com.kmu.bangbang;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -15,10 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class EnrollFragment extends Fragment {
@@ -42,33 +36,14 @@ public class EnrollFragment extends Fragment {
                 if(permissionCheck== PackageManager.PERMISSION_DENIED){
                     ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},0);
                 }else{
-
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent,1);
-                    Intent intent2 = new Intent( getActivity(),CameraActivity.class);
-                    startActivity(intent2);
+                    Intent intent = new Intent(getActivity(), CameraPreviewActivity.class);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(getActivity(), CameraActivity.class);
-                startActivity(intent);
-
-
             }
         });
 
         return view ;
     }
-
-    @Override //왜 안돌아가냐...
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        if(requestCode==0){
-            if(grantResults[0]==0){
-                Toast.makeText(getActivity(),"카메라 권한이 승인됨",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getActivity(),"카메라 권한이 거절 되었습니다. 카메라를 ㅇ용하려면 권한을 승낙하여야 합니다. ",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 }
 
 
