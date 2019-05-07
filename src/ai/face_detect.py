@@ -7,10 +7,16 @@ import dlib
 import cv2
 import os
 import numpy as np
+import sys
+from datetime import datetime
+
+folder_name = sys.argv[1] + '/'
+now = datetime.now()
+when = '%s_%s_%s_' % (now.year, now.month, now.day)
 np.set_printoptions(precision=2)
 
 #재생할 파일
-VIDEO_FILE_PATH = '2sec_test.MOV'
+VIDEO_FILE_PATH = '2sec_test.mp4'
 detector = dlib.get_frontal_face_detector()
 
 # 동영상 파일 open
@@ -51,7 +57,9 @@ while(True):
     if len(res) > 0:
         #params=[cv2.IMWRITE_PNG_COMPRESSION,0] => 압축률 높아질수록 영상의 질은 높아지지만 속도가 늦어짐 (추후에 조정)
         #cv2.imwrite('img/test_%d.png' % i,frame, params=[cv2.IMWRITE_PNG_COMPRESSION,0])
-        cv2.imwrite('img/test_%d.png' % i,frame)
+        filename = folder_name + when + 'data' + str(i) + '.png'
+        cv2.imwrite(filename,frame)
+        #cv2.imwrite('img/test_%d.png' % i,frame)
         i += 1
         print("res = {}".format(res))
 
