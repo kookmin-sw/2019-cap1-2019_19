@@ -32,13 +32,14 @@ public class EnrollFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
-                if(permissionCheck== PackageManager.PERMISSION_DENIED){
-                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},0);
-                }else{
-                    Intent intent = new Intent(getActivity(), CameraPreviewActivity.class);
+//                int permissionCheck = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA);
+//                if(permissionCheck== PackageManager.PERMISSION_DENIED){
+//                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},0);
+//                }else{
+//                    Intent intent = new Intent(view.getContext(),CameraActivity.class);
+                    Intent intent = new Intent(getActivity(),CameraActivity.class);
                     startActivity(intent);
-                }
+//                }
             }
         });
 
