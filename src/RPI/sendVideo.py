@@ -11,7 +11,7 @@ GPIO.setmode(GPIO.BCM)
 pirPin = 18
 GPIO.setup(pirPin, GPIO.IN, GPIO.PUD_UP)
 
-capture_duration = 41
+capture_duration = 35
 
 # 파일 이름을 위한 date
 date = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
@@ -19,7 +19,7 @@ date = datetime.datetime.now().strftime("%y%m%d_%H%M%S")
 # 스트리밍 서버에서 영상 읽기
 camera = cv2.VideoCapture("http://localhost:8080/stream/video.mjpeg")
 fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-out = cv2.VideoWriter(date+'.mp4', fourcc, 20, (640,480))
+out = cv2.VideoWriter(date+'.avi', fourcc, 20, (640,480))
 
 # 카메라가 열렸는지 확인
 if(camera.isOpened() == False):
@@ -54,7 +54,7 @@ while(camera.isOpened()):
         # 전송할 웹 서버 주소
         upload_url = 'http://52.78.219.61/video_upload.php'
         # 전송할 파일 설정
-        file_ = {'myfile': (date+'.mp4', open(date+'.mp4', 'rb'))}
+        file_ = {'myfile': (date+'.avi', open(date+'.avi', 'rb'))}
         # 파일 전송
         r = requests.post(upload_url, files=file_)
         print(r.text)
