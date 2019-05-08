@@ -62,7 +62,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER); //버튼 눌렀을때 동영상 녹화 시작 소리
                                 mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                                 mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));//화질
-                                mediaRecorder.setOrientationHint(90);
+                                mediaRecorder.setOrientationHint(270);
                                 mediaRecorder.setOutputFile("/sdcard/test.mp4");
                                 mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
                                 mediaRecorder.prepare();
@@ -85,7 +85,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         public void onPermissionGranted() {
             Toast.makeText(CameraActivity.this,"권한 허가",Toast.LENGTH_LONG).show();
 
-            camera = Camera.open();
+            camera = Camera.open(1);
             camera.setDisplayOrientation(90);
             surfaceView = (SurfaceView)findViewById(R.id.surfaceView);
             surfaceHolder = surfaceView.getHolder();
