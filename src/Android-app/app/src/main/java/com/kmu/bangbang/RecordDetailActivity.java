@@ -1,7 +1,5 @@
 package com.kmu.bangbang;
 
-import android.app.Activity;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -28,9 +26,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RecordActivity extends AppCompatActivity {
+public class RecordDetailActivity extends AppCompatActivity {
 
-    private static String TAG = "RecordActivity";
+    private static String TAG = "RecordDetailActivity";
 
     private static final String TAG_JSON="records";
     private static final String TAG_rIDX = "rIdx";
@@ -39,46 +37,34 @@ public class RecordActivity extends AppCompatActivity {
     private static final String TAG_BELONG ="belong";
 
     ArrayList<HashMap<String, String>> mArrayList;
-    ListView mlistView;
     String mJsonString;
     String rIdx;
-
-
+    String name;
+    String date ;
+    String belong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record);
+        setContentView(R.layout.activity_record_detail);
+        //TextView rIdxText = (TextView)findViewById(R.id.rIdxText);
+        //mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
+        mArrayList = new ArrayList<>();
 
         // 이전 액티비티로부터 선택된 카테고리 받아오기
         Intent intent = getIntent();
-        String category = intent.getExtras().getString("category");
+        //String s_rIdx = intent.getExtras().getString("rIdx");
+        //int rIdx =  Integer.parseInt(s_rIdx);
+        String rIdx = intent.getExtras().getString("rIdx");
 
-        Log.v("recieved category", category);
 
-        //mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
-        mlistView = (ListView) findViewById(R.id.listView_main_list);
-        mArrayList = new ArrayList<>();
+        Log.v("Recieved record : ", rIdx);
 
-        GetData task = new GetData();
+        RecordDetailActivity.GetData task = new RecordDetailActivity.GetData();
 
-        task.execute("http://52.78.219.61/visitRecord.php?category="+category);
+        task.execute("http://52.78.219.61/DetailRecord.php?rIdx="+rIdx);
 
-        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), RecordDetailActivity.class);
-
-                // 선택된 Record idx 전달(int로 형변환 후 전달)
-                HashMap selected_record = mArrayList.get(position);
-                rIdx = selected_record.get("rIdx").toString();
-                intent.putExtra("rIdx", rIdx);
-
-                Log.v("Selected rIdx : ", rIdx);
-                startActivity(intent);
-            }
-        });
-
+//        rIdxText.setText(rIdx);
         Log.v(TAG, "finised");
     }
 
@@ -91,7 +77,7 @@ public class RecordActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(RecordActivity.this,
+            progressDialog = ProgressDialog.show(RecordDetailActivity.this,
                     "Please Wait", null, true, true);
         }
 
@@ -105,9 +91,9 @@ public class RecordActivity extends AppCompatActivity {
             Log.d(TAG, "response  - " + result);
             System.out.print("result ="+result);
 
-            // SQL문 오류 검
+            // SQL문 오류 검사
             if (result == null){
-                Toast.makeText(RecordActivity.this, errorString, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecordDetailActivity.this, errorString, Toast.LENGTH_SHORT).show();
             }
             else {
 
@@ -117,7 +103,7 @@ public class RecordActivity extends AppCompatActivity {
                     showResult();
                 }
                 else{
-                    Toast.makeText(RecordActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecordDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -132,8 +118,6 @@ public class RecordActivity extends AppCompatActivity {
 
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();
@@ -150,7 +134,6 @@ public class RecordActivity extends AppCompatActivity {
                     inputStream = httpURLConnection.getErrorStream();
                 }
 
-
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -160,7 +143,6 @@ public class RecordActivity extends AppCompatActivity {
                 while((line = bufferedReader.readLine()) != null){
                     sb.append(line);
                 }
-
 
                 bufferedReader.close();
 
@@ -183,41 +165,27 @@ public class RecordActivity extends AppCompatActivity {
     private void showResult(){
         try {
 
+            TextView nameText = (TextView)findViewById(R.id.nameText);
+            TextView dateText = (TextView)findViewById(R.id.dateText);
+            TextView belongText = (TextView)findViewById(R.id.belongText);
 
             JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("record");
+            JSONObject item = jsonArray.getJSONObject(0);
 
-            JSONArray jsonArray = jsonObject.getJSONArray("records");
+            name = item.getString(TAG_NAME);
+            date = item.getString(TAG_DATE);
+            belong = item.getString(TAG_BELONG);
 
-            for(int i=0;i<jsonArray.length();i++){
+            HashMap<String,String> hashMap = new HashMap<>();
 
-                JSONObject item = jsonArray.getJSONObject(i);
+            Log.d(TAG, "rIdx : "+rIdx);
+            Log.d(TAG, "name : "+name);
 
-                rIdx = item.getString(TAG_rIDX);
-                String name = item.getString(TAG_NAME);
-                String date = item.getString(TAG_DATE);
-                String belong = item.getString(TAG_BELONG);
-
-                HashMap<String,String> hashMap = new HashMap<>();
-
-                Log.d(TAG, "rIdx : "+rIdx);
-
-                hashMap.put(TAG_rIDX, rIdx);
-                hashMap.put(TAG_NAME, name);
-                hashMap.put(TAG_DATE, date);
-                hashMap.put(TAG_BELONG, belong);
-
-
-
-                mArrayList.add(hashMap);
-            }
-
-            ListAdapter adapter = new SimpleAdapter(
-                    RecordActivity.this, mArrayList, R.layout.item_record,
-                    new String[]{TAG_NAME,TAG_DATE, TAG_BELONG},
-                    new int[]{R.id.textView_list_name, R.id.textView_list_date, R.id.textView_list_belong}
-            );
-            mlistView.setAdapter(adapter);
-
+            nameText.setText(name);
+            dateText.setText(date);
+            belongText.setText(belong);
+            
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
