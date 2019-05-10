@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -35,6 +38,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     private static final String TAG_NAME = "name";
     private static final String TAG_DATE = "date";
     private static final String TAG_BELONG ="belong";
+    private static final String TAG_VIDEO_URL ="video_url";
 
     ArrayList<HashMap<String, String>> mArrayList;
     String mJsonString;
@@ -42,29 +46,46 @@ public class RecordDetailActivity extends AppCompatActivity {
     String name;
     String date ;
     String belong;
+    String video_url;
+
+    TextView nameText;
+    TextView dateText;
+    TextView belongText;
+    WebView mWebView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_detail);
-        //TextView rIdxText = (TextView)findViewById(R.id.rIdxText);
-        //mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
-        mArrayList = new ArrayList<>();
+        //mArrayList = new ArrayList<>();
 
-        // 이전 액티비티로부터 선택된 카테고리 받아오기
+        nameText = (TextView)findViewById(R.id.nameText);
+        dateText = (TextView)findViewById(R.id.dateText);
+        belongText = (TextView)findViewById(R.id.belongText);
+
+        if (mWebView != null) {
+            mWebView.destroy();
+        }
+        mWebView = (WebView) findViewById(R.id.videoView);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.setBackgroundColor(255);
+
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+
+        WebSettings websettings = mWebView.getSettings();
+        websettings.setJavaScriptEnabled(true);
+
+        // rIdx 받아오기
         Intent intent = getIntent();
-        //String s_rIdx = intent.getExtras().getString("rIdx");
-        //int rIdx =  Integer.parseInt(s_rIdx);
         String rIdx = intent.getExtras().getString("rIdx");
-
 
         Log.v("Recieved record : ", rIdx);
 
         RecordDetailActivity.GetData task = new RecordDetailActivity.GetData();
-
         task.execute("http://52.78.219.61/DetailRecord.php?rIdx="+rIdx);
 
-//        rIdxText.setText(rIdx);
         Log.v(TAG, "finised");
     }
 
@@ -80,7 +101,6 @@ public class RecordDetailActivity extends AppCompatActivity {
             progressDialog = ProgressDialog.show(RecordDetailActivity.this,
                     "Please Wait", null, true, true);
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -107,7 +127,6 @@ public class RecordDetailActivity extends AppCompatActivity {
                 }
             }
         }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -164,11 +183,6 @@ public class RecordDetailActivity extends AppCompatActivity {
 
     private void showResult(){
         try {
-
-            TextView nameText = (TextView)findViewById(R.id.nameText);
-            TextView dateText = (TextView)findViewById(R.id.dateText);
-            TextView belongText = (TextView)findViewById(R.id.belongText);
-
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("record");
             JSONObject item = jsonArray.getJSONObject(0);
@@ -176,8 +190,7 @@ public class RecordDetailActivity extends AppCompatActivity {
             name = item.getString(TAG_NAME);
             date = item.getString(TAG_DATE);
             belong = item.getString(TAG_BELONG);
-
-            HashMap<String,String> hashMap = new HashMap<>();
+            video_url = item.getString(TAG_VIDEO_URL);
 
             Log.d(TAG, "rIdx : "+rIdx);
             Log.d(TAG, "name : "+name);
@@ -185,7 +198,8 @@ public class RecordDetailActivity extends AppCompatActivity {
             nameText.setText(name);
             dateText.setText(date);
             belongText.setText(belong);
-            
+            mWebView.loadUrl("http://52.78.219.61/"+video_url);
+
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }

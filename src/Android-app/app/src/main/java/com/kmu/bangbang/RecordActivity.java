@@ -43,8 +43,6 @@ public class RecordActivity extends AppCompatActivity {
     String mJsonString;
     String rIdx;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +103,7 @@ public class RecordActivity extends AppCompatActivity {
             Log.d(TAG, "response  - " + result);
             System.out.print("result ="+result);
 
-            // SQL문 오류 검
+            // SQL문 오류 검사
             if (result == null){
                 Toast.makeText(RecordActivity.this, errorString, Toast.LENGTH_SHORT).show();
             }
@@ -133,11 +131,9 @@ public class RecordActivity extends AppCompatActivity {
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();
-
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
@@ -149,7 +145,6 @@ public class RecordActivity extends AppCompatActivity {
                 else{
                     inputStream = httpURLConnection.getErrorStream();
                 }
-
 
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -182,10 +177,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private void showResult(){
         try {
-
-
             JSONObject jsonObject = new JSONObject(mJsonString);
-
             JSONArray jsonArray = jsonObject.getJSONArray("records");
 
             for(int i=0;i<jsonArray.length();i++){

@@ -54,23 +54,11 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/rIdxText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="-30dp"
-            android:layout_marginStart="22dp"
-            tools:layout_editor_absoluteX="139dp"
-            tools:layout_editor_absoluteY="182dp" />
-
-        <TextView
             android:id="@+id/nameText"
             android:layout_width="91dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="19dp"
-            android:layout_marginTop="39dp"
+            android:layout_alignTop="@+id/t4"
+            android:layout_toEndOf="@+id/t2"
             android:text="TextView"
             tools:layout_editor_absoluteX="170dp"
             tools:layout_editor_absoluteY="182dp" />
@@ -80,8 +68,8 @@
             android:layout_width="94dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/rIdxText"
-            android:layout_marginTop="112dp"
+            android:layout_alignStart="@+id/nameText"
+            android:layout_marginTop="93dp"
             android:text="TextView"
             tools:layout_editor_absoluteX="170dp"
             tools:layout_editor_absoluteY="202dp" />
@@ -91,11 +79,54 @@
             android:layout_width="94dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/rIdxText"
-            android:layout_marginTop="75dp"
+            android:layout_alignStart="@+id/nameText"
+            android:layout_marginTop="59dp"
             android:text="TextView"
             tools:layout_editor_absoluteX="170dp"
             tools:layout_editor_absoluteY="202dp" />
+
+        <TextView
+            android:id="@+id/T"
+            android:layout_width="94dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/belongText"
+            android:layout_toStartOf="@+id/nameText"
+            android:text="그룹"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="202dp" />
+
+        <TextView
+            android:id="@+id/t2"
+            android:layout_width="94dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dateText"
+            android:layout_alignStart="@+id/videoView"
+            android:layout_marginBottom="-110dp"
+            android:text="방문 시간"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="202dp" />
+
+        <TextView
+            android:id="@+id/t4"
+            android:layout_width="94dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/videoView"
+            android:layout_marginTop="25dp"
+            android:text="이름"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="202dp" />
+
+        <WebView
+            android:id="@+id/videoView"
+            android:layout_width="337dp"
+            android:layout_height="276dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="96dp">
+
+        </WebView>
 
     </RelativeLayout>
 
