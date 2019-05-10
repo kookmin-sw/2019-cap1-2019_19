@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CameraActivity"></activity>
-        <activity android:name=".RecordSubActivity" />
+        <activity android:name=".RecordActivity" />
         <activity android:name=".ManageSubActivity"></activity>
         <activity
             android:name=".LoginActivity"
