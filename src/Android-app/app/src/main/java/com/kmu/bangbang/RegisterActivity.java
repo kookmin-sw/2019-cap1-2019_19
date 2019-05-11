@@ -2,6 +2,7 @@ package com.kmu.bangbang;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -123,6 +124,8 @@ public class RegisterActivity extends Activity {
                 String id = idText.getText().toString();
                 String pw = passwordText.getText().toString();
                 String tel = numberText.getText().toString();
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                String token = pref.getString("token", "");
 
                 //ID 중복체크를 했는지 확인함
                 if (!validate) {
@@ -174,7 +177,7 @@ public class RegisterActivity extends Activity {
                 };//Response.Listener 완료
 
                 //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-                RegisterRequest registerRequest = new RegisterRequest(id, pw, tel, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(id, pw, tel, token, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 

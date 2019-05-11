@@ -13,13 +13,13 @@ public class RegisterRequest extends StringRequest{
     final static private String URL = "http://52.78.219.61/UserRegister.php";
     private Map<String, String> parameters;
 
-    public RegisterRequest(String id, String pw, String tel, Response.Listener<String> listener){
+    public RegisterRequest(String id, String pw, String tel, String token, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);//해당 URL에 POST방식으로 파마미터들을 전송함
         parameters = new HashMap<>();
         parameters.put("id", id);
         parameters.put("pw", pw);
         parameters.put("tel", tel);
-
+        parameters.put("token", token);
     }
 
     @Override

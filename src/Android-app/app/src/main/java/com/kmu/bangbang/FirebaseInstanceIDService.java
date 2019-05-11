@@ -21,7 +21,10 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService{
     }
 
     private void sendRegistrationToServer(String token) {
-
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token", token);
+        editor.commit();
     }
 
 }
