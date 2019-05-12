@@ -1,5 +1,6 @@
 package com.kmu.bangbang;
 
+
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -12,13 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class Upload {
 
-    public static final String UPLOAD_URL= "http://52.78.219.61/upload.php";
-    //php파일 먼저 접근해야 해서 uploads 폴더로 안넘어 가는거딩.
+public class Upload {
+    public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
 
     private int serverResponseCode;
-
+    String a ;
     public String uploadVideo(String file) {
 
         String fileName = file;
@@ -33,22 +33,24 @@ public class Upload {
 
         File sourceFile = new File(file);
         if (!sourceFile.isFile()) {
-            Log.e("bang", "Source File Does not exist");
+            Log.e("Huzza", "Source File Does not exist");
             return null;
         }
 
         try {
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
             URL url = new URL(UPLOAD_URL);
-            conn = (HttpURLConnection) url.openConnection(); //연결 설정
-            conn.setDoInput(true); //인풋과 아웃풋의 allow...?
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setUseCaches(false);
-            conn.setRequestMethod("POST"); //url 요청에 대한 메소드 설정
+            conn.setRequestMethod("POST");
             conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("ENCTYPE", "multipart/form-data"); //보내는 파일이 동영상이란 뜻인듯
+            conn.setRequestProperty("ENCTYPE", "multipart/form-data");
             conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
             conn.setRequestProperty("myFile", fileName);
+            Log.i("방방", "파일 이름 : " + fileName);
+
             dos = new DataOutputStream(conn.getOutputStream());
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
@@ -56,7 +58,7 @@ public class Upload {
             dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();
-            Log.i("bang", "Initial .available : " + bytesAvailable); //info Log
+            Log.i("방방", "Initial .available : " + bytesAvailable);
 
             bufferSize = Math.min(bytesAvailable, maxBufferSize);
             buffer = new byte[bufferSize];
@@ -65,12 +67,13 @@ public class Upload {
 
             while (bytesRead > 0) {
                 dos.write(buffer, 0, bufferSize);
+                Log.i("방방", "바이트 리드 : " + bytesRead);
                 bytesAvailable = fileInputStream.available();
                 bufferSize = Math.min(bytesAvailable, maxBufferSize);
                 bytesRead = fileInputStream.read(buffer, 0, bufferSize);
             }
-
-            dos.writeBytes(lineEnd);
+            Log.i("방방", "바이트 리드2 : " + bytesRead);
+            dos.writeBytes(lineEnd);//post 데이타를 업로드 .
             dos.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
 
             serverResponseCode = conn.getResponseCode();
@@ -87,7 +90,8 @@ public class Upload {
         if (serverResponseCode == 200) {
             StringBuilder sb = new StringBuilder();
             try {
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                BufferedReader rd = new BufferedReader(new InputStreamReader(conn
+                        .getInputStream()));
                 String line;
                 while ((line = rd.readLine()) != null) {
                     sb.append(line);
@@ -97,7 +101,8 @@ public class Upload {
             }
             return sb.toString();
         }else {
-            return "Could not upload";
+            a=""+serverResponseCode;
+            return a;
         }
     }
 }
