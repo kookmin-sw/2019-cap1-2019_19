@@ -11,12 +11,19 @@ import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class FireBaseMessagingService extends FirebaseMessagingService{
     private static final String TAG = "MyFirebaseMsgService";
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        PushUtils.acquireWakeLock(this);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -54,12 +61,13 @@ public class FireBaseMessagingService extends FirebaseMessagingService{
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FCM Message")
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+                        .setSmallIcon(R.mipmap.ic_launcher) //알림 아이콘
+                        .setContentTitle("BANGBANG : 외부인 방문") //타이틀
+                        .setContentText(messageBody)    //알림 설명문구
+                        .setAutoCancel(true)    //알림 터치시 사라짐
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))  //알림 수신음
+                        .setVibrate(new long[]{1,1000}) //알림 수신진동
+                       .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -70,6 +78,8 @@ public class FireBaseMessagingService extends FirebaseMessagingService{
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(0, notificationBuilder.build());
+
+        PushUtils.releaseWakeLock();
     }
 
 }
