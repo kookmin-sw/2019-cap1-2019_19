@@ -4,6 +4,7 @@ import android.Manifest;
 //import android.app.Activity;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -16,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
@@ -23,6 +25,8 @@ import android.view.View.OnClickListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback {
@@ -36,7 +40,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 //    업로드 코드 추가 부분
     private static final int SELECT_VIDEO = 3;
     private Button buttonUpload;
-    private String selectedPath="/storage/emulated/0/test.mp4";
+    private String name;
+    private String selectedPath="/storage/emulated/0/";
     private TextView textViewResponse;
 
 
@@ -47,6 +52,20 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 //        업로드 코드 추가 부분
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         textViewResponse = (TextView) findViewById(R.id.textViewResponse);
+//        EditText editText1 = (EditText)findViewById(R.id.edittext);
+        Intent intent = new Intent(this.getIntent());
+        name = intent.getStringExtra("text");
+
+//        try {
+//            name = URLEncoder.encode(name,"UTF-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
+
+//        name = editText1.getText().toString();
+        name=name+".mp4";
+        Toast.makeText(CameraActivity.this,name,Toast.LENGTH_LONG).show();
 
         TedPermission.with(CameraActivity.this)
                 .setPermissionListener(permission)
@@ -82,7 +101,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
                                     mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));//화질
                                     mediaRecorder.setOrientationHint(270);
-                                    mediaRecorder.setOutputFile("/sdcard/test.mp4");
+                                    mediaRecorder.setOutputFile("/sdcard/"+name);
                                     mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
                                     mediaRecorder.prepare();
                                     mediaRecorder.start();
@@ -103,45 +122,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         };
         btn_record.setOnClickListener(listener);
         buttonUpload.setOnClickListener(listener);
-
-//        btn_record.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(recording){ //녹화중지
-//                    mediaRecorder.stop();
-//                    mediaRecorder.release();
-//                    camera.lock();
-//                    recording = false;
-//                    Toast.makeText(CameraActivity.this,"녹화가 중지되었습니다.",Toast.LENGTH_LONG).show();
-//
-//                }else{
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(CameraActivity.this,"녹화가 시작되었습니다.",Toast.LENGTH_LONG).show();
-//                            try {
-//                                mediaRecorder = new MediaRecorder();
-//                                camera.unlock();
-//                                mediaRecorder.setCamera(camera);
-//                                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER); //버튼 눌렀을때 동영상 녹화 시작 소리
-//                                mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-//                                mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));//화질
-//                                mediaRecorder.setOrientationHint(270);
-//                                mediaRecorder.setOutputFile("/sdcard/test.mp4");
-//                                mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-//                                mediaRecorder.prepare();
-//                                mediaRecorder.start();
-//                                recording =true;
-//
-//                            }catch (Exception e){
-//                                e.printStackTrace();
-//                                mediaRecorder.release(); //동영상 촬영을 급하게 꺼라
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
     }
 
 
@@ -213,6 +193,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             protected String doInBackground(Void... params) {
                 Upload u = new Upload();
+                selectedPath = selectedPath+name;
                 String msg = u.uploadVideo(selectedPath);
                 return msg;
             }

@@ -1,6 +1,7 @@
 package com.kmu.bangbang;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class EnrollFragment extends Fragment {
 //                    ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},0);
 //                }else{
 //                    Intent intent = new Intent(view.getContext(),CameraActivity.class);
-                    Intent intent = new Intent(getActivity(),CameraActivity.class);
+                    Intent intent = new Intent(getActivity(),AddActivity.class);
                     startActivity(intent);
 //                }
             }
