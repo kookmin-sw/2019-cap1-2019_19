@@ -10,13 +10,13 @@
     
     mysqli_set_charset($link,"utf8");
     
-    // get 방식으로 카테고리 파라미터 받기
+    // 카테고리 값 get
     $category = $_GET['category']    ;
     
     if($category == "전체보기"){
-        $sql="select * from SUJIN";
+        $sql="select rIdx, name, rDate, belong from Historry";
     }else{
-        $sql="select * from SUJIN where belong='${category}'";
+        $sql="select rIdx, name, rDate, belong from Historry where belong='${category}'";
     }
     $result=mysqli_query($link,$sql);
     $data = array();
@@ -26,15 +26,14 @@
         
         while($row=mysqli_fetch_array($result)){
             array_push($data,
-                       array('name'=>$row[0],
-                             'date'=>$row[1],
-                             'belong'=>$row[2]
+                       array('rIdx'=>$row[0],'name'=>$row[1],
+                             'date'=>$row[2],
+                             'belong'=>$row[3]
                              ));
         }
         
         header('Content-Type: application/json; charset=utf8');
         
-        // 데이터가 있는 경우만 JSON 데이터 반환
         if(!empty( $data )){
             $json = json_encode(array("records"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
             echo $json;
@@ -48,6 +47,9 @@
         echo "SQL문 처리중 에러 발생 : ";
         echo mysqli_error($link);
     }
+    
+    
+    
     mysqli_close($link);
     
     ?>

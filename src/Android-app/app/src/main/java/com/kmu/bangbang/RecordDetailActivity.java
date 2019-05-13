@@ -201,7 +201,7 @@ public class RecordDetailActivity extends AppCompatActivity {
             Log.d(TAG, "video_url"+video_url);
 
             if(video_url == null || video_url.length() == 0){
-                mWebView.loadUrl("http://52.78.219.61/default.png");
+                mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
             }
             else{
                 mWebView.loadUrl("http://52.78.219.61/"+video_url);

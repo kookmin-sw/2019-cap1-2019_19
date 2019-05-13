@@ -60,7 +60,7 @@ public class RecordActivity extends AppCompatActivity {
 
         GetData task = new GetData();
 
-        task.execute("http://52.78.219.61/visitRecord.php?category="+category);
+        task.execute("http://52.78.219.61/VisitRecord.php?category="+category);
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
