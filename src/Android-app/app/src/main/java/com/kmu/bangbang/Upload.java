@@ -15,11 +15,11 @@ import java.net.URL;
 
 
 public class Upload {
-    public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
+    // public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php?userName=수진";
 
     private int serverResponseCode;
     String a ;
-    public String uploadVideo(String file) {
+    public String uploadVideo(String file, String file_Name) {
 
         String fileName = file;
         HttpURLConnection conn = null;
@@ -39,7 +39,8 @@ public class Upload {
 
         try {
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            URL url = new URL(UPLOAD_URL);
+            //URL url = new URL(UPLOAD_URL);
+            URL url = new URL("http://52.78.219.61/test_video/upload.php?file_Name="+file_Name);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -54,7 +55,8 @@ public class Upload {
             dos = new DataOutputStream(conn.getOutputStream());
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + fileName + "\"" + lineEnd);
+            //dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + fileName + "\"" + lineEnd);
+            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"temp.mp4\"" + lineEnd);
             dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();

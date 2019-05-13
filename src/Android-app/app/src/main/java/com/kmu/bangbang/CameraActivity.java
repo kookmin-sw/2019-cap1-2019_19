@@ -43,7 +43,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     private String name;
     private String selectedPath="/storage/emulated/0/";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -150,7 +149,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         }catch (Exception e){
             e.printStackTrace();
         }
-
         setCamera(camera);
     }
 
@@ -183,7 +181,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected String doInBackground(Void... params) {
                 Upload u = new Upload();
                 selectedPath = selectedPath+name;
-                String msg = u.uploadVideo(selectedPath);
+                String msg = u.uploadVideo(selectedPath, name);
                 return msg;
             }
         }
