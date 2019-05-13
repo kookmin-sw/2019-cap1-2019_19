@@ -35,6 +35,15 @@
             tools:layout_editor_absoluteY="15dp" />
 
         <ImageButton
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_logout"
+            android:background="#00ffffff"
+            android:layout_gravity="left"
+            android:layout_marginLeft="15dp"/>
+
+        <ImageButton
             android:id="@+id/setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        android:layout_marginStart="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

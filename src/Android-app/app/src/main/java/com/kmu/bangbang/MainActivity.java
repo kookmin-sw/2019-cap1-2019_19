@@ -1,5 +1,8 @@
 package com.kmu.bangbang;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment selectedFragment = new HomeFragment();
     Toolbar toolbar;
     ImageButton setting_button;
+    ImageButton logout_button;
     BottomNavigationView navigation;
 
 
@@ -38,6 +43,22 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
         navigation.setOnNavigationItemSelectedListener(BottomNavigationSelectedListener);
+
+        logout_button = (ImageButton) findViewById(R.id.logout);
+        logout_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = auto.edit();
+
+                editor.clear();
+                editor.commit();
+                Toast.makeText(MainActivity.this, "자동 로그인 해제", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
 
         setting_button = (ImageButton) findViewById(R.id.setting);
         setting_button.setOnClickListener(new View.OnClickListener() {
