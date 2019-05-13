@@ -15,13 +15,19 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Upload {
-    public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
+    public static String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
 
     private int serverResponseCode;
     String a ;
-    public String uploadVideo(String file) {
-
+    public String uploadVideo(String file,String check) {
         String fileName = file.substring(file.lastIndexOf("/"));
+
+        if(check.equals("User")){
+            UPLOAD_URL= "http://52.78.219.61/test_video/User/upload.php";
+            fileName ="User.mp4";
+//            Log.i("방방", "파일 이름 이것이 실행 했는가...: " + check);
+        }
+//        String fileName =file;
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";

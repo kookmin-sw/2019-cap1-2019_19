@@ -161,6 +161,10 @@ public class RegisterActivity extends Activity {
                                         .setNegativeButton("OK", null)
                                         .create();
                                 dialog.show();
+                                Intent intent = new Intent(RegisterActivity.this,CameraActivity.class);
+                                intent.putExtra("text",String.valueOf("User"));
+                                intent.putExtra("value",String.valueOf("User"));
+                                startActivity(intent);
                                 //finish();//액티비티를 종료시킴(회원등록 창을 닫음)
                             } else {//사용할 수 없는 아이디라면
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

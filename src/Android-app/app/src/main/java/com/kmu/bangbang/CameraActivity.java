@@ -43,6 +43,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 //    private TextView textViewResponse;
 
     private Button buttonUpload;
+    String check;
+
     private String name;
     private String selectedPath="/storage/emulated/0/";
 
@@ -59,6 +61,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
+        check = intent.getStringExtra("value");
+
 
         name=name+".mp4";
         Toast.makeText(CameraActivity.this,name,Toast.LENGTH_LONG).show();
@@ -190,7 +194,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected String doInBackground(Void... params) {
                 Upload u = new Upload();
                 selectedPath = selectedPath+name;
-                String msg = u.uploadVideo(selectedPath);
+                String msg = u.uploadVideo(selectedPath,check);
                 return msg;
             }
         }

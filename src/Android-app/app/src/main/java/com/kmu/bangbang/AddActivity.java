@@ -24,6 +24,7 @@ public class AddActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(AddActivity.this,CameraActivity.class);
                 intent.putExtra("text",String.valueOf(editText.getText()));
+                intent.putExtra("value",String.valueOf("Other"));
                 startActivity(intent);
             }
         });
