@@ -180,7 +180,6 @@ public class RecordDetailActivity extends AppCompatActivity {
         }
     }
 
-
     private void showResult(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
@@ -198,7 +197,16 @@ public class RecordDetailActivity extends AppCompatActivity {
             nameText.setText(name);
             dateText.setText(date);
             belongText.setText(belong);
-            mWebView.loadUrl("http://52.78.219.61/"+video_url);
+
+            Log.d(TAG, "video_url"+video_url);
+
+            if(video_url == null || video_url.length() == 0){
+                mWebView.loadUrl("http://52.78.219.61/default.png");
+            }
+            else{
+                mWebView.loadUrl("http://52.78.219.61/"+video_url);
+            }
+
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
