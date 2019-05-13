@@ -11,6 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
@@ -50,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        FirebaseMessaging.getInstance().subscribeToTopic("new");
+        FirebaseInstanceId.getInstance().getToken();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener BottomNavigationSelectedListener
