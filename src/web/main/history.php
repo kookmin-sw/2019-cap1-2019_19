@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<?php
+session_start();
+$check = $_SESSION['is_logged'];
+echo $id;
+if($check != "Y"){
+	echo "<script>location.replace('../index.html');</script>";
+}
+?>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -15,9 +23,18 @@
 				min-width: 300px;
 				overflow: scroll;
 			}
-			a:link { color: red; text-decoration: none;}
- 			a:visited { color: black; text-decoration: none;}
- 			a:hover { color: darkgrey; text-decoration:underline;}
+			a:link {
+				color: red;
+				text-decoration: none;
+			}
+ 			a:visited {
+				color: black;
+				text-decoration: none;
+			}
+ 			a:hover {
+				color: darkgrey;
+				text-decoration:underline;
+			}
 			li{
    				list-style:none;
    				padding-left:0px;
@@ -41,7 +58,30 @@
 				text-align: center;
 				color: #FF007F;
 				z-index: 4;
+      }
+      .event{
+        position:absolute;
+        bottom: 15px;
+        left: 550px;
+      }
+			#add{
+				font-size: 50px;
+				margin-left: 500px ;
+				color: #FF007F;
+        width: 80px;
 			}
+      #delete{
+        font-size: 50px;
+        text-align: center;
+        color: #FF007F;
+        width: 80px;
+      }
+      #modify{
+        font-size: 50px;
+        text-align: center;
+        color: #FF007F;
+        width: 80px;
+      }
 			.content{
 				position: relative;
 				top:-70; left:0; right:0;
@@ -108,7 +148,31 @@
 <body>
 	<div class="header">
 		Smart Interphone
+
+    <div class="event">
+      <input type="button" id="add" onclick="button1_click();" value="추가" />
+      <script>
+      function button1_click() {
+        alert("추가를 눌렀습니다..");
+      }
+      </script>
+
+      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
+      <script>
+      function button2_click() {
+        alert("삭제를 눌렀습니다.");
+      }
+      </script>
+
+      <input type="button" id="modify" onclick="button3_click();" value="수정" />
+      <script>
+      function button3_click() {
+        alert("수정을 눌렀습니다.");
+      }
+      </script>
+    </div>
 	</div>
+
 	<div class="content">
 		<div class="left">
 			<div class="menu">
@@ -124,22 +188,22 @@
 		</div>
 		<div class="history">
 			<div class="container">
-				<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+				<iframe width="220" height="220" src="http://52.78.219.61/recordVideo/<?php $id = $_SESSION['id']; echo id; ?>/수진.mp4" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
-						<li> "황승애 방문" </li>
+						<li> "이수진 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='http://52.78.219.61/recordVideo/<?php $id = $_SESSION['id']; echo id; ?>/혜안.mp4' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
-						<li> "황승애 방문" </li>
+						<li> "경혜안 방문" </li>
 			</div>
 			<div class="container">
-					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
+					<iframe width="220" height="220" src='http://52.78.219.61/recordVideo/<?php $id = $_SESSION['id']; echo id; ?>/cute.mp4' allow="autoplay" frameborder='0'></iframe>
 						<li> 2019-03-29 </li>
 						<li> 21:17 </li>
-						<li> "황승애 방문" </li>
+						<li> "큐트 방문" </li>
 			</div>
 			<div class="container">
 					<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
