@@ -38,11 +38,10 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceHolder surfaceHolder;
     private boolean recording = false;
 //    업로드 코드 추가 부분
-    private static final int SELECT_VIDEO = 3;
+
     private Button buttonUpload;
     private String name;
     private String selectedPath="/storage/emulated/0/";
-    private TextView textViewResponse;
 
 
     @Override
@@ -51,19 +50,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         setContentView(R.layout.activity_camera);
 //        업로드 코드 추가 부분
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
-        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
-//        EditText editText1 = (EditText)findViewById(R.id.edittext);
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
 
-//        try {
-//            name = URLEncoder.encode(name,"UTF-8");
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
-
-
-//        name = editText1.getText().toString();
         name=name+".mp4";
         Toast.makeText(CameraActivity.this,name,Toast.LENGTH_LONG).show();
 
@@ -186,8 +175,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 uploading.dismiss();
-                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
-                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
+//                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
+//                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
             }
 
             @Override
