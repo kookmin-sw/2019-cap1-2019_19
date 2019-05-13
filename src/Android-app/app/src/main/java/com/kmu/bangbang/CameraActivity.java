@@ -39,6 +39,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     private boolean recording = false;
 //    업로드 코드 추가 부분
 
+    // 디버깅
+//    private TextView textViewResponse;
+
     private Button buttonUpload;
     private String name;
     private String selectedPath="/storage/emulated/0/";
@@ -49,6 +52,11 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         setContentView(R.layout.activity_camera);
 //        업로드 코드 추가 부분
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
+
+
+        // 디버깅
+//        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
+
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
 
@@ -173,6 +181,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 uploading.dismiss();
+                // 디버깅
 //                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
 //                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
             }
@@ -181,7 +190,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected String doInBackground(Void... params) {
                 Upload u = new Upload();
                 selectedPath = selectedPath+name;
-                String msg = u.uploadVideo(selectedPath, name);
+                String msg = u.uploadVideo(selectedPath);
                 return msg;
             }
         }

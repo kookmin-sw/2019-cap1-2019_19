@@ -12,16 +12,16 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+import java.net.URLEncoder;
 
 public class Upload {
-    // public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php?userName=수진";
+    public static final String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
 
     private int serverResponseCode;
     String a ;
-    public String uploadVideo(String file, String file_Name) {
+    public String uploadVideo(String file) {
 
-        String fileName = file;
+        String fileName = file.substring(file.lastIndexOf("/"));
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
@@ -39,8 +39,7 @@ public class Upload {
 
         try {
             FileInputStream fileInputStream = new FileInputStream(sourceFile);
-            //URL url = new URL(UPLOAD_URL);
-            URL url = new URL("http://52.78.219.61/test_video/upload.php?file_Name="+file_Name);
+            URL url = new URL(UPLOAD_URL);
             conn = (HttpURLConnection) url.openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -56,7 +55,11 @@ public class Upload {
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             //dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + fileName + "\"" + lineEnd);
-            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"temp.mp4\"" + lineEnd);
+
+            dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"");
+            dos.writeBytes(URLEncoder.encode(fileName,"utf-8"));
+            dos.writeBytes("\"" + lineEnd);
+
             dos.writeBytes(lineEnd);
 
             bytesAvailable = fileInputStream.available();
