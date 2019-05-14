@@ -119,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_enroll:
                     selectedFragment = new EnrollFragment();
                     break;
-                case R.id.navigation_manage:
-                    selectedFragment = new ManageFragment();
+                case R.id.navigation_acquaintance:
+                    selectedFragment = new AcquaintanceFragment();
                     break;
                 case R.id.navigation_record:
                     selectedFragment = new RecordCategoryFragment();

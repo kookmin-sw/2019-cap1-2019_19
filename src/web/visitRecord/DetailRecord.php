@@ -14,7 +14,7 @@
     $s_rIdx = $_GET['rIdx'];
     $rIdx = (int)$s_rIdx;
     
-    $sql="select name, rDate, belong, video from Historry where rIdx='${rIdx}'";
+    $sql="select name, rDate, belong, video from History where rIdx='${rIdx}'";
     
     $result=mysqli_query($link,$sql);
     $data = array();

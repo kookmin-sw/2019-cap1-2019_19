@@ -9,7 +9,7 @@
     }
     mysqli_set_charset($link,"utf8");
     $today = date("Y-m-d");
-    $sql="SELECT COUNT(*) FROM Historry WHERE DATE_FORMAT(rDate, '%Y-%m-%d') = '${today}'";
+    $sql="SELECT COUNT(*) FROM History WHERE DATE_FORMAT(rDate, '%Y-%m-%d') = '${today}'";
     $count=mysqli_query($link,$sql);
     $row=mysqli_fetch_array($count);
     $row_result=$row[0];

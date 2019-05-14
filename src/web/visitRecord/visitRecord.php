@@ -14,9 +14,9 @@
     $category = $_GET['category']    ;
     
     if($category == "전체보기"){
-        $sql="select rIdx, name, rDate, belong from Historry";
+        $sql="select rIdx, name, rDate, belong from History";
     }else{
-        $sql="select rIdx, name, rDate, belong from Historry where belong='${category}'";
+        $sql="select rIdx, name, rDate, belong from History where belong='${category}'";
     }
     $result=mysqli_query($link,$sql);
     $data = array();

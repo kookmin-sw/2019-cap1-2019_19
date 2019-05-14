@@ -7,9 +7,9 @@
         android:title="@string/title_enroll" />
 
     <item
-        android:id="@+id/navigation_manage"
+        android:id="@+id/navigation_acquaintance"
         android:icon="@drawable/ic_manage"
-        android:title="@string/title_manage" />
+        android:title="@string/title_acquaintance" />
 
     <item
         android:id="@+id/navigation_home"
