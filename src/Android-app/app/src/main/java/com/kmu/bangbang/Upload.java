@@ -1,8 +1,10 @@
 package com.kmu.bangbang;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -15,12 +17,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Upload {
-    public static String UPLOAD_URL= "http://52.78.219.61/test_video/upload.php";
+    public static String UPLOAD_URL= "http://52.78.219.61/test_video/Friends/upload.php";
 
     private int serverResponseCode;
     String a ;
-    public String uploadVideo(String file,String check) {
-        String fileName = file.substring(file.lastIndexOf("/"));
+
+    public String uploadVideo(String file,String check, String id) {
+        String fileName = file.substring(file.lastIndexOf("/")+1);
 
         if(check.equals("User")){
             UPLOAD_URL= "http://52.78.219.61/test_video/User/upload.php";
@@ -60,9 +63,8 @@ public class Upload {
 
             dos.writeBytes(twoHyphens + boundary + lineEnd);
             //dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"" + fileName + "\"" + lineEnd);
-
             dos.writeBytes("Content-Disposition: form-data; name=\"myFile\";filename=\"");
-            dos.writeBytes(URLEncoder.encode(fileName,"utf-8"));
+            dos.writeBytes(URLEncoder.encode(fileName+id,"utf-8"));
             dos.writeBytes("\"" + lineEnd);
 
             dos.writeBytes(lineEnd);

@@ -5,6 +5,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -39,11 +40,11 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     private boolean recording = false;
 //    업로드 코드 추가 부분
 
-    // 디버깅
+//    디버깅
 //    private TextView textViewResponse;
 
     private Button buttonUpload;
-    String check;
+    String check, auto_id;
 
     private String name;
     private String selectedPath="/storage/emulated/0/";
@@ -55,8 +56,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 //        업로드 코드 추가 부분
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
 
-
-        // 디버깅
+//        디버깅
 //        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
 
         Intent intent = new Intent(this.getIntent());
@@ -66,6 +66,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
         name=name+".mp4";
         Toast.makeText(CameraActivity.this,name,Toast.LENGTH_LONG).show();
+
+        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        auto_id = auto.getString("auto_id", null);
 
         TedPermission.with(CameraActivity.this)
                 .setPermissionListener(permission)
@@ -195,7 +198,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             protected String doInBackground(Void... params) {
                 Upload u = new Upload();
                 selectedPath = selectedPath+name;
-                String msg = u.uploadVideo(selectedPath,check);
+                String msg = u.uploadVideo(selectedPath,check, auto_id);
                 return msg;
             }
         }
