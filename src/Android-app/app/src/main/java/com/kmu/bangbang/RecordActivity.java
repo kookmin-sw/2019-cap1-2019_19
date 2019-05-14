@@ -123,7 +123,6 @@ public class RecordActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-
             String serverURL = params[0];
 
             try {
@@ -170,10 +169,8 @@ public class RecordActivity extends AppCompatActivity {
 
                 return null;
             }
-
         }
     }
-
 
     private void showResult(){
         try {
