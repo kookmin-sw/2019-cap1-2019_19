@@ -106,6 +106,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     mediaRecorder.prepare();
                                     mediaRecorder.start();
                                     recording =true;
+                                    btn_record.setText("녹화 중지");
 
                                 }catch (Exception e){
                                     e.printStackTrace();

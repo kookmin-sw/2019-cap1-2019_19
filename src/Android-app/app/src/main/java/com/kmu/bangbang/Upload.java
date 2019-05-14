@@ -27,7 +27,6 @@ public class Upload {
             fileName ="User.mp4";
 //            Log.i("방방", "파일 이름 이것이 실행 했는가...: " + check);
         }
-//        String fileName =file;
         HttpURLConnection conn = null;
         DataOutputStream dos = null;
         String lineEnd = "\r\n";
