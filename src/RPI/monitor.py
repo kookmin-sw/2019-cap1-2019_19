@@ -5,8 +5,10 @@ from PIL import Image, ImageTk
 import cv2
 import pymysql
 import threading
+from multiprocessing import Process
 from time import sleep
 import socket
+import os
 
 user_id = ""
 user_pw = ""
@@ -24,7 +26,7 @@ def loginCheck(login, id, pw):
 	user_pw = pw.get()
 
 
-	conn = pymysql.connect(host='####', port=0000, user='####', passwd="####", db='####', charset='utf8')
+	conn = pymysql.connect(host='####', port=####, user='####', passwd="####", db='####', charset='utf8')
 	curs = conn.cursor()
 
 	sql = "select ip, i_ip from Login where id = %s and pw = %s"
@@ -69,12 +71,12 @@ def makeKeyboard(window, entry, buttons, upper):
 				bd=1,command=command).place(x = baseX+count*w, y = baseY, width = w*3, height = h)
 		elif button == "SHIFT":
 			Button(window,text= button,width=4, bg="#FFE08C", fg="black",
-				activebackground = "#ffffff", activeforeground="#FFE08C", relief='raised', font=("Arial",12,"bold"),
-				bd=1,command=partial(makeKeyboard,window, entry, buttons, (upper+1)%2)).place(x = baseX+count*w, y = baseY, width = w, height = h)
+                                activebackground = "#ffffff", activeforeground="#FFE08C", relief='raised', font=("Arial",12,"bold"),
+                                bd=1,command=partial(makeKeyboard,window, entry, buttons, (upper+1)%2)).place(x = baseX+count*w, y = baseY, width = w, height = h)
 		elif button == "BACK":
-			Button(window,text= button,width=12, bg="#FFE08C", fg="black",
-				activebackground = "#ffffff", activeforeground="#FFE08C", relief='raised', font=("Arial",12,"bold"),
-				bd=1,command=command).place(x = baseX+count*w, y = baseY, width = w, height = h)
+                        Button(window,text= button,width=12, bg="#FFE08C", fg="black",
+                                activebackground = "#ffffff", activeforeground="#FFE08C", relief='raised', font=("Arial",12,"bold"),
+                                bd=1,command=command).place(x = baseX+count*w, y = baseY, width = w, height = h)
 		else:
 			Button(window,text= button,width=4, bg="#FFB2F5", fg="black",
 				activebackground = "#ffffff", activeforeground="#FFB2F5", relief='raised', font=("Arial",12,"bold"),
@@ -92,8 +94,8 @@ def makeKeyboard(window, entry, buttons, upper):
 			count = 0
 			baseY += h
 		if count > 9 and baseY == 380:
-			count = 0
-			baseY += h
+                        count = 0
+                        baseY += h
 # 로그인 창
 def LoginWindow(window):
 	# Login 창 생성 및 설정
@@ -138,40 +140,91 @@ def LoginWindow(window):
 	# Login 창 버튼: 로그인, 종료
 	bt_login = Button(menu, text="Login", bg="green", fg="white", activebackground = "white", activeforeground="green", font=("Arial",15,"bold"), command=partial(loginCheck, Login, id, pw)).place(x=0, y=0, width = 160, height = 480)
 
+# 통화 설정
 
 # 통화 상태
 state = "calloff"
+
+def play(i):
+	os.system("aplay --format=S16_LE --rate=16000 output_"+i+".wav")
+
+def record(i):
+	os.system("arecord --format=S16_LE --duration=5 --rate=16000 --file-type=wav input_"+i+".wav")
+
 # 오디오 송신
 def send(s):
 	global state
 
-	s_m = "hi from monitor"
-	e_m = "bye from moniotr"
-	print("send 시작")
+	e_m = "bye from monitor"
+	count = 0
 	while True:
+		i = str(count%3+1)
+		print("record complete")
+		record(i)
+		print("record complete")
+		print("send start")
+		path = "input_"+i+".wav"
+		audio = open(path, 'rb')
+		data = audio.read()
+		len_data = str(len(data))
 		if state == "calloff" or state == "programoff":
-			s.send(e_m.encode('utf-8'))
+			try:
+				l = str(len(e_m))
+				s.send(l.encode('utf-8'))
+				sleep(1)
+				s.send(e_m.encode('utf-8'))
+				sleep(1)
+				break
+			except:
+				break
+		try:
+			s.send(len_data.encode('utf-8'))
 			sleep(1)
-			break
-		s.send(s_m.encode('utf-8'))
+			s.sendall(data)
+			print("send complete")
+		except:
+			print("error")
+		audio.close()
 		sleep(1)
-	print("send 종료")
-
+		count += 1
 # 오디오 수신
 def receive(s):
 	global state
+	count = 0
 	while True:
+		path = 'output_'+str(count%3+1)+'.wav'
 		if state == "programoff":
 			break
-		data = s.recv(65536)
-		data = data.decode("utf-8")
-		print(data)
-		if data == "bye from rpi":
-			print("receive end")
-			break
+		try:
+			len_data = s.recv(1023)
+			len_data = len_data.decode('utf-8')
+			len_data = int(len_data)
+			sleep(1)
+		except:
+			continue
+		size = 0
+		result = b""
+		while True:
+			data = s.recv(65536)
+			result += data
+
+			if data == "bye from rpi":
+				print("receive end")
+				return
+			size += len(data)
+			if len_data == size:
+				print("complete")
+				break
+
+		audio = open(path, 'wb')
+		audio.write(result)
+		audio.close()
+		play(str(count%3+1))
+		count += 1
 
 # 통화 시작
 def call(s):
+	sleep(1)
 	global state
 	if state == "calloff":
 		state = "callon"
@@ -181,17 +234,17 @@ def call(s):
 
 # 통화 종료
 def hangup():
+	sleep(1)
 	global state
 	if state == "callon":
 		state = "calloff"
 		print("hangup")
 
-# message 전송
 def SendMessage(s,message):
 	s.send(message.encode('utf-8'))
 
-# 스트리밍 창 종료
 def closeStreaming(s,streaming):
+	sleep(1)
 	global state
 	state = "programoff"
 	SendMessage(s,'close')
@@ -206,15 +259,14 @@ def StreamingWindow(window):
 	global camIP, camPrivateIP, state
 	state = "calloff"
 
-	# 스트리밍
 	def stream():
-		_,frame = camera.read()
+		_, frame = camera.read()
 		cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
 		img = Image.fromarray(cv2image)
 		imgtk = ImageTk.PhotoImage(image=img)
 		screen.imgtk = imgtk
 		screen.configure(image=imgtk)
-		screen.after(1, stream)
+		screen.after(2, stream)
 
 	streaming=Toplevel(window)
 	streaming.title("streaming")
@@ -224,17 +276,17 @@ def StreamingWindow(window):
 
 	# screen, camera 설정
 	video = Frame(streaming, width = 640, height = 480)
+	video.place(x=0, y=0)
 	video.grid()
 	screen = Label(video)
 	screen.grid()
 	camera = cv2.VideoCapture('http://'+camIP+':8080/stream/video.mjpeg')
-	video.pack(side="left")
-	sleep(1)
-	stream()
+	t = threading.Thread(target=stream)
+	t.daemon = 1
+	t.start()
 
-	# 외부 인터폰과 통신
 	HOST = camPrivateIP
-	PORT = 0000
+	PORT = ####
 
 	s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 	s.connect((HOST,PORT))
@@ -243,16 +295,53 @@ def StreamingWindow(window):
 
 	# button 생성
 	buttonList = Frame(streaming, width = 160, height = 480)
-	buttonList.pack()
+	buttonList.place(x=640, y=0)
 
 	# bt_call: 전화 걸기, bt_hangup: 전화 끊기, bt_streaming_close: 창닫기
 	bt_call = Button(buttonList, text="call", command = partial(call,s)).place(x=0, y=0, width = 160, height = 160)
 	bt_hangup = Button(buttonList, text="hang up", command = hangup).place(x=0, y= 160, width = 160, height = 160)
 	bt_streaming_close = Button(buttonList, text="close", command=partial(closeStreaming,s,streaming)).place(x=0, y=320, width = 160, height = 160)
 
+	streaming.bind("<Escape>",lambda e: streaming.destroy())
 # 방문기록 창
 def HistoryWindow(window):
-	window.destroy()
+	# 방문 기록
+	def stream():
+		_,frame = camera.read()
+		cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+		img = Image.fromarray(cv2image)
+		imgtk = ImageTk.PhotoImage(image=img)
+		screen.imgtk = imgtk
+		screen.configure(image=imgtk)
+		screen.after(1, stream)
+
+	history=Toplevel(window)
+	history.title("history")
+	history.geometry("800x480+0+0")
+	#history.attributes('-fullscreen', True)
+	history.resizable(False, False)
+
+	history.bind("<Escape>",lambda e:history.destroy())
+
+  	# screen, camera 설정
+	video = Frame(history, width = 640, height = 480, bg = "black")
+	video.place(x=0,y=0)
+	video.grid()
+	screen = Label(video)
+	screen.grid()
+	camera = cv2.VideoCapture('http://52.78.219.61/recordVideo/혜안.mp4')
+	t = threading.Thread(target=stream)
+	t.start()
+
+
+	video2 = Frame(history, width = 640, height = 480, bg = "blue")
+	video2.place(x=660,y=500)
+	video2.grid()
+	screen2 = Label(video2)
+	screen2.grid()
+	camera = cv2.VideoCapture('http://52.78.219.61/recordVideo/혜안.mp4')
+	t = threading.Thread(target=stream)
+	t.start()
 
 # main 창 생성 및 설정
 # size: 800x480, size 변경 불가, fullscreen
@@ -278,3 +367,4 @@ bt_history = Button(mainframe, text="History", bg="#E4F7BA", font=("Arial",20,"b
 LoginWindow(main)
 
 main.mainloop()
+]
