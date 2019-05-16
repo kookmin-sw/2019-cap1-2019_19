@@ -23,10 +23,11 @@ if( $error != UPLOAD_ERR_OK ) {
         exit;
 }
 
-
 // 파일 이동
 move_uploaded_file( $_FILES['myfile']['tmp_name'], "$uploads_dir/$name");
+
 echo "촬영종료";
+
 // 파일 정보 출력
 echo " ";
 echo "<h3>파일 정보</h3>
@@ -36,4 +37,24 @@ echo "<h3>파일 정보</h3>
     <li>파일형식: {$_FILES['myfile']['type']}</li>
     <li>파일크기: {$_FILES['myfile']['size']} 바이트</li>
 </ul>";
+echo"저장완료";
 
+// id 읽어오기
+$f = fopen('id.txt', 'r');
+$ID = fgets($f);
+fclose($f);
+
+// db 연결
+$mysqli = new mysqli('localhost', 'admin', 'Kookmin1!', 'db');
+if($mysqli->connect_errno) {
+  exit('Error Connecting db');
+}
+$mysqli->set_charset('utf8');
+$ID = trim($ID);
+
+// insert query
+$test = "INSERT INTO `SEUNGAE` (`rIdx`, `id`, `name`, `rDate`, `belong`, `video`) VALUES (NULL, '{$ID}', 'name', NOW(), 'belong', '{$uploads_dir}/{$name}')";
+
+$mysqli->query($test);
+
+echo "INSERTT 완료";
