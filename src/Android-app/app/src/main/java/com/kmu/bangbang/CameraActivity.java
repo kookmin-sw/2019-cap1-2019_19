@@ -70,6 +70,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         auto_id = auto.getString("auto_id", null);
 
+
         TedPermission.with(CameraActivity.this)
                 .setPermissionListener(permission)
                 .setRationaleMessage("녹화 위하여 권한을 허용해주세요.")

@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,10 +36,17 @@ public class ConnectActivity extends Activity {
     final byte delimiter = 33;
     int readBufferPosition = 0;
 
+    String users_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
+
+
+/////////////
+        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        users_id= auto.getString("auto_id", null);
 
         ssidTextView = (TextView) findViewById(R.id.ssid_text);
         pskTextView = (TextView) findViewById(R.id.psk_text);
@@ -93,6 +101,8 @@ public class ConnectActivity extends Activity {
         private String ssid;
         private String psk;
         private BluetoothDevice device;
+        //////////////////////
+
 
         public workerThread(String ssid, String psk, BluetoothDevice device) {
             this.ssid = ssid;
@@ -132,6 +142,11 @@ public class ConnectActivity extends Activity {
                 mmOutputStream.flush();
                 waitForResponse(mmInputStream, -1);
 
+                ///////////////////////////////
+
+                mmOutputStream.write(users_id.getBytes());
+                mmOutputStream.flush();
+                waitForResponse(mmInputStream,-1);
                 mmSocket.close();
 
                 writeOutput("Success.");
