@@ -11,6 +11,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -53,7 +54,6 @@ public class RecordDetailActivity extends AppCompatActivity {
     TextView belongText;
     WebView mWebView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +76,7 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         WebSettings websettings = mWebView.getSettings();
         websettings.setJavaScriptEnabled(true);
+        websettings.setMediaPlaybackRequiresUserGesture(true);
 
         // rIdx 받아오기
         Intent intent = getIntent();
@@ -85,6 +86,9 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         RecordDetailActivity.GetData task = new RecordDetailActivity.GetData();
         task.execute("http://52.78.219.61/DetailRecord.php?rIdx="+rIdx);
+
+
+
 
         Log.v(TAG, "finised");
     }
@@ -200,19 +204,26 @@ public class RecordDetailActivity extends AppCompatActivity {
 
             Log.d(TAG, "video_url"+video_url);
 
-            if(video_url == null || video_url.length() == 0){
-                mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
-            }
-            else{
-                mWebView.loadUrl("http://52.78.219.61/"+video_url);
-            }
+//            if(video_url == null || video_url.length() == 0){
+//                mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
+//            }
+//            else{
+//                mWebView.loadUrl("http://52.78.219.61/"+video_url);
+//            }
 
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
-
-
     }
+
+    public void playVideo(View view){
+        if(video_url == null || video_url.length() == 0){
+            mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
+        }
+        else{
+            mWebView.loadUrl("http://52.78.219.61/"+video_url);
+        }
+    }
+
 }
