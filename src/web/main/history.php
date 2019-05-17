@@ -18,6 +18,7 @@ $mysqli->set_charset('utf8');
 // select query
 
 $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
+
 ?>
 
 <html>
@@ -229,92 +230,83 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
 				</div>
 			</div>
 
-			<script>
+			<!-- <script>
 				function check(video){
 					if(video.checked == true)
 					alert(video.value + "의 동영상을 체크했습니다.")
 				}
-			</script>
+			</script> -->
 
 			<div class="history">
 				<div class="container">
-					<form>
-						<input type=radio name="chek" value="<?php $name = $_SESSION['name']; echo $name; ?>" width="230" height="230" onclick="check(this)"><br>
-							<iframe width="220" height="220" src="http://52.78.219.61/recordVideo/승애.mp4" frameborder='0'></iframe>
-								<li>"<?= $result['rDate'] ?>" </li>
-								<li>"<?= $result['name'] ?> 방문 "</li>
-					</form>
-				</div>
+	          <form>
+	            <?php
+	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=1")->fetch_assoc();
+	                ?>
+	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/승애.mp4" frameborder='0'></iframe>
+	                <li>"<?= $res['rIdx'] ?>" </li>
+	                <li>"<?= $res['rDate'] ?>" </li>
+	                <li>"<?= $res['name'] ?> 방문 "</li>
+	          </form>
+	      </div>
 
 
 				<div class="container">
-					<form>
-						<input type=radio name="chek" value="<?php $id = $_SESSION['id']; echo $id; ?>" width="230" height="230" onclick="check(this)"><br>
-							<iframe width="220" height="220" src="http://52.78.219.61/recordVideo/수진.mp4" frameborder='0'></iframe>
-								<li> 2019-03-29 </li>
-								<li> 21:17 </li>
-								<li> "이수진 방문" </li>
-					</form>
-				</div>
+	          <form>
+	            <?php
+	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=2")->fetch_assoc();
+	                ?>
+	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/은주.mp4" frameborder='0'></iframe>
+	                <li>"<?= $res['rIdx'] ?>" </li>
+	                <li>"<?= $res['rDate'] ?>" </li>
+	                <li>"<?= $res['name'] ?> 방문 "</li>
+	          </form>
+	      </div>
 
 
 				<div class="container">
-					<form>
-						<input type=radio name="chek" value="큐트" width="230" height="230" onclick="check(this)"><br>
-							<iframe width="220" height="220" src='http://52.78.219.61/<?php $id = $_SESSION['id']; echo $id; ?>/recordVideo/cute.mp4' allow="autoplay" frameborder='0'>$
-								<li> 2019-03-29 </li>
-								<li> 21:17 </li>
-								<li> "큐트 방문" </li>
-					</form>
-				</div>
+	          <form>
+	            <?php
+	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=3")->fetch_assoc();
+	                ?>
+	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/수진.mp4" frameborder='0'></iframe>
+	                <li>"<?= $res['rIdx'] ?>" </li>
+	                <li>"<?= $res['rDate'] ?>" </li>
+	                <li>"<?= $res['name'] ?> 방문 "</li>
+	          </form>
+	      </div>
 
 
 				<div class="container">
-					<form>
-						<input type=radio name="chek" value="<?php $id = $_SESSION['id']; echo $id; ?>" width="230" height="230" onclick="check(this)"><br>
-            	<input type=radio name="chek" value="<?php $id = $_SESSION['id']; echo $id; ?>" width="230" height="230" onclick="check(this)"><br>
-              	<iframe width="220" height="220" src='http://52.78.219.61/<?php $id = $_SESSION['id']; echo $id; ?>/recordVideo/혜안.mp4' allow="autoplay" frameborder='0'>$
-                	<li> 2019-03-29 </li>
-                	<li> 21:17 </li>
-                	<li> "경혜안 방문" </li>
-          </form>
-        </div>
+	          <form>
+	            <?php
+	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=5")->fetch_assoc();
+	                ?>
+	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/cute.mp4" frameborder='0'></iframe>
+	                <li>"<?= $res['rIdx'] ?>" </li>
+	                <li>"<?= $res['rDate'] ?>" </li>
+	                <li>"<?= $res['name'] ?> 방문 "</li>
+	          </form>
+	      </div>
 
 
-        <div class="container">
-        	<form>
-          	<input type=radio name="chek" value="은주" width="230" height="230" onclick="check(this)"><br>
-            	<iframe width="220" height="220" src='http://52.78.219.61/recordVideo/은주.mp4' allow="autoplay" frameborder='0'></iframe>
-              	<li> 2019-03-29 </li>
-              	<li> 21:17 </li>
-              	<li> "최은주 방문" </li>
-        	</form>
-        </div>
+				<div class="container">
+	          <form>
+	            <?php
+	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=6")->fetch_assoc();
+	                ?>
+	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/혜안.mp4" frameborder='0'></iframe>
+	                <li>"<?= $res['rIdx'] ?>" </li>
+	                <li>"<?= $res['rDate'] ?>" </li>
+	                <li>"<?= $res['name'] ?> 방문 "</li>
+	          </form>
+	      </div>
 
-
-        <div class="container">
-        	<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
-          	<li> 2019-03-29 </li>
-          	<li> 21:17 </li>
-          	<li> "황승애 방문" </li>
-        </div>
-
-
-        <div class="container">
-        	<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
-        		<li> 2019-03-29 </li>
-        		<li> 21:17 </li>
-        		<li> "황승애 방문" </li>
-        </div>
-
-
-        <div class="container">
-        	<iframe width="220" height="220" src='https://www.youtube.com/embed/4HG_CJzyX6A' allow="autoplay" frameborder='0'></iframe>
-          	<li> 2019-03-29 </li>
-          	<li> 21:17 </li>
-          	<li> "황승애 방문" </li>
-        </div>
-			</div>
 
       <div class="page">
       	<ol>
