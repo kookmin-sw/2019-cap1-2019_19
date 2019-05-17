@@ -22,7 +22,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     private AlertDialog dialog;
     String auto_id, auto_pw;
-    String id, pw;
+    String id, pw, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+                token = pref.getString("token", "no token");
+
                 /*
                 Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                 LoginActivity.this.startActivity(mainIntent);
@@ -104,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-                LoginRequest loginRequest = new LoginRequest(id, pw, responseListener);
+                LoginRequest loginRequest = new LoginRequest(id, pw, token, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
 
