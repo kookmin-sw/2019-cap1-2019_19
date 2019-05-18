@@ -17,8 +17,7 @@ $mysqli->set_charset('utf8');
 
 // select query
 
-$result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
-
+$result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 ?>
 
 <html>
@@ -185,17 +184,30 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
 		        	{
 		          	alert("동영상을 해제했습니다.")
 		          	chek[i].checked = false;
+								break;
 		        	}
-		        	// else
-		        	//     alert("해제할 동영상이 없습니다.")
+		        	else
+							{
+								alert("해제할 동영상이 없습니다.")
+								break;
+							}
 		     		}
 		      }
 		    </script>
 
-	      <input type="button" id="add" onclick="button1_click();" value="추가" />
+				<script>
+					function check(video){
+						if(video.checked == true)
+							index = video.value;
+							alert(index + "번 동영상을 체크했습니다.")
+					}
+				</script>
+
+
+	      <input type="button" id="add" onclick="button1_click();" value="등록" />
 		      <script>
 			      function button1_click() {
-			        alert("추가를 눌렀습니다..");
+			        alert("등록을 눌렀습니다.");
 			      }
 		      </script>
 
@@ -209,7 +221,7 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
 	      <input type="button" id="modify" onclick="button3_click();" value="수정" />
 		      <script>
 			      function button3_click() {
-			        alert("수정을 눌렀습니다.");
+							location.href="updatePage.php?rIdx=" + index;
 			      }
 	      	</script>
     	</div>
@@ -230,82 +242,30 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
 				</div>
 			</div>
 
-			<!-- <script>
-				function check(video){
-					if(video.checked == true)
-					alert(video.value + "의 동영상을 체크했습니다.")
-				}
-			</script> -->
 
 			<div class="history">
-				<div class="container">
-	          <form>
-	            <?php
-	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=1")->fetch_assoc();
-	                ?>
-	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/승애.mp4" frameborder='0'></iframe>
-	                <li>"<?= $res['rIdx'] ?>" </li>
-	                <li>"<?= $res['rDate'] ?>" </li>
-	                <li>"<?= $res['name'] ?> 방문 "</li>
-	          </form>
-	      </div>
+				<form>
 
+				<?php
+	      $i = $result->num_rows;
+	      while ($res = $result->fetch_assoc()) {
+
+	       ?>
 
 				<div class="container">
-	          <form>
-	            <?php
-	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=2")->fetch_assoc();
-	                ?>
 	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/은주.mp4" frameborder='0'></iframe>
-	                <li>"<?= $res['rIdx'] ?>" </li>
-	                <li>"<?= $res['rDate'] ?>" </li>
+							<video width="220" height="220" controls="controls">
+	            	<source src="<?= $res['video']?>" type="video/mp4" />
+	          	</video>
+									<li>"<?= $res['rDate'] ?>" </li>
 	                <li>"<?= $res['name'] ?> 방문 "</li>
-	          </form>
-	      </div>
-
-
-				<div class="container">
-	          <form>
-	            <?php
-	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=3")->fetch_assoc();
-	                ?>
-	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/수진.mp4" frameborder='0'></iframe>
-	                <li>"<?= $res['rIdx'] ?>" </li>
-	                <li>"<?= $res['rDate'] ?>" </li>
-	                <li>"<?= $res['name'] ?> 방문 "</li>
-	          </form>
-	      </div>
-
-
-				<div class="container">
-	          <form>
-	            <?php
-	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=5")->fetch_assoc();
-	                ?>
-	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/cute.mp4" frameborder='0'></iframe>
-	                <li>"<?= $res['rIdx'] ?>" </li>
-	                <li>"<?= $res['rDate'] ?>" </li>
-	                <li>"<?= $res['name'] ?> 방문 "</li>
-	          </form>
-	      </div>
-
-
-				<div class="container">
-	          <form>
-	            <?php
-	            $res = $mysqli->query("SELECT * FROM `SEUNGAE` WHERE rIdx=6")->fetch_assoc();
-	                ?>
-	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-	              <iframe width="220" height="220" src="http://52.78.219.61/recordVideo/혜안.mp4" frameborder='0'></iframe>
-	                <li>"<?= $res['rIdx'] ?>" </li>
-	                <li>"<?= $res['rDate'] ?>" </li>
-	                <li>"<?= $res['name'] ?> 방문 "</li>
-	          </form>
-	      </div>
+									<?php
+									$i—;
+							}
+							?>
+						</div>
+	       </form>
+			</div>
 
 
       <div class="page">
@@ -317,7 +277,6 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`")->fetch_assoc();
 
 				</ol>
 			</div>
-		</div>
 	</div>
 
 	<div class="footer">
