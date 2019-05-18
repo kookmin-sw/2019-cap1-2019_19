@@ -16,12 +16,12 @@ if($mysqli->connect_errno) {
 $mysqli->set_charset('utf8');
 
 // select query
-
 $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 ?>
 
 <html>
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 	<meta charset="UTF-8">
   <title>History</title>
   <style type="text/css">
@@ -164,6 +164,9 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		}
 
 	</style>
+	<script>
+	var index;
+	</script>
 </head>
 <body>
 	<div class="header">
@@ -175,55 +178,64 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 					function deselect() {
 		    		//체크 해제할 라디오버튼 불러오기
 		     		var chek = document.getElementsByName("chek");
-
-		     		for(var i=0; chek.length; i++)
+						var find = false;
+						for(var i=0;  i < chek.length; i++)
 		     		{
 		        	//체크되어 있다면 chek[i].checked == true
 		        	//true -> false로 변환 ==> 체크해제
 		        	if(chek[i].checked)
 		        	{
-		          	alert("동영상을 해제했습니다.")
+								find = true;
+		          	alert("동영상을 해제했습니다.");
 		          	chek[i].checked = false;
-								break;
+								return;
 		        	}
-		        	else
-							{
-								alert("해제할 동영상이 없습니다.")
-								break;
-							}
 		     		}
-		      }
-		    </script>
-
-				<script>
-					function check(video){
-						if(video.checked == true)
-							index = video.value;
-							alert(index + "번 동영상을 체크했습니다.")
+						if(!find) {
+							alert("해제할 동영상이 없습니다.");
+							return;
+						}
 					}
-				</script>
+		    </script>
 
 
 	      <input type="button" id="add" onclick="button1_click();" value="등록" />
 		      <script>
 			      function button1_click() {
-			        alert("등록을 눌렀습니다.");
+							location.href="insertPage.php?rIdx=" + index;
 			      }
 		      </script>
 
-	      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
-		      <script>
-			      function button2_click() {
-			        alert("삭제를 눌렀습니다.");
-			      }
-		      </script>
+
+		      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
+			      <script>
+				      function button2_click() {
+								if(!confirm("정말 삭제하시겠습니까?"))
+									return false;
+									$.get( "delete.php?rIdx=" + index, function( data ) {
+  									$( ".result" ).html( data );
+										location.reload();
+										});
+							}
+			      </script>
+
 
 	      <input type="button" id="modify" onclick="button3_click();" value="수정" />
-		      <script>
+					<script>
 			      function button3_click() {
 							location.href="updatePage.php?rIdx=" + index;
 			      }
 	      	</script>
+
+				<script>
+					function check(video){
+						if(video.checked == true)
+							index = video.value;
+							alert(index + "의 동영상을 체크했습니다.")
+					}
+				</script>
+
+
     	</div>
     </div>
 
@@ -244,27 +256,26 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 
 
 			<div class="history">
-				<form>
+	    	<form>
+        	<?php
+	        	$i = $result->num_rows;
+	        	while ($res = $result->fetch_assoc()) {
 
-				<?php
-	      $i = $result->num_rows;
-	      while ($res = $result->fetch_assoc()) {
+          ?>
+					<div class="container">
 
-	       ?>
-
-				<div class="container">
-	            <input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
-							<video width="220" height="220" controls="controls">
-	            	<source src="<?= $res['video']?>" type="video/mp4" />
-	          	</video>
-									<li>"<?= $res['rDate'] ?>" </li>
-	                <li>"<?= $res['name'] ?> 방문 "</li>
-									<?php
-									$i—;
-							}
-							?>
-						</div>
-	       </form>
+	         	<input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+          	<video width="220" height="220" controls="controls">
+            	<source src="<?= $res['video']?>" type="video/mp4" />
+          	</video>
+	             <li>"<?= $res['rDate'] ?>" </li>
+	             <li>"<?= $res['name'] ?> 방문 "</li>
+					<?php
+					$i—;
+					}
+				?>
+			</div>
+	     </form>
 			</div>
 
 
