@@ -8,18 +8,25 @@
     tools:context=".CameraActivity">
 
     <!--android:orientation="vertical"-->
-
-    <Button
-        android:id="@+id/buttonUpload"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="등록하기" />
+        android:gravity="center">
+        <Button
+            android:id="@+id/btn_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="녹화시작"
+            android:layout_marginRight="60dp"
+            android:enabled="true"/>
+        <Button
+            android:id="@+id/buttonUpload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="등록하기" />
 
-    <Button
-        android:id="@+id/btn_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="녹화시작" />
+
+    </LinearLayout>
     <TextView
         android:id="@+id/timer"
         android:layout_width="match_parent"

@@ -85,6 +85,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         btn_record = (Button)findViewById(R.id.btn_record);
         buttonUpload = (Button)findViewById(R.id.buttonUpload);
 
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +110,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     mediaRecorder.prepare();
                                     mediaRecorder.start();
                                     recording =true;
-                                    btn_record.setText("녹화 중지");
+                                    btn_record.setText("녹화 중");
+                                    btn_record.setEnabled(false);
 
                                     handler = new Handler(){
                                       public void handleMessage (Message msg){
@@ -132,6 +134,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                             mediaRecorder.release();
                                             camera.lock();
                                             recording = false;
+                                            btn_record.setEnabled(true);
                                             Toast.makeText(CameraActivity.this,"녹화가 중지되었습니다.",Toast.LENGTH_LONG).show();
                                         }
                                     },8000);
@@ -149,6 +152,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         };
         btn_record.setOnClickListener(listener);
         buttonUpload.setOnClickListener(listener);
+
     }
 
 
@@ -163,6 +167,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             surfaceHolder = surfaceView.getHolder();
             surfaceHolder.addCallback(CameraActivity.this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+            camera.startPreview();
+
 
         }//퍼미션들이 허용이 되었을때
 
@@ -179,9 +185,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     }//서페이스 뷰가 만들어진 시점
 
     private void refreshCamera(Camera camera) { //카메라 초기화 작업
-        if(surfaceHolder.getSurface() == null){
-            return;
-        }
+//        if(surfaceHolder.getSurface() == null){
+//            return;
+//        }
 
         try{
             camera.stopPreview();
