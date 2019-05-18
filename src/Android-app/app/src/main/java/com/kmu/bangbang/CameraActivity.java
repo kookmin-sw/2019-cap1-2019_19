@@ -11,6 +11,8 @@ import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -38,7 +40,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private boolean recording = false;
-//    업로드 코드 추가 부분
+    int counter = 8;
+    TextView timer;
+    Handler handler;
 
 //    디버깅
 //    private TextView textViewResponse;
@@ -55,7 +59,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         setContentView(R.layout.activity_camera);
 //        업로드 코드 추가 부분
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
-
+        timer = (TextView)findViewById(R.id.timer);
 //        디버깅
 //        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
 
@@ -84,15 +88,10 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == btn_record) {
-                    if(recording){ //녹화중지
-                        mediaRecorder.stop();
-                        mediaRecorder.release();
-                        camera.lock();
-                        recording = false;
-                        Toast.makeText(CameraActivity.this,"녹화가 중지되었습니다.",Toast.LENGTH_LONG).show();
-
-                    }else{
+                if (v == buttonUpload) {
+                    uploadVideo();
+                }
+                    else if(v == btn_record){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -112,6 +111,32 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     recording =true;
                                     btn_record.setText("녹화 중지");
 
+                                    handler = new Handler(){
+                                      public void handleMessage (Message msg){
+                                          counter--;
+                                          if(counter <= 8){
+                                              timer.setText("남은 촬영 시간 : "+counter);
+                                              handler.sendEmptyMessageDelayed(0,1000);
+                                          }
+                                          if(counter <= 0){
+                                              timer.setText("촬영이 종료되었습니다.");
+                                          }
+                                      }
+                                    };
+                                    handler.sendEmptyMessage(0);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mediaRecorder.stop();
+                                            mediaRecorder.release();
+                                            camera.lock();
+                                            recording = false;
+                                            Toast.makeText(CameraActivity.this,"녹화가 중지되었습니다.",Toast.LENGTH_LONG).show();
+                                        }
+                                    },8000);
+
+
                                 }catch (Exception e){
                                     e.printStackTrace();
                                     mediaRecorder.release(); //동영상 촬영을 급하게 꺼라
@@ -120,10 +145,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                         });
                     }
                 }
-                if (v == buttonUpload) {
-                    uploadVideo();
-                }
-            }
+//            }
         };
         btn_record.setOnClickListener(listener);
         buttonUpload.setOnClickListener(listener);

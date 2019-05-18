@@ -14,15 +14,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="등록하기" />
-    <TextView
-        android:id="@+id/textViewResponse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/btn_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="녹화시작" />
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="버튼을 누르시면 8초후 촬영이 종료됩니다."/>
 
     <SurfaceView
         android:id="@+id/surfaceView"
