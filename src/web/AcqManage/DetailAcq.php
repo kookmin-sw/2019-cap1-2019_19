@@ -10,7 +10,12 @@
     
     mysqli_set_charset($link,"utf8");
     
-    $sql="SELECT aIdx, name, belong FROM Acquaintance";
+    // get 방식으로 카테고리 파라미터 받기
+    $s_aIdx = $_GET['aIdx'];
+    $aIdx = (int)$s_aIdx;
+    
+    $sql="SELECT name, belong, alarm FROM Acquaintance WHERE aIdx='${aIdx}'";
+    
     $result=mysqli_query($link,$sql);
     $data = array();
     
@@ -18,15 +23,17 @@
     if($result){
         while($row=mysqli_fetch_array($result)){
             array_push($data,
-                       array('aIdx'=>$row[0],'name'=>$row[1],
-                             'belong'=>$row[2]
+                       array('name'=>$row[0],
+                             'belong'=>$row[1],
+                             'alarm'=>$row[2]
                              ));
         }
         
         header('Content-Type: application/json; charset=utf8');
         
+        // 데이터가 있는 경우만 JSON 데이터 반환
         if(!empty( $data )){
-            $json = json_encode(array("Acquaintances"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
+            $json = json_encode(array("Acquaintance"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
             echo $json;
         }
     }
@@ -35,4 +42,5 @@
         echo mysqli_error($link);
     }
     mysqli_close($link);
+    
     ?>
