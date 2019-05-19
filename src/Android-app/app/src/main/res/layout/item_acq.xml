@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_margin="15dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    >
 
 
     <TextView

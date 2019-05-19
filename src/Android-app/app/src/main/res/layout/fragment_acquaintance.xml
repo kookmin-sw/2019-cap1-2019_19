@@ -1,19 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AcquaintanceFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/edge_bottom"
+        >
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/acquaintance_list"/>
+        <TextView
+            android:id="@+id/textView_list_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="2"
+            android:padding="5dp"
+            android:text="이름"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/textView_list_belong"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="5"
+            android:padding="5dp"
+            android:text="그룹"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
-</FrameLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/acquaintance_list"/>
+
+</LinearLayout>
