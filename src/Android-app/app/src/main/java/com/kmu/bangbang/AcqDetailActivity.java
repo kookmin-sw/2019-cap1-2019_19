@@ -40,25 +40,12 @@ public class AcqDetailActivity extends AppCompatActivity {
     private static final String TAG_ALARM = "alarm";
 
     ArrayList<HashMap<String, String>> mArrayList;
-    String mJsonString;
-    String aIdx;
-    String name;
-    String alarm ;
-    String belong;
-
-    TextView nameText;
-    TextView alarmText;
-    TextView belongText;
-
-    EditText nameEdit;
-    EditText belongEdit;
-    EditText alarmEdit;
-
-    Button updateBtn;
-    Button confirmBtn;
+    String mJsonString, aIdx, name, alarm, belong;
+    TextView nameText, alarmText, belongText;
+    EditText nameEdit, belongEdit, alarmEdit;
+    Button updateBtn, confirmBtn;
 
     AcqDetailActivity.GetData task;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +55,6 @@ public class AcqDetailActivity extends AppCompatActivity {
         nameText = (TextView)findViewById(R.id.nameText);
         alarmText = (TextView)findViewById(R.id.alarmText);
         belongText = (TextView)findViewById(R.id.belongText);
-
 
         // rIdx 받아오기
         Intent intent = getIntent();
@@ -158,7 +144,6 @@ public class AcqDetailActivity extends AppCompatActivity {
 
                 return sb.toString().trim();
 
-
             } catch (Exception e) {
 
                 Log.d(TAG, "InsertData: Error ", e);
@@ -166,7 +151,6 @@ public class AcqDetailActivity extends AppCompatActivity {
 
                 return null;
             }
-
         }
     }
 
@@ -204,14 +188,13 @@ public class AcqDetailActivity extends AppCompatActivity {
                         task = new AcqDetailActivity.GetData();
                         task.execute("http://52.78.219.61/DeleteAcq.php?aIdx="+aIdx);
                         Toast.makeText(getApplicationContext(),"삭제가 완료되었습니다.",Toast.LENGTH_LONG).show();
-                        //Log.v("Selected aIdx : ", aIdx);
                         finish();
                     }
                 });
         builder.setNegativeButton("NO",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+                        dialog.cancel();
                     }
                 });
         builder.show();
@@ -223,7 +206,6 @@ public class AcqDetailActivity extends AppCompatActivity {
         alarmEdit = (EditText) findViewById(R.id.alarmEdit);
         updateBtn = (Button) findViewById(R.id.updateBtn);
         confirmBtn = (Button) findViewById(R.id.confirmBtn);
-
 
         nameText.setVisibility(View.GONE);
         belongText.setVisibility(View.GONE);
@@ -241,25 +223,40 @@ public class AcqDetailActivity extends AppCompatActivity {
     }
 
     public void confirmAcq(View view){
-        task = new AcqDetailActivity.GetData();
-        task.execute("http://52.78.219.61/UpdateAcq.php?aIdx="+aIdx
-                                                        +"&name="+nameEdit.getText().toString()
-                                                        +"&belong="+belongEdit.getText().toString()
-                                                        +"&alarm="+alarmEdit.getText().toString());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("수정 알림");
+        builder.setMessage("정말로 수정하시겠습니까?");
+        builder.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        task = new AcqDetailActivity.GetData();
+                        task.execute("http://52.78.219.61/UpdateAcq.php?aIdx="+aIdx
+                                +"&name="+nameEdit.getText().toString()
+                                +"&belong="+belongEdit.getText().toString()
+                                +"&alarm="+alarmEdit.getText().toString());
 
-        Toast.makeText(getApplicationContext(),"수정이 완료되었습니다.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"수정이 완료되었습니다.",Toast.LENGTH_LONG).show();
 
-        task = new AcqDetailActivity.GetData();
-        task.execute("http://52.78.219.61/DetailAcq.php?aIdx="+aIdx);
+                        task = new AcqDetailActivity.GetData();
+                        task.execute("http://52.78.219.61/DetailAcq.php?aIdx="+aIdx);
 
-        nameEdit.setVisibility(View.GONE);
-        belongEdit.setVisibility(View.GONE);
-        alarmEdit.setVisibility(View.GONE);
-        confirmBtn.setVisibility(View.GONE);
+                        nameEdit.setVisibility(View.GONE);
+                        belongEdit.setVisibility(View.GONE);
+                        alarmEdit.setVisibility(View.GONE);
+                        confirmBtn.setVisibility(View.GONE);
 
-        nameText.setVisibility(View.VISIBLE);
-        belongText.setVisibility(View.VISIBLE);
-        alarmText.setVisibility(View.VISIBLE);
-        updateBtn.setVisibility(View.VISIBLE);
+                        nameText.setVisibility(View.VISIBLE);
+                        belongText.setVisibility(View.VISIBLE);
+                        alarmText.setVisibility(View.VISIBLE);
+                        updateBtn.setVisibility(View.VISIBLE);
+                    }
+                });
+        builder.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
     }
 }
