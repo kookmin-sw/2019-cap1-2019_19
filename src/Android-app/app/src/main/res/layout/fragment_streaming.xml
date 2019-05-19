@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="360dp"
-        android:text="MIC ON" />
+        android:text="MIC ON"
+        android:background="@drawable/round_yellow_button"/>
 
     <Button
         android:id="@+id/mic_off"
@@ -29,6 +30,7 @@
         android:layout_gravity="right"
         android:layout_marginTop="360dp"
         android:layout_marginRight="20dp"
-        android:text="MIC OFF" />
+        android:text="MIC OFF"
+        android:background="@drawable/round_yellow_button"/>
 
 </FrameLayout>

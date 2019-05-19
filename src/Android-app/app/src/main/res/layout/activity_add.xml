@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:text="등록하기"
+        android:background="@drawable/round_yellow_button"
         android:layout_gravity="center"/>
 
 </LinearLayout>

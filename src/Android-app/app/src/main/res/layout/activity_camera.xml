@@ -17,13 +17,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="녹화시작"
+            android:background="@drawable/round_yellow_button"
             android:layout_marginRight="60dp"
             android:enabled="true"/>
         <Button
             android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="등록하기" />
+            android:text="등록하기"
+            android:background="@drawable/round_yellow_button"/>
 
 
     </LinearLayout>

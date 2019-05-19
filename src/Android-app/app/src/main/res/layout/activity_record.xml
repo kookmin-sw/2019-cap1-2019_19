@@ -53,12 +53,4 @@
         android:padding="5dp"
         android:id="@+id/listView_main_list" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:id="@+id/textView_main_result" />
-
 </LinearLayout>
