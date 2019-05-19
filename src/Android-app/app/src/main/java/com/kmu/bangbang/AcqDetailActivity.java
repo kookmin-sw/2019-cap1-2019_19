@@ -1,20 +1,16 @@
 package com.kmu.bangbang;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,52 +25,48 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+public class AcqDetailActivity extends AppCompatActivity {
 
-public class AcquaintanceFragment extends Fragment {
+    private static String TAG = "RecordDetailActivity";
 
-    private static String TAG = "AcquaintanceFragment";
-
-    private static final String TAG_JSON="Acquaintances";
+    private static final String TAG_JSON="records";
     private static final String TAG_aIDX = "aIdx";
     private static final String TAG_NAME = "name";
-    private static final String TAG_BELONG = "belong";
+    private static final String TAG_BELONG ="belong";
+    private static final String TAG_ALARM = "alarm";
 
     ArrayList<HashMap<String, String>> mArrayList;
-    ListView mlistView;
     String mJsonString;
     String aIdx;
+    String name;
+    String alarm ;
+    String belong;
+
+    TextView nameText;
+    TextView alarmText;
+    TextView belongText;
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_acquaintance, null) ;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_acquaintance_detail);
 
-        mlistView = (ListView) view.findViewById(R.id.acquaintance_list);
-        mArrayList = new ArrayList<>();
+        nameText = (TextView)findViewById(R.id.nameText);
+        alarmText = (TextView)findViewById(R.id.alarmText);
+        belongText = (TextView)findViewById(R.id.belongText);
 
-        GetData task = new GetData();
 
-        task.execute("http://52.78.219.61/AcqRecord.php");
+        // rIdx 받아오기
+        Intent intent = getIntent();
+        aIdx = intent.getExtras().getString("aIdx");
 
-        mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+        Log.v("Recieved acq : ", aIdx);
 
-                Log.v("Selected aIdx : ", "oddddddd");
-                Intent intent = new Intent(getActivity(), AcqDetailActivity.class);
-
-                // 선택된 Record idx 전달(int로 형변환 후 전달)
-                HashMap selected_acq = mArrayList.get(position);
-                aIdx = selected_acq.get("aIdx").toString();
-                intent.putExtra("aIdx", aIdx);
-
-                Log.v("Selected aIdx : ", aIdx);
-                startActivity(intent);
-            }
-        });
+        AcqDetailActivity.GetData task = new AcqDetailActivity.GetData();
+        task.execute("http://52.78.219.61/DetailAcq.php?aIdx="+aIdx);
 
         Log.v(TAG, "finised");
-        return view ;
     }
 
     private class GetData extends AsyncTask<String, Void, String> {
@@ -85,7 +77,7 @@ public class AcquaintanceFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(getActivity(),
+            progressDialog = ProgressDialog.show(AcqDetailActivity.this,
                     "Please Wait", null, true, true);
         }
 
@@ -100,7 +92,7 @@ public class AcquaintanceFragment extends Fragment {
 
             // SQL문 오류 검사
             if (result == null){
-                Toast.makeText(getActivity(), errorString, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AcqDetailActivity.this, errorString, Toast.LENGTH_SHORT).show();
             }
             else {
 
@@ -110,24 +102,24 @@ public class AcquaintanceFragment extends Fragment {
                     showResult();
                 }
                 else{
-                    Toast.makeText(getActivity(), "등록된 지인이 없습니다!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AcqDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
-
         @Override
         protected String doInBackground(String... params) {
+
             String serverURL = params[0];
 
             try {
 
                 URL url = new URL(serverURL);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();
+
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
@@ -152,7 +144,9 @@ public class AcquaintanceFragment extends Fragment {
 
                 bufferedReader.close();
 
+
                 return sb.toString().trim();
+
 
             } catch (Exception e) {
 
@@ -161,44 +155,30 @@ public class AcquaintanceFragment extends Fragment {
 
                 return null;
             }
+
         }
     }
 
     private void showResult(){
         try {
             JSONObject jsonObject = new JSONObject(mJsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray("Acquaintances");
+            JSONArray jsonArray = jsonObject.getJSONArray("Acquaintance");
+            JSONObject item = jsonArray.getJSONObject(0);
 
-            for(int i=0;i<jsonArray.length();i++){
+            name = item.getString(TAG_NAME);
+            belong = item.getString(TAG_BELONG);
+            alarm = item.getString(TAG_ALARM);
 
-                JSONObject item = jsonArray.getJSONObject(i);
+            Log.d(TAG, "aIdx : "+aIdx);
+            Log.d(TAG, "name : "+name);
+            Log.d(TAG, "alarm : "+alarm);
 
-                aIdx = item.getString(TAG_aIDX);
-                String name = item.getString(TAG_NAME);
-                String belong = item.getString(TAG_BELONG);
-
-                HashMap<String,String> hashMap = new HashMap<>();
-
-                Log.d(TAG, "aIdx : "+aIdx);
-
-                hashMap.put(TAG_aIDX, aIdx);
-                hashMap.put(TAG_NAME, name);
-                hashMap.put(TAG_BELONG, belong);
-
-                mArrayList.add(hashMap);
-            }
-
-            ListAdapter adapter = new SimpleAdapter(
-                    getActivity(), mArrayList, R.layout.item_acq,
-                    new String[]{TAG_NAME, TAG_BELONG},
-                    new int[]{R.id.textView_list_name, R.id.textView_list_belong}
-            );
-            mlistView.setAdapter(adapter);
+            nameText.setText(name);
+            belongText.setText(belong);
+            alarmText.setText(alarm);
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
     }
-
 }
