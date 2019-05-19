@@ -42,16 +42,9 @@ public class RecordDetailActivity extends AppCompatActivity {
     private static final String TAG_VIDEO_URL ="video_url";
 
     ArrayList<HashMap<String, String>> mArrayList;
-    String mJsonString;
-    String rIdx;
-    String name;
-    String date ;
-    String belong;
-    String video_url;
-
-    TextView nameText;
-    TextView dateText;
-    TextView belongText;
+    String mJsonString, rIdx, name, date, belong, video_url;
+    TextView nameText, dateText, belongText;
+    Button openBtn, closeBtn;
     WebView mWebView;
 
     @Override
@@ -63,6 +56,9 @@ public class RecordDetailActivity extends AppCompatActivity {
         nameText = (TextView)findViewById(R.id.nameText);
         dateText = (TextView)findViewById(R.id.dateText);
         belongText = (TextView)findViewById(R.id.belongText);
+
+        openBtn = (Button) findViewById(R.id.openBtn);
+        closeBtn = (Button) findViewById(R.id.closeBtn);
 
         if (mWebView != null) {
             mWebView.destroy();
@@ -210,20 +206,29 @@ public class RecordDetailActivity extends AppCompatActivity {
 //            else{
 //                mWebView.loadUrl("http://52.78.219.61/"+video_url);
 //            }
-
-
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
     }
 
-    public void playVideo(View view){
+    public void openVideo(View view){
+        openBtn.setVisibility(View.GONE);
+        closeBtn.setVisibility(View.VISIBLE);
+
         if(video_url == null || video_url.length() == 0){
             mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
         }
         else{
             mWebView.loadUrl("http://52.78.219.61/"+video_url);
         }
+    }
+
+    // 수정 필요함
+    public void closeVideo(View view){
+        closeBtn.setVisibility(View.GONE);
+        openBtn.setVisibility(View.VISIBLE);
+
+        mWebView.loadUrl("about:blank");
     }
 
 }

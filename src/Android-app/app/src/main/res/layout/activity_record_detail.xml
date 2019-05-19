@@ -143,16 +143,31 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnPlay"
+                android:id="@+id/openBtn"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:onClick="playVideo"
+                android:onClick="openVideo"
                 android:background="@drawable/round_yellow_button"
                 android:text="▼"
                 android:textScaleX="2"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:visibility="visible"
+                />
+
+            <Button
+                android:id="@+id/closeBtn"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:onClick="closeVideo"
+                android:background="@drawable/round_yellow_button"
+                android:text="▲"
+                android:textScaleX="2"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
                 />
 
         </LinearLayout>
@@ -165,7 +180,6 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp">
-
         </WebView>
 
     </LinearLayout>
