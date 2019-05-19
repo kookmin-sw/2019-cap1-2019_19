@@ -11,6 +11,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
@@ -47,6 +49,13 @@ public class AcqDetailActivity extends AppCompatActivity {
     TextView nameText;
     TextView alarmText;
     TextView belongText;
+
+    EditText nameEdit;
+    EditText belongEdit;
+    EditText alarmEdit;
+
+    Button updateBtn;
+    Button confirmBtn;
 
     AcqDetailActivity.GetData task;
 
@@ -206,7 +215,51 @@ public class AcqDetailActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
-
     }
 
+    public void updateAcq(View view){
+        nameEdit = (EditText) findViewById(R.id.nameEdit);
+        belongEdit = (EditText) findViewById(R.id.belongEdit);
+        alarmEdit = (EditText) findViewById(R.id.alarmEdit);
+        updateBtn = (Button) findViewById(R.id.updateBtn);
+        confirmBtn = (Button) findViewById(R.id.confirmBtn);
+
+
+        nameText.setVisibility(View.GONE);
+        belongText.setVisibility(View.GONE);
+        alarmText.setVisibility(View.GONE);
+        updateBtn.setVisibility(View.GONE);
+
+        nameEdit.setVisibility(View.VISIBLE);
+        belongEdit.setVisibility(View.VISIBLE);
+        alarmEdit.setVisibility(View.VISIBLE);
+        confirmBtn.setVisibility(View.VISIBLE);
+
+        nameEdit.setText(name);
+        belongEdit.setText(belong);
+        alarmEdit.setText(alarm);
+    }
+
+    public void confirmAcq(View view){
+        task = new AcqDetailActivity.GetData();
+        task.execute("http://52.78.219.61/UpdateAcq.php?aIdx="+aIdx
+                                                        +"&name="+nameEdit.getText().toString()
+                                                        +"&belong="+belongEdit.getText().toString()
+                                                        +"&alarm="+alarmEdit.getText().toString());
+
+        Toast.makeText(getApplicationContext(),"수정이 완료되었습니다.",Toast.LENGTH_LONG).show();
+
+        task = new AcqDetailActivity.GetData();
+        task.execute("http://52.78.219.61/DetailAcq.php?aIdx="+aIdx);
+
+        nameEdit.setVisibility(View.GONE);
+        belongEdit.setVisibility(View.GONE);
+        alarmEdit.setVisibility(View.GONE);
+        confirmBtn.setVisibility(View.GONE);
+
+        nameText.setVisibility(View.VISIBLE);
+        belongText.setVisibility(View.VISIBLE);
+        alarmText.setVisibility(View.VISIBLE);
+        updateBtn.setVisibility(View.VISIBLE);
+    }
 }
