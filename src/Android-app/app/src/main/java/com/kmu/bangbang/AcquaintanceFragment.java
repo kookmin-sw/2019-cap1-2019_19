@@ -44,15 +44,18 @@ public class AcquaintanceFragment extends Fragment {
     String mJsonString;
     String aIdx;
 
+    GetData task;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_acquaintance, null) ;
 
         mlistView = (ListView) view.findViewById(R.id.acquaintance_list);
         mArrayList = new ArrayList<>();
 
-        GetData task = new GetData();
+        task = new GetData();
 
         task.execute("http://52.78.219.61/AcqRecord.php");
 
@@ -60,16 +63,15 @@ public class AcquaintanceFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Log.v("Selected aIdx : ", "oddddddd");
                 Intent intent = new Intent(getActivity(), AcqDetailActivity.class);
 
                 // 선택된 Record idx 전달(int로 형변환 후 전달)
                 HashMap selected_acq = mArrayList.get(position);
                 aIdx = selected_acq.get("aIdx").toString();
                 intent.putExtra("aIdx", aIdx);
-
                 Log.v("Selected aIdx : ", aIdx);
                 startActivity(intent);
+
             }
         });
 

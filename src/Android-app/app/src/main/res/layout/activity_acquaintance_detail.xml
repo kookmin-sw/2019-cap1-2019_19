@@ -133,6 +133,27 @@
             android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/modifyBtn"
+                android:layout_width="10dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_modify_button"
+                android:text="수정"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="10dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_delete_button"
+                android:onClick="deleteAcq"
+                android:text="삭제"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>

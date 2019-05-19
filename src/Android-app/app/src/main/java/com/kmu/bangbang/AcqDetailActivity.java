@@ -1,6 +1,7 @@
 package com.kmu.bangbang;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import java.util.HashMap;
 
 public class AcqDetailActivity extends AppCompatActivity {
 
-    private static String TAG = "RecordDetailActivity";
+    private static String TAG = "AcqDetailActivity";
 
     private static final String TAG_JSON="records";
     private static final String TAG_aIDX = "aIdx";
@@ -46,6 +48,8 @@ public class AcqDetailActivity extends AppCompatActivity {
     TextView alarmText;
     TextView belongText;
 
+    AcqDetailActivity.GetData task;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +67,7 @@ public class AcqDetailActivity extends AppCompatActivity {
 
         Log.v("Recieved acq : ", aIdx);
 
-        AcqDetailActivity.GetData task = new AcqDetailActivity.GetData();
+        task = new AcqDetailActivity.GetData();
         task.execute("http://52.78.219.61/DetailAcq.php?aIdx="+aIdx);
 
         Log.v(TAG, "finised");
@@ -95,15 +99,14 @@ public class AcqDetailActivity extends AppCompatActivity {
                 Toast.makeText(AcqDetailActivity.this, errorString, Toast.LENGTH_SHORT).show();
             }
             else {
-
                 mJsonString = result;
                 // 데이터 유무 검사
                 if(!mJsonString.equals("")){
                     showResult();
                 }
-                else{
-                    Toast.makeText(AcqDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
-                }
+//                else{
+//                    Toast.makeText(AcqDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
+//                }
             }
         }
 
@@ -119,7 +122,6 @@ public class AcqDetailActivity extends AppCompatActivity {
                 httpURLConnection.setReadTimeout(5000);
                 httpURLConnection.setConnectTimeout(5000);
                 httpURLConnection.connect();
-
 
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
@@ -181,4 +183,30 @@ public class AcqDetailActivity extends AppCompatActivity {
             Log.d(TAG, "showResult : ", e);
         }
     }
+
+    public void deleteAcq(View view){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("삭제 알림");
+        builder.setMessage("정말로 삭제하시겠습니까?");
+        builder.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        task = new AcqDetailActivity.GetData();
+                        task.execute("http://52.78.219.61/DeleteAcq.php?aIdx="+aIdx);
+                        Toast.makeText(getApplicationContext(),"삭제가 완료되었습니다.",Toast.LENGTH_LONG).show();
+                        //Log.v("Selected aIdx : ", aIdx);
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
+
+    }
+
 }
