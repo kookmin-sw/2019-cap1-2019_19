@@ -4,6 +4,7 @@ import pyfcm
 import pymysql
 import json
 import requests
+import sys
 
 # AI 결과값: 이름 or Stranger
 
@@ -42,4 +43,20 @@ def send(id, visitor):
 	else:
 		print("등록된 기기가 없습니다.")
 
-send('id','stranger')
+def getStatus(id, visitor):
+	conn = pymysql.connect(host='####', user='###', password='####', db='db', charset='utf8')
+	curs = conn.cursor()
+
+	sql = "select * from Acquaintance where id=%s and name=%s"
+	curs.execute(sql, (id, visitor))
+
+	rows = curs.fetchall()
+	alarm = rows[0][4]
+
+	return alarm
+
+if __name__ == '__main__':
+	visitor = sys.argv[1]
+	alarm = getStatus('id', visitor)
+	if (alarm):
+		send('id',visitor)
