@@ -16,7 +16,7 @@
     $name = $_GET['name'];
     $belong = $_GET['belong'];
     $s_alarm = $_GET['alarm'];
-    $alarm = (bool)$s_alarm;
+    $alarm = (int)$s_alarm;
     $sql="UPDATE Acquaintance SET name='${name}', belong='${belong}', alarm='${alarm}' WHERE aIdx='${aIdx}'";
     $result=mysqli_query($link,$sql);
     $data = array();
@@ -25,8 +25,8 @@
     if(!($result)){
         echo "SQL문 처리중 에러 발생 : ";
         echo mysqli_error($link);
+        
     }
-    
     mysqli_close($link);
     
     ?>
