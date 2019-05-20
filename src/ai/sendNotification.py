@@ -28,12 +28,18 @@ def getToken(id):
 # 알림 전송하기
 def send(id, visitor):
 	push_service = pyfcm.FCMNotification(api_key = "####")
-	message_title = "방문자 알림"
+
 	message_body = visitor + "님이 방문했습니다"
 	registration_id = getToken(id)
+	data = {
+			"title" : "BANGBANG 방문자 알림",
+			"body" : message_body
+			}
+
 	if registration_id != "empty":
-		result = push_service.notify_single_device(registration_id=registration_id, message_title = message_title, message_body = message_body)
+		result = push_service.notify_single_device(registration_id=registration_id, data_message=data)
 		print(result)
 	else:
 		print("등록된 기기가 없습니다.")
+
 send('id','stranger')
