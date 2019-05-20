@@ -268,4 +268,8 @@ public class AcqDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
+    public void back(View view){
+        finish();
+    }
 }

@@ -256,4 +256,8 @@ public class RecordDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void back(View view){
+        finish();
+    }
+
 }
