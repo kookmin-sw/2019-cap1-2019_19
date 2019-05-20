@@ -67,6 +67,7 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		}
 		.header{
 			display: fixed;
+      position: relative;
 			top:0; left:0; right:0;
 			width: 100%;
 			height:60px;
@@ -76,15 +77,15 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 			color: #FF007F;
 			z-index: 4;
 		}
-		.event{
-			position:absolute;
-			bottom: 15px;
-			left: 550px;
-			z-index: 4;
+    .event{
+			position:relative;
+			bottom: 65px;
+			left: 450px;
+			z-index: 5;
 		}
 		#option{
 			font-size: 50px;
-			margin-left: 400px ;
+			margin-left: 100px ;
 			color: #FF007F;
 			width: 80px;
 		}
@@ -174,10 +175,15 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 </head>
 <body>
 	<div class="header">
-		Smart Interphone
 
-		<div class="event">
-			<input type="button" id="option" onclick="deselect();" value="선택 해제" />
+		Smart Interphone
+    <div class="event">
+      <input type="button" id="option" onclick="deselect();" value="선택 해제" />
+      <input type="button" id="add" onclick="button1_click();" value="등록" />
+      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
+      <input type="button" id="modify" onclick="button3_click();" value="수정" />
+    </div>
+
 				<script>
 					function deselect() {
 		    		//체크 해제할 라디오버튼 불러오기
@@ -203,33 +209,30 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		    </script>
 
 
-	      <input type="button" id="add" onclick="button1_click();" value="등록" />
-		      <script>
-			      function button1_click() {
-							location.href="insertPage.php?rIdx=" + index;
-			      }
-		      </script>
+		    <script>
+			    function button1_click() {
+					location.href="insertPage.php?rIdx=" + index;
+			    }
+		    </script>
 
 
-		      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
-			      <script>
-				      function button2_click() {
-								if(!confirm("정말 삭제하시겠습니까?"))
-									return false;
-									$.get( "delete.php?rIdx=" + index, function( data ) {
-  									$( ".result" ).html( data );
-										location.reload();
-										});
-							}
-			      </script>
+			  <script>
+				  function button2_click() {
+    				if(!confirm("정말 삭제하시겠습니까?"))
+    					return false;
+					$.get( "delete.php?rIdx=" + index, function( data ) {
+  					$( ".result" ).html( data );
+						location.reload();
+					});
+			}
+			  </script>
 
 
-	      <input type="button" id="modify" onclick="button3_click();" value="수정" />
-					<script>
-			      function button3_click() {
-							location.href="updatePage.php?rIdx=" + index;
-			      }
-	      	</script>
+				<script>
+			     function button3_click() {
+						location.href="updatePage.php?rIdx=" + index;
+			     }
+	      </script>
 
 				<script>
 					function check(video){
@@ -239,8 +242,6 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 					}
 				</script>
 
-
-    	</div>
     </div>
 
     <div class="content">
