@@ -37,18 +37,15 @@
             tools:layout_editor_absoluteX="164dp"
             tools:layout_editor_absoluteY="15dp" />
 
-        <Button
-            android:id="@+id/deleteBtn"
-            android:layout_width="40dp"
-            android:layout_height="35dp"
+        <ImageButton
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginLeft="5dp"
             android:layout_marginRight="15dp"
-            android:background="@drawable/round_red_button"
-            android:onClick="deleteRecord"
-            android:text="삭제"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold" />
+            android:background="#00ffffff"
+            app:srcCompat="@drawable/ic_home_white"
+            android:onClick="backHome"/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -173,6 +170,19 @@
                 android:textStyle="bold"
                 android:visibility="gone"
                 />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="40dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/round_red_button"
+                android:onClick="deleteRecord"
+                android:text="삭제"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

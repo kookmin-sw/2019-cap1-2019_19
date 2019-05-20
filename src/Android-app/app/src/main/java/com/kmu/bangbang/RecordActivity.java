@@ -210,4 +210,9 @@ public class RecordActivity extends AppCompatActivity {
             Log.d(TAG, "showResult : ", e);
         }
     }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
 }

@@ -211,6 +211,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     public void openVideo(View view){
         openBtn.setVisibility(View.GONE);
         closeBtn.setVisibility(View.VISIBLE);
+        mWebView.setVisibility(View.VISIBLE);
 
         if(video_url == null || video_url.length() == 0){
             mWebView.loadUrl("http://52.78.219.61/recordVideo/default.png");
@@ -225,6 +226,7 @@ public class RecordDetailActivity extends AppCompatActivity {
         openBtn.setVisibility(View.VISIBLE);
 
         mWebView.loadUrl("about:blank");
+        mWebView.setVisibility(View.GONE);
     }
 
     public void deleteRecord(View view){
@@ -247,6 +249,11 @@ public class RecordDetailActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
+    }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
 }

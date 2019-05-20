@@ -229,7 +229,6 @@ public class AcqDetailActivity extends AppCompatActivity {
     }
 
     public void confirmAcq(View view){
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("수정 알림");
         builder.setMessage("정말로 수정하시겠습니까?");
@@ -263,5 +262,10 @@ public class AcqDetailActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
+    }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }
