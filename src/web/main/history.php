@@ -57,6 +57,10 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 			margin:0;
 			padding:0;
 		}
+
+		input {
+			display: table-cell;
+		}
 		.page li {
 			margin-left: 10px;
 			float: left;
@@ -264,17 +268,18 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
           ?>
 					<div class="container">
 
-	         	<input type=radio name="chek" value="<?= $res['rIdx']?>" width="230" height="230" onclick="check(this)"><br>
+	         	<input type=radio name="chek" value="<?= $res['rIdx']?>" width="300" height="300" onclick="check(this)"><br>
           	<video width="220" height="220" controls="controls">
             	<source src="<?= $res['video']?>" type="video/mp4" />
           	</video>
 	             <li>"<?= $res['rDate'] ?>" </li>
 	             <li>"<?= $res['name'] ?> 방문 "</li>
-					<?php
-					$i—;
-					}
-				?>
+
 			</div>
+			<?php
+			$i—;
+			}
+		?>
 	     </form>
 			</div>
 
