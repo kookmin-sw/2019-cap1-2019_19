@@ -206,7 +206,6 @@ public class RecordActivity extends AppCompatActivity {
             );
             mlistView.setAdapter(adapter);
 
-
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }

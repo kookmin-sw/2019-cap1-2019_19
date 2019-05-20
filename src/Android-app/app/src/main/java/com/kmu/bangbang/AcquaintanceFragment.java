@@ -46,17 +46,25 @@ public class AcquaintanceFragment extends Fragment {
 
     GetData task;
 
+    View view;
+
+    ListAdapter adapter;
+
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_acquaintance, null) ;
+        return view;
+    }
 
-        View view = inflater.inflate(R.layout.fragment_acquaintance, null) ;
+    @Override
+    public void onResume() {
+        super.onResume();
 
         mlistView = (ListView) view.findViewById(R.id.acquaintance_list);
         mArrayList = new ArrayList<>();
 
         task = new GetData();
-
         task.execute("http://52.78.219.61/AcqRecord.php");
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,19 +72,15 @@ public class AcquaintanceFragment extends Fragment {
                                     int position, long id) {
 
                 Intent intent = new Intent(getActivity(), AcqDetailActivity.class);
-
                 // 선택된 Record idx 전달(int로 형변환 후 전달)
                 HashMap selected_acq = mArrayList.get(position);
                 aIdx = selected_acq.get("aIdx").toString();
                 intent.putExtra("aIdx", aIdx);
                 Log.v("Selected aIdx : ", aIdx);
                 startActivity(intent);
-
             }
         });
-
         Log.v(TAG, "finised");
-        return view ;
     }
 
     private class GetData extends AsyncTask<String, Void, String> {
@@ -112,16 +116,15 @@ public class AcquaintanceFragment extends Fragment {
                     showResult();
                 }
                 else{
+                    mlistView.setAdapter(null);
                     Toast.makeText(getActivity(), "등록된 지인이 없습니다!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
 
-
         @Override
         protected String doInBackground(String... params) {
             String serverURL = params[0];
-
             try {
 
                 URL url = new URL(serverURL);
@@ -171,6 +174,7 @@ public class AcquaintanceFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(mJsonString);
             JSONArray jsonArray = jsonObject.getJSONArray("Acquaintances");
 
+            adapter = null;
             for(int i=0;i<jsonArray.length();i++){
 
                 JSONObject item = jsonArray.getJSONObject(i);
@@ -190,7 +194,7 @@ public class AcquaintanceFragment extends Fragment {
                 mArrayList.add(hashMap);
             }
 
-            ListAdapter adapter = new SimpleAdapter(
+            adapter = new SimpleAdapter(
                     getActivity(), mArrayList, R.layout.item_acq,
                     new String[]{TAG_NAME, TAG_BELONG},
                     new int[]{R.id.textView_list_name, R.id.textView_list_belong}
@@ -200,7 +204,5 @@ public class AcquaintanceFragment extends Fragment {
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
     }
-
 }
