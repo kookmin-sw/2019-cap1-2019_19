@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -30,23 +31,29 @@ public class FireBaseMessagingService extends FirebaseMessagingService{
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //super.onMessageReceived(remoteMessage);
-        String messageBody = remoteMessage.getData().get("message");
-        sendNotification(messageBody);
+        String messageTitle = remoteMessage.getData().get("title");
+        String messageBody = remoteMessage.getData().get("body");
+
+        sendNotification(messageTitle, messageBody);
     }
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageTitle, String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
+        SharedPreferences pref = getSharedPreferences("alarm", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("alarm", "on");
+        editor.commit();
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher) //알림 아이콘
-                        .setContentTitle("BANGBANG 외부인 방문") //타이틀
+                        .setContentTitle(messageTitle) //타이틀
                         .setContentText(messageBody)    //알림 설명문구
                         .setAutoCancel(true)    //알림 터치시 사라짐
                         .setSound(defaultSoundUri)  //알림 수신음

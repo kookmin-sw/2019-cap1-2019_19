@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton setting_button;
     ImageButton logout_button;
     BottomNavigationView navigation;
+    String notice;
 
 
     @Override
@@ -45,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
         navigation.setOnNavigationItemSelectedListener(BottomNavigationSelectedListener);
+
+        SharedPreferences pref = getSharedPreferences("alarm", MODE_PRIVATE);
+        notice = pref.getString("alarm", "off");
+
+        if(notice.equals("on")){
+
+            SharedPreferences.Editor editor = pref.edit();
+            //editor.clear();
+            editor.putString("alarm", "off");
+            editor.commit();
+
+            selectedFragment = new StreamingFragment();
+            navigation.setSelectedItemId(R.id.navigation_streaming);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+        }
 
         logout_button = (ImageButton) findViewById(R.id.logout);
         logout_button.setOnClickListener(new View.OnClickListener(){
