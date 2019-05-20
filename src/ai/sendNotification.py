@@ -51,7 +51,11 @@ def getStatus(id, visitor):
 	curs.execute(sql, (id, visitor))
 
 	rows = curs.fetchall()
-	alarm = rows[0][4]
+
+	if len(rows) == 0:
+		alarm = 1
+	elif len(rows) == 1:
+		alarm = rows[0][4]
 
 	return alarm
 
