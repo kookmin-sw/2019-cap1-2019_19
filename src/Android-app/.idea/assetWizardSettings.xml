@@ -72,7 +72,6 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="ffffff" />
-                                                <entry key="paddingPercent" value="-10" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -83,7 +82,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/notification/ic_priority_high_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_directions_walk_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -93,7 +92,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="iconShape" value="NONE" />
+                                      <entry key="backgroundColor" value="ffbf00" />
+                                      <entry key="outputName" value="ic_install_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
