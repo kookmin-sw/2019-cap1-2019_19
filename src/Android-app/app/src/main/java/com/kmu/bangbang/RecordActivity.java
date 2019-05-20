@@ -42,44 +42,48 @@ public class RecordActivity extends AppCompatActivity {
     ListView mlistView;
     String mJsonString;
     String rIdx;
+    String category;
+
+    GetData task;
+
+    ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+    }
 
-        // 이전 액티비티로부터 선택된 카테고리 받아오기
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_record);
+
+//      이전 액티비티로부터 선택된 카테고리 받아오기
         Intent intent = getIntent();
-        String category = intent.getExtras().getString("category");
+        category = intent.getExtras().getString("category");
 
         Log.v("recieved category", category);
 
-        //mTextViewResult = (TextView)findViewById(R.id.textView_main_result);
         mlistView = (ListView) findViewById(R.id.listView_main_list);
         mArrayList = new ArrayList<>();
 
-        GetData task = new GetData();
-
+        task = new GetData();
         task.execute("http://52.78.219.61/VisitRecord.php?category="+category);
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), RecordDetailActivity.class);
-
                 // 선택된 Record idx 전달(int로 형변환 후 전달)
                 HashMap selected_record = mArrayList.get(position);
                 rIdx = selected_record.get("rIdx").toString();
                 intent.putExtra("rIdx", rIdx);
-
                 Log.v("Selected rIdx : ", rIdx);
                 startActivity(intent);
             }
         });
-
-        Log.v(TAG, "finised");
     }
-
 
     private class GetData extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
@@ -155,9 +159,7 @@ public class RecordActivity extends AppCompatActivity {
                     sb.append(line);
                 }
 
-
                 bufferedReader.close();
-
 
                 return sb.toString().trim();
 
@@ -178,7 +180,6 @@ public class RecordActivity extends AppCompatActivity {
             JSONArray jsonArray = jsonObject.getJSONArray("records");
 
             for(int i=0;i<jsonArray.length();i++){
-
                 JSONObject item = jsonArray.getJSONObject(i);
 
                 rIdx = item.getString(TAG_rIDX);
@@ -195,23 +196,19 @@ public class RecordActivity extends AppCompatActivity {
                 hashMap.put(TAG_DATE, date);
                 hashMap.put(TAG_BELONG, belong);
 
-
-
                 mArrayList.add(hashMap);
             }
 
-            ListAdapter adapter = new SimpleAdapter(
+            adapter = new SimpleAdapter(
                     RecordActivity.this, mArrayList, R.layout.item_record,
                     new String[]{TAG_NAME,TAG_DATE, TAG_BELONG},
                     new int[]{R.id.textView_list_name, R.id.textView_list_date, R.id.textView_list_belong}
             );
             mlistView.setAdapter(adapter);
 
+
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
         }
-
-
-
     }
 }

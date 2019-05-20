@@ -1,6 +1,8 @@
 package com.kmu.bangbang;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +48,7 @@ public class RecordDetailActivity extends AppCompatActivity {
     TextView nameText, dateText, belongText;
     Button openBtn, closeBtn;
     WebView mWebView;
+    RecordDetailActivity.GetData task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +79,12 @@ public class RecordDetailActivity extends AppCompatActivity {
 
         // rIdx 받아오기
         Intent intent = getIntent();
-        String rIdx = intent.getExtras().getString("rIdx");
+        rIdx = intent.getExtras().getString("rIdx");
 
         Log.v("Recieved record : ", rIdx);
 
-        RecordDetailActivity.GetData task = new RecordDetailActivity.GetData();
+        task = new RecordDetailActivity.GetData();
         task.execute("http://52.78.219.61/DetailRecord.php?rIdx="+rIdx);
-
-
-
 
         Log.v(TAG, "finised");
     }
@@ -121,9 +121,6 @@ public class RecordDetailActivity extends AppCompatActivity {
                 // 데이터 유무 검사
                 if(!mJsonString.equals("")){
                     showResult();
-                }
-                else{
-                    Toast.makeText(RecordDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -223,12 +220,33 @@ public class RecordDetailActivity extends AppCompatActivity {
         }
     }
 
-    // 수정 필요함
     public void closeVideo(View view){
         closeBtn.setVisibility(View.GONE);
         openBtn.setVisibility(View.VISIBLE);
 
         mWebView.loadUrl("about:blank");
+    }
+
+    public void deleteRecord(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("삭제 알림");
+        builder.setMessage("정말로 삭제하시겠습니까?");
+        builder.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        task = new RecordDetailActivity.GetData();
+                        task.execute("http://52.78.219.61/DeleteRecord.php?rIdx="+rIdx);
+                        Toast.makeText(getApplicationContext(),"삭제가 완료되었습니다.",Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
+        builder.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
     }
 
 }
