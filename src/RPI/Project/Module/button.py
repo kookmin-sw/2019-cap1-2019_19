@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*- 
+import RPi.GPIO as GPIO
+import os
+
+btnPin = 25
+
+def init():
+	global btnPin
+
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setup(btnPin, GPIO.IN, GPIO.PUD_UP)
+	print("Button 설정 완료")
+
+def click():
+	global btnPin
+
+	if GPIO.input(btnPin) == 1:
+		play()
+		return 1
+	else:
+		return 0
+
+def play():
+	os.system("aplay  --format=S16_LE --rate=16000 ../Project/Audio/bell.wav")
