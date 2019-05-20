@@ -138,22 +138,27 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/alarmText"
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="TextView"
-                android:textSize="15sp" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/alarmEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text=""
-                android:visibility="gone" />
+                <RadioButton
+                    android:id="@+id/yesRadioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="YES" />
 
+                <RadioButton
+                    android:id="@+id/noRadioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="NO" />
+
+            </RadioGroup>
         </LinearLayout>
 
         <LinearLayout

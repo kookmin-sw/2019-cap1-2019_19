@@ -13,6 +13,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.AlertDialog;
@@ -40,10 +42,13 @@ public class AcqDetailActivity extends AppCompatActivity {
     private static final String TAG_ALARM = "alarm";
 
     ArrayList<HashMap<String, String>> mArrayList;
-    String mJsonString, aIdx, name, alarm, belong;
+    String mJsonString, aIdx, name, belong;
     TextView nameText, alarmText, belongText;
     EditText nameEdit, belongEdit, alarmEdit;
     Button updateBtn, confirmBtn;
+    int alarm;
+
+    RadioButton yes_btn, no_btn;
 
     AcqDetailActivity.GetData task;
 
@@ -53,10 +58,13 @@ public class AcqDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_acquaintance_detail);
 
         nameText = (TextView)findViewById(R.id.nameText);
-        alarmText = (TextView)findViewById(R.id.alarmText);
         belongText = (TextView)findViewById(R.id.belongText);
 
-        // rIdx 받아오기
+        // 라디오 버튼 설정
+        yes_btn = (RadioButton) findViewById(R.id.yesRadioBtn);
+        no_btn = (RadioButton) findViewById(R.id.noRadioBtn);
+
+        // aIdx 받아오기
         Intent intent = getIntent();
         aIdx = intent.getExtras().getString("aIdx");
 
@@ -99,9 +107,6 @@ public class AcqDetailActivity extends AppCompatActivity {
                 if(!mJsonString.equals("")){
                     showResult();
                 }
-//                else{
-//                    Toast.makeText(AcqDetailActivity.this, "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
-//                }
             }
         }
 
@@ -162,7 +167,7 @@ public class AcqDetailActivity extends AppCompatActivity {
 
             name = item.getString(TAG_NAME);
             belong = item.getString(TAG_BELONG);
-            alarm = item.getString(TAG_ALARM);
+            alarm = item.getInt(TAG_ALARM);
 
             Log.d(TAG, "aIdx : "+aIdx);
             Log.d(TAG, "name : "+name);
@@ -170,7 +175,12 @@ public class AcqDetailActivity extends AppCompatActivity {
 
             nameText.setText(name);
             belongText.setText(belong);
-            alarmText.setText(alarm);
+            if(alarm == 1){
+                yes_btn.setChecked(true);
+            }
+            else{
+                no_btn.setChecked(true);
+            }
 
         } catch (JSONException e) {
             Log.d(TAG, "showResult : ", e);
@@ -203,26 +213,23 @@ public class AcqDetailActivity extends AppCompatActivity {
     public void updateAcq(View view){
         nameEdit = (EditText) findViewById(R.id.nameEdit);
         belongEdit = (EditText) findViewById(R.id.belongEdit);
-        alarmEdit = (EditText) findViewById(R.id.alarmEdit);
         updateBtn = (Button) findViewById(R.id.updateBtn);
         confirmBtn = (Button) findViewById(R.id.confirmBtn);
 
         nameText.setVisibility(View.GONE);
         belongText.setVisibility(View.GONE);
-        alarmText.setVisibility(View.GONE);
         updateBtn.setVisibility(View.GONE);
 
         nameEdit.setVisibility(View.VISIBLE);
         belongEdit.setVisibility(View.VISIBLE);
-        alarmEdit.setVisibility(View.VISIBLE);
         confirmBtn.setVisibility(View.VISIBLE);
 
         nameEdit.setText(name);
         belongEdit.setText(belong);
-        alarmEdit.setText(alarm);
     }
 
     public void confirmAcq(View view){
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("수정 알림");
         builder.setMessage("정말로 수정하시겠습니까?");
@@ -233,7 +240,7 @@ public class AcqDetailActivity extends AppCompatActivity {
                         task.execute("http://52.78.219.61/UpdateAcq.php?aIdx="+aIdx
                                 +"&name="+nameEdit.getText().toString()
                                 +"&belong="+belongEdit.getText().toString()
-                                +"&alarm="+alarmEdit.getText().toString());
+                                +"&alarm="+(yes_btn.isChecked() ? "1" : "0"));
 
                         Toast.makeText(getApplicationContext(),"수정이 완료되었습니다.",Toast.LENGTH_LONG).show();
 
@@ -242,12 +249,10 @@ public class AcqDetailActivity extends AppCompatActivity {
 
                         nameEdit.setVisibility(View.GONE);
                         belongEdit.setVisibility(View.GONE);
-                        alarmEdit.setVisibility(View.GONE);
                         confirmBtn.setVisibility(View.GONE);
 
                         nameText.setVisibility(View.VISIBLE);
                         belongText.setVisibility(View.VISIBLE);
-                        alarmText.setVisibility(View.VISIBLE);
                         updateBtn.setVisibility(View.VISIBLE);
                     }
                 });
