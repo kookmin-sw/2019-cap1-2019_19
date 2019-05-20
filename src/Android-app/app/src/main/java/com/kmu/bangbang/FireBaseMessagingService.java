@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -53,11 +54,13 @@ public class FireBaseMessagingService extends FirebaseMessagingService{
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher) //알림 아이콘
+                        .setColor(getResources().getColor(R.color.colorPrimary))
                         .setContentTitle(messageTitle) //타이틀
                         .setContentText(messageBody)    //알림 설명문구
                         .setAutoCancel(true)    //알림 터치시 사라짐
                         .setSound(defaultSoundUri)  //알림 수신음
-                       .setContentIntent(pendingIntent);
+                        //.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+                        .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
