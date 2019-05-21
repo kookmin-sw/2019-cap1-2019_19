@@ -9,19 +9,20 @@ if($check != "Y"){
 
 
 // db 연결
-$mysqli = new mysqli('localhost', 'admin', 'Kookmin1!', 'db');
+$mysqli = new mysqli('localhost', 'monitor', 'Kookmin1!', 'db');
 if($mysqli->connect_errno) {
   exit('Error Connecting db');
 }
 $mysqli->set_charset('utf8');
 
 // select query
-$result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
+$result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 ?>
 
 <html>
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
 	<meta charset="UTF-8">
   <title>History</title>
   <style type="text/css">
@@ -59,7 +60,8 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		}
 
 		input {
-			display: table-cell;
+			display: fixed;
+
 		}
 		.page li {
 			margin-left: 10px;
@@ -78,9 +80,10 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 			z-index: 4;
 		}
     .event{
+			width: 37%;
 			position:relative;
 			bottom: 65px;
-			left: 450px;
+			left: 880px;
 			z-index: 5;
 		}
 		#option{
@@ -150,11 +153,12 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 	 	}
 	 	.page{
 		 	float: left;
-		 	bottom: -60px; left:740px; right:0;
+		 	bottom: 0px; left:600px; right:0;
 		 	margin:0;
-		 	width: 100px;
-		 	height: 100px;
-		 	position: fixed;
+		 	width: 100%;
+		 	height: auto;
+		 	position: absolute;
+			display: table-cell;
 		}
 		.footer{
 			margin:0px;
@@ -179,9 +183,9 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		Smart Interphone
     <div class="event">
       <input type="button" id="option" onclick="deselect();" value="선택 해제" />
-      <input type="button" id="add" onclick="button1_click();" value="등록" />
-      <input type="button" id="delete" onclick="button2_click();" value="삭제" />
-      <input type="button" id="modify" onclick="button3_click();" value="수정" />
+      <input type="button" id="add" onclick="add();" value="등록" />
+      <input type="button" id="delete" onclick="del();" value="삭제" />
+      <input type="button" id="modify" onclick="update();" value="수정" />
     </div>
 
 				<script>
@@ -210,27 +214,83 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 
 
 		    <script>
-			    function button1_click() {
-					location.href="insertPage.php?rIdx=" + index;
+			    function add() {
+						var chek = document.getElementsByName("chek");
+						var find = false;
+						for(var i=0;  i < chek.length; i++)
+						{
+							//체크되어 있다면 chek[i].checked == true
+							//true -> false로 변환 ==> 체크해제
+							if(chek[i].checked)
+							{
+								find = true;
+								location.href="insertPage.php?rIdx=" + index;
+								chek[i].checked = false;
+
+								return;
+							}
+						}
+						if(!find) {
+							alert("등록할 동영상이 없습니다.");
+							return;
+						}
 			    }
 		    </script>
 
 
 			  <script>
-				  function button2_click() {
-    				if(!confirm("정말 삭제하시겠습니까?"))
-    					return false;
-					$.get( "delete.php?rIdx=" + index, function( data ) {
-  					$( ".result" ).html( data );
-						location.reload();
-					});
+				  function del() {
+						var chek = document.getElementsByName("chek");
+						var find = false;
+						for(var i=0;  i < chek.length; i++)
+		     		{
+		        	//체크되어 있다면 chek[i].checked == true
+		        	//true -> false로 변환 ==> 체크해제
+		        	if(chek[i].checked)
+		        	{
+								find = true;
+
+								if(!confirm("정말 삭제하시겠습니까?"))
+									return false;
+								$.get( "delete.php?rIdx=" + index, function( data ) {
+									$( ".result" ).html( data );
+									location.reload();
+								});
+		          	chek[i].checked = false;
+								return;
+		        	}
+		     		}
+						if(!find) {
+							alert("삭제할 동영상이 없습니다.");
+							return;
+						}
+
+
 			}
 			  </script>
 
 
 				<script>
-			     function button3_click() {
-						location.href="updatePage.php?rIdx=" + index;
+			     function update() {
+						 var chek = document.getElementsByName("chek");
+						 var find = false;
+						 for(var i=0;  i < chek.length; i++)
+						 {
+							 //체크되어 있다면 chek[i].checked == true
+							 //true -> false로 변환 ==> 체크해제
+							 if(chek[i].checked)
+							 {
+								 find = true;
+								 location.href="updatePage.php?rIdx=" + index;
+
+								 chek[i].checked = false;
+								 return;
+							 }
+						 }
+						 if(!find) {
+							 alert("수정할 동영상이 없습니다.");
+							 return;
+						 }
 			     }
 	      </script>
 
@@ -263,6 +323,22 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 			<div class="history">
 	    	<form>
         	<?php
+						if(isset($_GET['page']))
+							$page = $_GET['page'];
+						else
+							$page = 1;
+
+						// page 당 8개
+						$per_page = 8;
+						$offset = ($page-1) * $per_page;
+
+
+						$totalCount = $mysqli->query("SELECT * FROM `SEUNGAE`");
+						$totalCount = $totalCount->num_rows;
+						$totalPages = ceil($totalCount / $per_page);
+
+						$result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT $offset, $per_page");
+
 	        	$i = $result->num_rows;
 	        	while ($res = $result->fetch_assoc()) {
 
@@ -283,20 +359,42 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT 8");
 		?>
 	     </form>
 			</div>
+		</div>
 
-
-      <div class="page">
-      	<ol>
-        	<li class=""><a href="./history.php" class="this"><span style="color:pink"><</span></a></li>
-        	<li class=""><a href="./history.php" class="this"><span style="color:pink">1</span></a></li>
-        	<li ><a href="./history2.php" class="this"><span style="color:pink">2</span></a></li>
-					<li ><a href="./history2.php" class="this"><span style="color:pink">></span></a></li>
-
-				</ol>
-			</div>
 	</div>
 
 	<div class="footer">
+
+		<div class="page">
+			<ul>
+				<?php
+					$i = $_GET['page'];
+					$i =(int)$i;
+					$max = $i + 4;
+					$min = $i - 3;
+					if($min <= 0) {
+						$max += 1 - $min;
+						$min = 1;
+					}
+					if($max > $totalPages) {
+						$min -= $max - $totalPages;
+						$max = $totalPages ;
+						if($min <= 0) {
+							$min = 1;
+						}
+					}
+
+					for(; $min<=$max; $min=$min+1) {
+						if($min == $_GET['page']) {
+							echo "<li><a style=\"color:#FF007F;\"href=\"?page={$min}\">{$min}</a></li>";
+							continue;
+						}
+						echo "<li><a href=\"?page={$min}\">{$min}</a></li>";
+					}
+				?>
+			</ul>
+
+		</div>
 		2019 캡스톤 디자인 I - 19조(5정호)
 	</div>
 </body>
