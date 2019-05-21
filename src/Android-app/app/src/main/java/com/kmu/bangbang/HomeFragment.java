@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+// Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, null) ;
         countText = (TextView) (TextView)view.findViewById(R.id.countText);
 
@@ -52,16 +52,14 @@ public class HomeFragment extends Fragment {
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
-                seleted_date = year+"-"+(month+1)+"-"+dayOfMonth;
+                seleted_date = year+"-"+
+                        ((month+1) < 10? "0"+(month+1) : (month+1))
+                        +"-"+(dayOfMonth < 10? "0"+dayOfMonth : dayOfMonth);
                 //Toast.makeText(getActivity(), seleted_date, Toast.LENGTH_SHORT).show();
                 task = new GetData();
                 task.execute("http://52.78.219.61/VisitorCount.php?seleted_date="+seleted_date);
-
             }
-
         });
-
 
         return view;
     }
@@ -77,7 +75,6 @@ public class HomeFragment extends Fragment {
             progressDialog = ProgressDialog.show(getActivity(),
                     "Please Wait", null, true, true);
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -104,7 +101,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-
 
         @Override
         protected String doInBackground(String... params) {
