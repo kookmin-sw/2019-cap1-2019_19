@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,13 +20,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class HomeFragment extends Fragment {
 
     private static String TAG = "HomeFragment";
     String mJsonString;
+    String seleted_date;
     TextView countText;
+
+    GetData task;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,8 +39,29 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, null) ;
         countText = (TextView) (TextView)view.findViewById(R.id.countText);
 
-        GetData task = new GetData();
-        task.execute("http://52.78.219.61/VisitorCount.php");
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        seleted_date = sdf.format(date);
+
+        task = new GetData();
+        task.execute("http://52.78.219.61/VisitorCount.php?seleted_date="+seleted_date);
+
+
+        CalendarView calendar = (CalendarView)view.findViewById(R.id.calendarView);
+        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+
+                seleted_date = year+"-"+(month+1)+"-"+dayOfMonth;
+                //Toast.makeText(getActivity(), seleted_date, Toast.LENGTH_SHORT).show();
+                task = new GetData();
+                task.execute("http://52.78.219.61/VisitorCount.php?seleted_date="+seleted_date);
+
+            }
+
+        });
+
 
         return view;
     }
@@ -74,7 +100,7 @@ public class HomeFragment extends Fragment {
                     showResult();
                 }
                 else{
-                    Toast.makeText(getActivity(), "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "방문기록이 없습니다!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -135,7 +161,7 @@ public class HomeFragment extends Fragment {
             JSONObject jsonObject = new JSONObject(mJsonString);
 
             int count = jsonObject.getInt("count");
-            countText.setText("오늘은 " + Integer.toString(count)+"명이\n 방문했습니다!");
+            countText.setText(seleted_date+"은\n" + Integer.toString(count)+"명이 방문했습니다!");
         } catch (JSONException e) {
             e.printStackTrace();
         }
