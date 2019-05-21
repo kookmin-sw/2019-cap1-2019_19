@@ -16,7 +16,7 @@ if($mysqli->connect_errno) {
 $mysqli->set_charset('utf8');
 
 // select query
-$result = $mysqli->query("SELECT * FROM `SEUNGAE`");
+$result = $mysqli->query("SELECT * FROM `History`");
 ?>
 
 <html>
@@ -153,7 +153,7 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 	 	}
 	 	.page{
 		 	float: left;
-		 	bottom: 0px; left:600px; right:0;
+		 	bottom: 0px; left:750px; right:0;
 		 	margin:0;
 		 	width: 100%;
 		 	height: auto;
@@ -219,8 +219,6 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 						var find = false;
 						for(var i=0;  i < chek.length; i++)
 						{
-							//체크되어 있다면 chek[i].checked == true
-							//true -> false로 변환 ==> 체크해제
 							if(chek[i].checked)
 							{
 								find = true;
@@ -244,8 +242,6 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 						var find = false;
 						for(var i=0;  i < chek.length; i++)
 		     		{
-		        	//체크되어 있다면 chek[i].checked == true
-		        	//true -> false로 변환 ==> 체크해제
 		        	if(chek[i].checked)
 		        	{
 								find = true;
@@ -276,14 +272,11 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 						 var find = false;
 						 for(var i=0;  i < chek.length; i++)
 						 {
-							 //체크되어 있다면 chek[i].checked == true
-							 //true -> false로 변환 ==> 체크해제
 							 if(chek[i].checked)
 							 {
 								 find = true;
 								 location.href="updatePage.php?rIdx=" + index;
 
-								 chek[i].checked = false;
 								 return;
 							 }
 						 }
@@ -333,15 +326,15 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
 						$offset = ($page-1) * $per_page;
 
 
-						$totalCount = $mysqli->query("SELECT * FROM `SEUNGAE`");
+						$totalCount = $mysqli->query("SELECT * FROM `History`");
 						$totalCount = $totalCount->num_rows;
 						$totalPages = ceil($totalCount / $per_page);
 
-						$result = $mysqli->query("SELECT * FROM `SEUNGAE` LIMIT $offset, $per_page");
+						$result = $mysqli->query("SELECT * FROM `History` LIMIT $offset, $per_page");
 
 	        	$i = $result->num_rows;
 	        	while ($res = $result->fetch_assoc()) {
-
+							$date = substr($res['rDate'], 0, 16);
           ?>
 					<div class="container">
 
@@ -349,7 +342,7 @@ $result = $mysqli->query("SELECT * FROM `SEUNGAE`");
           	<video width="220" height="220" controls="controls">
             	<source src="<?= $res['video']?>" type="video/mp4" />
           	</video>
-	             <li>"<?= $res['rDate'] ?>" </li>
+	             <li>"<?= $date ?>" </li>
 	             <li>"<?= $res['name'] ?> 방문 "</li>
 
 			</div>
