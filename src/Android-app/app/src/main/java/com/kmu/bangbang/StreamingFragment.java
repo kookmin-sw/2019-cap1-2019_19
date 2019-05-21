@@ -39,7 +39,7 @@ public class StreamingFragment extends Fragment {
         WebSettings websettings = mWebView.getSettings();
         websettings.setJavaScriptEnabled(true);
 
-        mWebView.loadUrl("http://211.179.123.91:8080/stream/video.mjpeg");
+        mWebView.loadUrl("http://219.248.39.189:8080/stream/video.mjpeg");
 
         return fl;
 
