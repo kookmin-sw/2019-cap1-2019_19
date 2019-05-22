@@ -61,6 +61,7 @@ def getStatus(id, visitor):
 
 if __name__ == '__main__':
 	visitor = sys.argv[1]
-	alarm = getStatus('id', visitor)
+	id = sys.argv[2]
+	alarm = getStatus(id, visitor)
 	if (alarm):
-		send('id',visitor)
+		send(id,visitor)
