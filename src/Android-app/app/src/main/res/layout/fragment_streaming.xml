@@ -32,5 +32,11 @@
         android:layout_marginRight="20dp"
         android:text="MIC OFF"
         android:background="@drawable/round_yellow_button"/>
+//디버깅
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="here is error"-->
+        <!--android:id="@+id/error_text"/>-->
 
 </FrameLayout>
