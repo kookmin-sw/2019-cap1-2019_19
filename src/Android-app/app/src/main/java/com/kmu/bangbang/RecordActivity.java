@@ -3,7 +3,9 @@ package com.kmu.bangbang;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,18 +42,22 @@ public class RecordActivity extends AppCompatActivity {
 
     ArrayList<HashMap<String, String>> mArrayList;
     ListView mlistView;
-    String mJsonString;
-    String rIdx;
-    String category;
+    ListAdapter adapter;
+    String mJsonString, rIdx, category, auto_id;
 
     GetData task;
+    SharedPreferences auto;
 
-    ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+        auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        auto_id = auto.getString("auto_id", null);
+
+        Log.v("id : ", auto_id);
     }
 
     @Override
@@ -69,7 +75,7 @@ public class RecordActivity extends AppCompatActivity {
         mArrayList = new ArrayList<>();
 
         task = new GetData();
-        task.execute("http://52.78.219.61/VisitRecord.php?category="+category);
+        task.execute("http://52.78.219.61/VisitRecord.php?category="+category+"&id="+auto_id);
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,

@@ -1,6 +1,8 @@
 package com.kmu.bangbang;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,8 +28,9 @@ import java.text.SimpleDateFormat;
 public class HomeFragment extends Fragment {
 
     private static String TAG = "HomeFragment";
-    String mJsonString;
-    String seleted_date;
+    String mJsonString, seleted_date, auto_id;
+    SharedPreferences auto;
+
     TextView countText;
 
     GetData task;
@@ -35,9 +38,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-// Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, null) ;
         countText = (TextView) (TextView)view.findViewById(R.id.countText);
+
+        auto = getActivity().getSharedPreferences("auto", Context.MODE_PRIVATE);
+        auto_id = auto.getString("auto_id", null);
 
         long now = System.currentTimeMillis();
         Date date = new Date(now);
@@ -45,7 +50,7 @@ public class HomeFragment extends Fragment {
         seleted_date = sdf.format(date);
 
         task = new GetData();
-        task.execute("http://52.78.219.61/VisitorCount.php?seleted_date="+seleted_date);
+        task.execute("http://52.78.219.61/VisitorCount.php?id="+auto_id+"&selected_date="+seleted_date);
 
 
         CalendarView calendar = (CalendarView)view.findViewById(R.id.calendarView);
@@ -55,9 +60,8 @@ public class HomeFragment extends Fragment {
                 seleted_date = year+"-"+
                         ((month+1) < 10? "0"+(month+1) : (month+1))
                         +"-"+(dayOfMonth < 10? "0"+dayOfMonth : dayOfMonth);
-                //Toast.makeText(getActivity(), seleted_date, Toast.LENGTH_SHORT).show();
                 task = new GetData();
-                task.execute("http://52.78.219.61/VisitorCount.php?seleted_date="+seleted_date);
+                task.execute("http://52.78.219.61/VisitorCount.php?id="+auto_id+"&selected_date="+seleted_date);
             }
         });
 

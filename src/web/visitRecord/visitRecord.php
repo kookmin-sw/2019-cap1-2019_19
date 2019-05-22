@@ -12,18 +12,19 @@
     
     // 카테고리 값 get
     $category = $_GET['category']    ;
+    // id 값 get
+    $id = $_GET['id'];
     
     if($category == "전체보기"){
-        $sql="select rIdx, name, rDate, belong from History";
+        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}'";
     }else{
-        $sql="select rIdx, name, rDate, belong from History where belong='${category}'";
+        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}' AND belong='${category}'";
     }
     $result=mysqli_query($link,$sql);
     $data = array();
     
     // 정상적으로 SQL문이 작동했는지 검사
     if($result){
-        
         while($row=mysqli_fetch_array($result)){
             array_push($data,
                        array('rIdx'=>$row[0],'name'=>$row[1],
@@ -38,18 +39,10 @@
             $json = json_encode(array("records"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
             echo $json;
         }
-        //    else{
-        //        $json = json_encode("no data", JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
-        //    }
-        
     }
     else{
         echo "SQL문 처리중 에러 발생 : ";
         echo mysqli_error($link);
     }
-    
-    
-    
     mysqli_close($link);
-    
     ?>

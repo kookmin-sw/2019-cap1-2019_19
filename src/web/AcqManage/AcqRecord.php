@@ -10,7 +10,8 @@
     
     mysqli_set_charset($link,"utf8");
     
-    $sql="SELECT aIdx, name, belong FROM Acquaintance";
+    $id = $_GET['id'];
+    $sql="SELECT aIdx, name, belong FROM Acquaintance WHERE id = '${id}'";
     $result=mysqli_query($link,$sql);
     $data = array();
     

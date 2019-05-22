@@ -8,8 +8,9 @@
         exit();
     }
     mysqli_set_charset($link,"utf8");
-    $seleted_date = $_GET['seleted_date'];
-    $sql="SELECT COUNT(*) FROM History WHERE DATE_FORMAT(rDate, '%Y-%m-%d') = '${seleted_date}'";
+    $id = $_GET['id'];
+    $selected_date = $_GET['selected_date'];
+    $sql="SELECT COUNT(*) FROM History WHERE id='${id}' AND DATE_FORMAT(rDate, '%Y-%m-%d') = '${selected_date}'";
     $count=mysqli_query($link,$sql);
     $row=mysqli_fetch_array($count);
     $row_result=$row[0];

@@ -1,8 +1,10 @@
 package com.kmu.bangbang;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,21 +41,24 @@ public class AcquaintanceFragment extends Fragment {
     private static final String TAG_NAME = "name";
     private static final String TAG_BELONG = "belong";
 
+    String mJsonString, aIdx, auto_id;
+
     ArrayList<HashMap<String, String>> mArrayList;
     ListView mlistView;
-    String mJsonString;
-    String aIdx;
+    View view;
+    ListAdapter adapter;
 
     GetData task;
-
-    View view;
-
-    ListAdapter adapter;
+    SharedPreferences auto;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_acquaintance, null) ;
+
+        auto = getActivity().getSharedPreferences("auto", Context.MODE_PRIVATE);
+        auto_id = auto.getString("auto_id", null);
+
         return view;
     }
 
@@ -65,7 +70,7 @@ public class AcquaintanceFragment extends Fragment {
         mArrayList = new ArrayList<>();
 
         task = new GetData();
-        task.execute("http://52.78.219.61/AcqRecord.php");
+        task.execute("http://52.78.219.61/AcqRecord.php?id="+auto_id);
 
         mlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
