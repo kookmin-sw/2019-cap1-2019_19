@@ -153,7 +153,7 @@ $result = $mysqli->query("SELECT * FROM `History`");
 	 	}
 	 	.page{
 		 	float: left;
-		 	bottom: 0px; left:750px; right:0;
+		 	bottom: 0px; left:600px; right:0;
 		 	margin:0;
 		 	width: 100%;
 		 	height: auto;
@@ -260,8 +260,6 @@ $result = $mysqli->query("SELECT * FROM `History`");
 							alert("삭제할 동영상이 없습니다.");
 							return;
 						}
-
-
 			}
 			  </script>
 
@@ -275,7 +273,17 @@ $result = $mysqli->query("SELECT * FROM `History`");
 							 if(chek[i].checked)
 							 {
 								 find = true;
-								 location.href="updatePage.php?rIdx=" + index;
+								 // location.href="updatePage.php?rIdx=" + index;
+								 var newWindow = window.open("about:blank", "수정 페이지", "width=500, height=500, left=100, top=50");
+								 newWindow.location.href ="updatePage.php?rIdx=" + index;
+
+								 var timer = setInterval(function() {
+								     if(newWindow.closed) {
+								         clearInterval(timer);
+								         alert('창을 닫습니다.');
+												 location.reload();
+								     }
+									 }, 1000);
 
 								 return;
 							 }
