@@ -5,12 +5,28 @@ from time import sleep
 state = 'on'
 call_state = 'off'
 
+# 음성 녹음
 def record(i):
-	os.system("arecord --format=S16_LE --duration=5 --rate=16000 --file-type=wav Audio/input_"+i+".wav")
+	os.system("rec -c 1 -r 44100 Audio/input_"+i+".mp3 trim 0 5")
 
+# 음성 재생
 def play(i):
-	os.system("aplay --format=S16_LE --rate=16000 ../Audio/output_"+i+".wav")
+	os.system("play Audio/output_"+i+".mp3")
 
+# 벨 눌렸을 때 모니터에 알림 전송
+def notification(conn):
+	global call_state
+
+	msg = "bell"
+	if call_state == "off":
+		try:
+			conn.send(msg.encode("utf-8"))
+			print("전송 성공")
+		except:
+			print("전송 실패")
+	print("벨 누름")
+
+# 통화 수신
 def receive(conn):
 	global state, call_state
 	count = 0
@@ -50,6 +66,7 @@ def receive(conn):
 		play(i)
 		count += 1
 
+# 통화 송신
 def send(conn):
 	global state, call_state
 	e_m = "bye from rpi"
@@ -80,6 +97,7 @@ def send(conn):
 		count += 1
 	call_state = "off"
 
+# 음성 스트리밍
 def communication(conn):
 	global state, call_state
 	count = 0
