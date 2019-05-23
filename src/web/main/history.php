@@ -2,7 +2,7 @@
 <?php
 session_start();
 $check = $_SESSION['is_logged'];
-echo $id;
+$id = $_SESSION['id'];
 if($check != "Y"){
 	echo "<script>location.replace('../index.html');</script>";
 }
@@ -273,7 +273,6 @@ $result = $mysqli->query("SELECT * FROM `History`");
 							 if(chek[i].checked)
 							 {
 								 find = true;
-								 // location.href="updatePage.php?rIdx=" + index;
 								 var newWindow = window.open("about:blank", "수정 페이지", "width=500, height=500, left=100, top=50");
 								 newWindow.location.href ="updatePage.php?rIdx=" + index;
 
@@ -333,12 +332,11 @@ $result = $mysqli->query("SELECT * FROM `History`");
 						$per_page = 8;
 						$offset = ($page-1) * $per_page;
 
-
-						$totalCount = $mysqli->query("SELECT * FROM `History`");
+						$totalCount = $mysqli->query("SELECT * FROM `History` WHERE `id` LIKE '$id'");
 						$totalCount = $totalCount->num_rows;
 						$totalPages = ceil($totalCount / $per_page);
 
-						$result = $mysqli->query("SELECT * FROM `History` LIMIT $offset, $per_page");
+						$result = $mysqli->query("SELECT * FROM `History` WHERE `id` LIKE '$id' LIMIT $offset, $per_page");
 
 	        	$i = $result->num_rows;
 	        	while ($res = $result->fetch_assoc()) {
