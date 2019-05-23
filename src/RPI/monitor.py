@@ -145,11 +145,13 @@ def LoginWindow(window):
 # 통화 상태
 state = "calloff"
 
+# 음성 재생
 def play(i):
-	os.system("aplay --format=S16_LE --rate=16000 output_"+i+".wav")
+	os.system("play Audio/output_"+i+".mp3")
 
+# 음성 녹음
 def record(i):
-	os.system("arecord --format=S16_LE --duration=5 --rate=16000 --file-type=wav input_"+i+".wav")
+	os.system("rec -c 1 -r 44100 Audio/input_"+i+".mp3 trim 0 5")
 
 # 오디오 송신
 def send(s):
