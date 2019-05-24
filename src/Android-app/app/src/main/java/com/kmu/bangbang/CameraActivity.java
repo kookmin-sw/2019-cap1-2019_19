@@ -25,8 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -46,9 +51,11 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
 //    디버깅
 //    private TextView textViewResponse;
+//    private TextView id_C;
 
     private Button buttonUpload;
     String check, auto_id;
+
 
     private String name;
     private String selectedPath="/storage/emulated/0/";
@@ -62,7 +69,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         timer = (TextView)findViewById(R.id.timer);
 //        디버깅
 //        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
-
+//        id_C = (TextView)findViewById(R.id.id_c);
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
         check = intent.getStringExtra("value");
@@ -73,6 +80,10 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
         auto_id = auto.getString("auto_id", null);
+        if(check.equals("User")){
+            auto_id = intent.getStringExtra("id");
+        }
+//        id_C.setText(auto_id);
 
 
         TedPermission.with(CameraActivity.this)
@@ -110,8 +121,18 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                                     mediaRecorder.prepare();
                                     mediaRecorder.start();
                                     recording =true;
-                                    btn_record.setText("녹화 중");
+                                    btn_record.setText("재촬영하기");
                                     btn_record.setEnabled(false);
+
+
+                                    Response.Listener<String> responseListener = new Response.Listener<String>(){
+
+                                        @Override
+                                        public void onResponse(String response) {
+//
+                                        }
+                                    };
+
 
                                     handler = new Handler(){
                                       public void handleMessage (Message msg){

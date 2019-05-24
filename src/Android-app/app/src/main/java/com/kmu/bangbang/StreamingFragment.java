@@ -55,7 +55,7 @@ public class StreamingFragment extends Fragment {
         WebSettings websettings = mWebView.getSettings();
         websettings.setJavaScriptEnabled(true);
 
-        text = (TextView)fl.findViewById(R.id.error_text);
+//        text = (TextView)fl.findViewById(R.id.error_text);
 
         Context context = getActivity();
         SharedPreferences auto = context.getSharedPreferences("auto", Context.MODE_PRIVATE);

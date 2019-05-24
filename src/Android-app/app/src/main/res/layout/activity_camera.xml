@@ -29,6 +29,16 @@
 
 
     </LinearLayout>
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/textViewResponse"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/id_c"/>-->
+
     <TextView
         android:id="@+id/timer"
         android:layout_width="match_parent"

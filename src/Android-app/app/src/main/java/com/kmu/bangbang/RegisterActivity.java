@@ -121,7 +121,7 @@ public class RegisterActivity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String id = idText.getText().toString();
+               final String id = idText.getText().toString();
                 String pw = passwordText.getText().toString();
                 String tel = numberText.getText().toString();
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -164,6 +164,7 @@ public class RegisterActivity extends Activity {
                                 Intent intent = new Intent(RegisterActivity.this,CameraActivity.class);
                                 intent.putExtra("text",String.valueOf("User"));
                                 intent.putExtra("value",String.valueOf("User"));
+                                intent.putExtra("id",String.valueOf(id));
                                 startActivity(intent);
                                 //finish();//액티비티를 종료시킴(회원등록 창을 닫음)
                             } else {//사용할 수 없는 아이디라면

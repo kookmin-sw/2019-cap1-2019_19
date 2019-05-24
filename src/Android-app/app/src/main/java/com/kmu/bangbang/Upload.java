@@ -17,7 +17,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Upload {
-    public static String UPLOAD_URL= "http://52.78.219.61/test_video/Friends/upload.php";
+    public static String UPLOAD_URL= "http://52.78.219.61/Users/upload.php";
 
     private int serverResponseCode;
     String a ;
@@ -26,7 +26,7 @@ public class Upload {
         String fileName = file.substring(file.lastIndexOf("/")+1);
 
         if(check.equals("User")){
-            UPLOAD_URL= "http://52.78.219.61/test_video/User/upload.php";
+//            UPLOAD_URL= "http://52.78.219.61/testupload.php";
             fileName ="User.mp4";
 //            Log.i("방방", "파일 이름 이것이 실행 했는가...: " + check);
         }
