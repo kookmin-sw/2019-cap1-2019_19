@@ -13,7 +13,7 @@ def DB(id, date, date_stamp):
     global row_data
     global idx
 
-    conn = pymysql.connect(host='52.78.219.61', user='monitor', passwd="Kookmin1!", db='db', cha$
+    conn = pymysql.connect(host='52.78.219.61', user='monitor', passwd="Kookmin1!", db='db', charset='utf8')
     cursor = conn.cursor()
     try:
         sql = "SELECT * FROM History WHERE id = %s AND rDate = %s"
@@ -31,6 +31,7 @@ def DB(id, date, date_stamp):
         conn.close()
 
 
+
 def video(id, date, date_stamp):
     camera = cv2.VideoCapture('http://localhost:8080/stream/video.mjpeg')
     out = cv2.VideoWriter(date+'_before.mp4', 0X00000021, 30, (640,480))
@@ -39,7 +40,7 @@ def video(id, date, date_stamp):
         print('Error opening video stream or file')
 
     start_time = time.time()
-    while(time.time()-start_time < 20):
+    while(time.time()-start_time < 10):
         ret, frame = camera.read()
         if ret:
             out.write(frame)
@@ -50,15 +51,17 @@ def video(id, date, date_stamp):
     os.system('ffmpeg -y -i '+date+'_before.mp4 -acodec aac -vcodec libx264 '+date+'.mp4')
 
     DB(id, date, date_stamp)
-    uploadVideo(date)
+    uploadVideo(id, date)
     print("video upload")
     camera.release()
 
-    #os.system('rm '+date+'.mp4')
-    #os.system('rm '+date+'_before.mp4')
+    os.system('rm '+date+'.mp4')
+    os.system('rm '+date+'_before.mp4')
 
-def uploadVideo(date):
+def uploadVideo(id, date):
+    print("웹서버에 전송 시작")
     upload_url = 'http://52.78.219.61/video_upload.php'
     file_ = {'myfile': (date+'.mp4', open(date+'.mp4', 'rb'))}
-    r = requests.post(upload_url, files=file_)
+    data_ = {'id' : id}
+    r = requests.post(upload_url, files=file_, data=data_)
     print(r.text)
