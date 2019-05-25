@@ -15,10 +15,9 @@ def click():
 	global btnPin
 
 	if GPIO.input(btnPin) == 1:
-		play()
 		return 1
 	else:
 		return 0
 
 def play():
-	os.system("aplay  --format=S16_LE --rate=16000 ../Project/Audio/bell.wav")
+	os.system("play Audio/bell.wav")

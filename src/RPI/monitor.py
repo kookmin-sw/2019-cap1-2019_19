@@ -371,6 +371,8 @@ def PlayVideoWindow(window, path):
 ################
 # NOTIFICATION #
 ################
+
+# 알림 처리
 def notification():
 	global noti_state, s
 
@@ -382,18 +384,22 @@ def notification():
 			try:
 				data = s.recv(1023)
 				data = data.decode("utf-8")
-				if data == "bell":
-					print("bell")
-				else:
-					noti_state = "OFF"
-					print(data)
-					break
 			except:
-				print("notification error")
+				print("recevie error")
+			if data == "bell":
+				notificationWindow()
+				print("bell")
+			else:
+				noti_state = "OFF"
+				print(data)
 				break
 		else:
 			print("notification end")
 			break
+
+# 알림 창
+def notificationWindow():
+	messagebox.showwarning("Notice","방문자가 있습니다.")
 
 ########
 # MAIN #
