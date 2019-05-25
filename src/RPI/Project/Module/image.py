@@ -4,11 +4,31 @@ import base64
 import cv2
 from Module import faceDetection as fd
 import time
+import pymysql
 
+########
+# INFO #
+########
 HOST = '####'
 PORT = 0000
 PATH = '../Project/Image/'
 
+############
+# FUNCTION #
+############
+
+# 방문 기록 DB 추가
+def insertDB(id, timestamp):
+	conn = pymysql.connect(host="####", port=0000, user="####", passwd="####", db="####", charset="utf8")
+	cursor = conn.cursor()
+
+	sql = "insert into SEUNGAE(id, name, rDate, belong, video) values (%s, %s, %s, %s, %s)"
+	cursor.execute(sql, (id,"UNKNOWN", timestamp, "NULL", "NULL"))
+	conn.commit()
+	print("영상 DB INSERT")
+	conn.close()
+
+# 사진 저장
 def save():
 	global PATH
 
@@ -38,7 +58,8 @@ def save():
 	else:
 		return 1
 
-def send(id, result):
+# 사진 전송
+def send(id, result, timestamp):
 	global HOST, PORT, PATH
 
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -48,6 +69,15 @@ def send(id, result):
 	# id 전송
 	s.send(id.encode('utf-8'))
 
+	# timestap 전송
+	timestamp = str(timestamp)
+	s.send(timestamp.encode('utf-8'))
+
+	# 사진 개수 전송
+	result = str(result)
+	s.send(result.encode('utf-8'))
+
+	# result: 검출 여부, 1: 검출O
 	if result == 1:
 		# 사진 3장 전송
 		for i in range(1, 4):
@@ -67,7 +97,7 @@ def send(id, result):
 		img = open(PATH+'image_1.jpg','rb')
 		b = base64.b64encode(img.read())
 
-		lenb = str(len(b))
+		len_b = str(len(b))
 		s.send(len_b.encode('utf-8'))
 		time.sleep(1)
 
@@ -78,7 +108,8 @@ def send(id, result):
 	s.close()
 	print("전송 끝")
 
-def image(id):
+# 사진 저장 및 전송
+def image(id, timestamp):
+	insertDB(id, timestamp)
 	r = save()
-	#send(id, r)
-
+	send(id, r, timestamp)
