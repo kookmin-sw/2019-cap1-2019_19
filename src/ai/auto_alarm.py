@@ -18,7 +18,6 @@ while(1):
 	print("알림 전송 완료")
 	print("------------------------------------------------")
 	print("방문기록 변경")
-	timestamp = "2019-05-24 03:59:49.702502"
 
 	conn = pymysql.connect(host="localhost", user="admin", password="Kookmin1!", db="db")
 	try:
