@@ -30,6 +30,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 noti_state = "ON" # 알림 여부
 stream_state = "OFF" # 영상 스트리밍 상태
 call_state = "OFF" # 음성 통화 상태
+page_num = 0 # 방문 기록 페이지 번호
 
 #########
 # LOGIN #
@@ -369,25 +370,25 @@ def selectDB():
 	curs = conn.cursor()
 
 	# SELECT문 실행
-	sql = "select name, rDate, video from SEUNGAE where id = %s"
+	sql = "select name, rDate, video from SEUNGAE where id = %s order by rIdx desc"
 	curs.execute(sql, user_id)
 
 	rows = curs.fetchall()
 
-	history = [[0]*3 for i in range(10)]
+	history = [[0]*3 for i in range(len(rows))]
 	count = 0
 	for row in rows:
 		history[count][0] = row[0]
 		history[count][1] = row[1]
 		history[count][2] = row[2]
 		count += 1
-		if count == 10:
-			break
 	conn.close()
 	return history
 
 # 방문기록 목록 창
 def HistoryWindow(window):
+	global page_num
+
 	print("History Window")
 	History = Toplevel(window)
 	History.title("History")
@@ -406,14 +407,36 @@ def HistoryWindow(window):
 		Y += 48
 	menu = Frame(History, width=160, height=480, bg="green")
 	menu.pack()
-	close_btn = Button(menu, text="Close", bg="red", fg="white", font=("Arial", 20, "bold"), activebackground="red", activeforeground="white", command=lambda: History.destroy()).place(x=0, y=0, width=160, height=480)
+	previous_btn = Button(menu, text="Previous", command=partial(move, window, history, 0, historyList)).place(x=0, y=0, width=160, height=160)
+	next_btn = Button(menu, text="Next", command=partial(move, window, history, 1, historyList)).place(x=0, y=160, width=160, height=160)
+	close_btn = Button(menu, text="Close", bg="red", fg="white", font=("Arial", 20, "bold"), activebackground="red", activeforeground="white", command=lambda: History.destroy()).place(x=0, y=320, width=160, height=160)
+
+# 페이지 전환, opt: 0->previous, 1->next
+def move(window,frame, opt, historyList):
+	global page_num
+
+	if opt == 0:
+		if page_num != 0:
+			page_num -= 10
+	else:
+		if page_num+10 <= len(historyList):
+			page_num += 10
+	Y = 0
+	for i in range(page_num, page_num+10):
+		if i >= len(historyList):
+			text = ""
+			btn = Button(frame, text=text, state="disabled").place(x=0, y=Y, width=640, height=48)
+		else:
+			text = "방문자: "+historyList[i][0] + "                 방문시각: "  + str(historyList[i][1])
+			btn = Button(frame, text=text, bg="white", font=("Arial", 10, "bold"), anchor="w", command=partial(PlayVideoWindow, window, historyList[i][2])).place(x=0, y=Y, width=640, height=48)
+		Y += 48
 
 # 방문 기록영상 재생 창
 def PlayVideoWindow(window, path):
 
 	def stream():
 		_, frame = camera.read()
-		cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+		cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 		img = Image.fromarray(cv2image)
 		imgtk = ImageTk.PhotoImage(image=img)
 		screen.imgtk = imgtk
@@ -427,7 +450,6 @@ def PlayVideoWindow(window, path):
 	Video.resizable(False, False)
 
 	video = Frame(Video, width=640, height=480, bg="black")
-	video.place(x=0, y=0)
 	video.grid()
 	screen = Label(video)
 	screen.grid()
