@@ -1,6 +1,7 @@
 #-*- coding:utf-8 -*-
 
 from tkinter import *
+from tkinter import messagebox
 from functools import partial
 from PIL import Image, ImageTk
 from time import sleep
@@ -69,8 +70,8 @@ def loginCheck(login, id, pw):
 	else:
 		# 로그인 실패 표시
 		text = "ID또는 PW가 틀렸습니다."
-		Lable(login, text=text, fg="red", bg="white", font=("Arial", 20, "bold")).place(x=0, y=25, width=640, height=25)
-
+		Label(login, text=text, fg="red", bg="white", font=("Arial", 20, "bold")).place(x=0, y=25, width=640, height=25)
+	conn.close()
 # Login 창- Keyboard
 # button 눌렸을 때 처리
 def press(entry, value, upper):
@@ -360,12 +361,86 @@ def closeStreaming(streaming):
 # HISTORY #
 ###########
 
+# DB에서 방문기록 가져오기
+def selectDB():
+	global user_id
+
+	conn = pymysql.connect(host="####", port=0000, user="####", passwd="####", db="####", charset="utf8")
+	curs = conn.cursor()
+
+	# SELECT문 실행
+	sql = "select name, rDate, video from SEUNGAE where id = %s"
+	curs.execute(sql, user_id)
+
+	rows = curs.fetchall()
+
+	history = [[0]*3 for i in range(10)]
+	count = 0
+	for row in rows:
+		history[count][0] = row[0]
+		history[count][1] = row[1]
+		history[count][2] = row[2]
+		count += 1
+		if count == 10:
+			break
+	conn.close()
+	return history
+
 # 방문기록 목록 창
 def HistoryWindow(window):
 	print("History Window")
+	History = Toplevel(window)
+	History.title("History")
+	History.geometry("800x480+0+0")
+	#History.attributes("-fullscreen", True)
+	History.resizable(False, False)
+
+	history = Frame(History, width=640, height=480)
+	history.pack(side="left")
+
+	historyList = selectDB()
+	Y = 0
+	for i in range(10):
+		text = "방문자: "+historyList[i][0] + "			방문시각: "  + str(historyList[i][1])
+		btn = Button(history, text=text, bg="white", font=("Arial", 10, "bold"), anchor="w", command=partial(PlayVideoWindow, window, historyList[i][2])).place(x=0, y=Y, width=640, height=48)
+		Y += 48
+	menu = Frame(History, width=160, height=480, bg="green")
+	menu.pack()
+	close_btn = Button(menu, text="Close", bg="red", fg="white", font=("Arial", 20, "bold"), activebackground="red", activeforeground="white", command=lambda: History.destroy()).place(x=0, y=0, width=160, height=480)
 
 # 방문 기록영상 재생 창
 def PlayVideoWindow(window, path):
+
+	def stream():
+		_, frame = camera.read()
+		cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
+		img = Image.fromarray(cv2image)
+		imgtk = ImageTk.PhotoImage(image=img)
+		screen.imgtk = imgtk
+		screen.configure(image=imgtk)
+		screen.after(2, stream)
+
+	Video = Toplevel(window)
+	Video.title("video")
+	Video.geometry("800x480+0+0")
+	#Video.attributes("-fullscreen", True)
+	Video.resizable(False, False)
+
+	video = Frame(Video, width=640, height=480, bg="black")
+	video.place(x=0, y=0)
+	video.grid()
+	screen = Label(video)
+	screen.grid()
+	camera = cv2.VideoCapture(path)
+
+	play_thread = threading.Thread(target=stream).start()
+
+	# button
+	buttonList = Frame(Video, width=160, height=480)
+	buttonList.place(x=640, y=0)
+
+	close_btn = Button(buttonList, text="CLOSE", bg="red", fg="white", font=("Arial", 20, "bold"), activebackground="red", activeforeground="white", command=lambda: Video.destroy()).place(x=0, y=0, width=160, height=480)
+	print(path)
 	print("Play Video Window")
 
 ################
