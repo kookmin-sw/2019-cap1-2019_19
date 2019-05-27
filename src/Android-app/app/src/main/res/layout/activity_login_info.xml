@@ -85,7 +85,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/info_id"
+                android:id="@+id/idText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -110,7 +110,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/external_ip"
+                android:id="@+id/ipText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -135,7 +135,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/internal_ip"
+                android:id="@+id/i_ipText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -160,7 +160,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/monitor_ip"
+                android:id="@+id/m_ipText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
@@ -183,7 +183,9 @@
                 android:layout_gravity="center"
                 android:text="비밀번호 변경하기"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
+
 
             <Button
                 android:id="@+id/openBtn"
@@ -228,6 +230,7 @@
             android:textColorHint="#ffffff"
             android:layout_marginTop="20dp"
             android:background="@color/colorPrimary"
+            android:visibility="gone"
             />
 
         <LinearLayout
@@ -235,7 +238,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <EditText
                 android:id="@+id/pw_change"
@@ -247,10 +251,11 @@
                 android:hint="변경할 비밀번호"
                 android:padding="10dp"
                 android:textColor="#ffffff"
-                android:textColorHint="#ffffff" />
+                android:textColorHint="#ffffff"
+                android:visibility="gone"/>
 
             <Button
-                android:id="@+id/changeButton"
+                android:id="@+id/changeBtn"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
@@ -258,7 +263,8 @@
                 android:text="변경"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
 
         </LinearLayout>
@@ -272,7 +278,7 @@
             android:layout_marginTop="20dp"
             android:text="로그아웃"
             android:textSize="15dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
 
     </LinearLayout>
