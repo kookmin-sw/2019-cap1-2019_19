@@ -189,4 +189,21 @@ public class LoginInfoActivity extends AppCompatActivity {
         }
     }
 
+    public void openEditPw(View view){
+        openBtn.setVisibility(View.GONE);
+        closeBtn.setVisibility(View.VISIBLE);
+        changeBtn.setVisibility(View.VISIBLE);
+        pw_now.setVisibility(View.VISIBLE);
+        pw_change.setVisibility(View.VISIBLE);
+
+    }
+
+    public void closeEditPw(View view){
+        openBtn.setVisibility(View.VISIBLE);
+        closeBtn.setVisibility(View.GONE);
+        changeBtn.setVisibility(View.GONE);
+        pw_now.setVisibility(View.GONE);
+        pw_change.setVisibility(View.GONE);
+    }
+
 }
