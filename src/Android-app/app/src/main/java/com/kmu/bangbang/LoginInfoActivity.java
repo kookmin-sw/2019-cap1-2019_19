@@ -1,7 +1,10 @@
 package com.kmu.bangbang;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -71,9 +74,6 @@ public class LoginInfoActivity extends AppCompatActivity {
 
         task = new LoginInfoActivity.GetData();
         task.execute("http://52.78.219.61/UserInfo.php?id="+auto_id);
-
-
-
 
     }
 
@@ -205,6 +205,28 @@ public class LoginInfoActivity extends AppCompatActivity {
         changeBtn.setVisibility(View.GONE);
         pw_now.setVisibility(View.GONE);
         pw_change.setVisibility(View.GONE);
+    }
+
+    public void changePw(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("비밀번호 변경 알림");
+        builder.setMessage("정말로 변경하시겠습니까?");
+        builder.setPositiveButton("YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        task = new GetData();
+                        task.execute("http://52.78.219.61/UpdateInfo.php?id="+auto_id+"&new_pw="+pw_change.getText().toString());
+                        Toast.makeText(getApplicationContext(),"변경이 완료되었습니다.",Toast.LENGTH_LONG).show();
+                        closeEditPw(closeBtn);
+                    }
+                });
+        builder.setNegativeButton("NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
     }
 
     public void backHome(View view){
