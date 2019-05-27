@@ -71,6 +71,8 @@ public class StreamingFragment extends Fragment {
     boolean record_state = false;
     boolean send_state = false;
 
+    boolean close_state = false;
+
     int count = 0;
 
     TextView recieveText;
@@ -91,7 +93,7 @@ public class StreamingFragment extends Fragment {
     MyClientTask myClientTask;
 
     // DB에서 가져와서 합칠 것
-    final String m_ip = "192.168.34.77";
+    final String m_ip = "172.30.1.11";
     int m_port = 3077;
 
     @Override
@@ -263,8 +265,17 @@ public class StreamingFragment extends Fragment {
 
                 // state에 따라 send/receive
                 while(true){
+
+                    if(close_state == true){
+                        // call 메시지 전송
+                        out.println("close");
+                        Log.v(TAG, "close 신호 보냈다");
+                        break;
+                        //Thread.sleep(1000);
+                    }
+
                     // state -> send
-                    if(send_state == true){
+                    else if(send_state == true){
 
                         Log.v(TAG, "파일 전송");
 
@@ -373,7 +384,7 @@ public class StreamingFragment extends Fragment {
                         killMediaPlayer();
 
                         // 전송 받은 녹음 파일 재생
-                        if(record_state == false && send_state == false){
+                        if(record_state == false && send_state == false && close_state  == false){
                             player = new MediaPlayer();
                             player.setDataSource(fileName);
                             player.prepare();
@@ -413,6 +424,8 @@ public class StreamingFragment extends Fragment {
             player = null;
         }
         super.onPause();
+
+        close_state = true;
     }
 
     public void onDetach(){
