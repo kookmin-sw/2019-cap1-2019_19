@@ -16,6 +16,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -50,7 +51,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     Handler handler;
 
 //    디버깅
-//    private TextView textViewResponse;
+    private TextView textViewResponse;
 //    private TextView id_C;
 
     private Button buttonUpload;
@@ -68,7 +69,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         timer = (TextView)findViewById(R.id.timer);
 //        디버깅
-//        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
+        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
 //        id_C = (TextView)findViewById(R.id.id_c);
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
@@ -102,6 +103,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             public void onClick(View v) {
                 if (v == buttonUpload) {
                     uploadVideo();
+                    buttonUpload.setEnabled(false);
+
                 }
                     else if(v == btn_record){
                         runOnUiThread(new Runnable() {
@@ -232,16 +235,19 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                uploading = ProgressDialog.show(CameraActivity.this, "Uploading File", "Please wait...", false, false);
+//                uploading = ProgressDialog.show(CameraActivity.this, "Uploading File", "Please wait...", false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                uploading.dismiss();
+//                uploading.dismiss();
                 // 디버깅
-//                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
-//                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
+                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
+                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
+//                uploading = ProgressDialog.show(CameraActivity.this, "Uploading File", "Please wait...", false, false);
+                Toast.makeText(CameraActivity.this,"등록이 완료되었습니다.",Toast.LENGTH_LONG).show();
+                Log.i("bang bang ","finished ");
             }
 
             @Override
@@ -249,6 +255,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 Upload u = new Upload();
                 selectedPath = selectedPath+name;
                 String msg = u.uploadVideo(selectedPath,check, auto_id);
+//                uploading = ProgressDialog.show(CameraActivity.this, "Uploading File", "Please wait...", false, false);
                 return msg;
             }
         }

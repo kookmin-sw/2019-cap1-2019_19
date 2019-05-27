@@ -17,7 +17,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 public class Upload {
-    public static String UPLOAD_URL= "http://52.78.219.61/Users/upload.php";
+    public static String UPLOAD_URL= "http://52.78.219.61/upload.php";
 
     private int serverResponseCode;
     String a ;
