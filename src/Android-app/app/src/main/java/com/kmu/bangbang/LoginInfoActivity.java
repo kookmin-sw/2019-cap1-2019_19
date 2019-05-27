@@ -2,6 +2,7 @@ package com.kmu.bangbang;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -204,6 +205,15 @@ public class LoginInfoActivity extends AppCompatActivity {
         changeBtn.setVisibility(View.GONE);
         pw_now.setVisibility(View.GONE);
         pw_change.setVisibility(View.GONE);
+    }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void back(View view){
+        finish();
     }
 
 }
