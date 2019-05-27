@@ -28,7 +28,6 @@ public class RegisterActivity extends Activity {
     private String id;
     private String pw;
     private String ip;
-    private String tel;
     private String m_ip;
     private AlertDialog dialog;
     private boolean validate = false;
@@ -40,7 +39,6 @@ public class RegisterActivity extends Activity {
 
         final EditText idText = (EditText) findViewById(R.id.idText);
         final EditText passwordText = (EditText) findViewById(R.id.passwordText);
-        final EditText numberText = (EditText) findViewById(R.id.numberText);
 
         TextView backButton = (TextView)findViewById(R.id.backButton);
 
@@ -123,7 +121,6 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                final String id = idText.getText().toString();
                 String pw = passwordText.getText().toString();
-                String tel = numberText.getText().toString();
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                 String token = pref.getString("token", "");
 
@@ -138,7 +135,7 @@ public class RegisterActivity extends Activity {
                 }
 
                 //한칸이라도 빠뜨렸을 경우
-                if (id.equals("") || pw.equals("") || tel.equals("")) {
+                if (id.equals("") || pw.equals("")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                     dialog = builder.setMessage("빈칸을 모두 채워주세요.")
                             .setNegativeButton("OK", null)
@@ -182,7 +179,7 @@ public class RegisterActivity extends Activity {
                 };//Response.Listener 완료
 
                 //Volley 라이브러리를 이용해서 실제 서버와 통신을 구현하는 부분
-                RegisterRequest registerRequest = new RegisterRequest(id, pw, tel, token, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(id, pw, token, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
 
