@@ -46,7 +46,7 @@ public class LoginInfoActivity extends AppCompatActivity {
     TextView idText, ipText, i_ipText, m_ipText;
 
     SharedPreferences auto;
-    String auto_id, mJsonString, ip, i_ip, m_ip,cur_pw;
+    String auto_id, mJsonString, ip, i_ip, m_ip,cur_pw, new_pw;
 
     GetData task;
 
@@ -214,10 +214,17 @@ public class LoginInfoActivity extends AppCompatActivity {
         builder.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        task = new GetData();
-                        task.execute("http://52.78.219.61/UpdateInfo.php?id="+auto_id+"&new_pw="+pw_change.getText().toString());
-                        Toast.makeText(getApplicationContext(),"변경이 완료되었습니다.",Toast.LENGTH_LONG).show();
-                        closeEditPw(closeBtn);
+
+                        if(cur_pw.equals(pw_now.getText().toString())){
+                            task = new GetData();
+                            task.execute("http://52.78.219.61/UpdateInfo.php?id="+auto_id+"&new_pw="+pw_change.getText().toString());
+                            Toast.makeText(getApplicationContext(),"변경이 완료되었습니다.",Toast.LENGTH_LONG).show();
+                            closeEditPw(closeBtn);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(),"비밀번호 변경 오류\n현재 비밀번호를 잘못 입력하셨습니다.",Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 });
         builder.setNegativeButton("NO",
