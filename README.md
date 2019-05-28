@@ -70,3 +70,12 @@ e-mail: ghkdtmddo01@naver.com
 역할: BOARD & WEB
 ```
 
+
+# 5. 시연 영상
+외부 인터폰 + 어플 알림 : https://youtu.be/ftg1u4shjY4
+
+어플 : https://youtu.be/3byrBOUAuqQ
+
+웹 : https://youtu.be/4cYqvkunBWI
+
+내부 모니터 https://www.youtube.com/watch?v=PzwYaF2FcsA
