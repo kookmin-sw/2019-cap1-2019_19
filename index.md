@@ -1,10 +1,20 @@
 ### 팀페이지 주소 -> https://kookmin-sw.github.io/2019-cap1-2019_19
 
-## 1. 프로젝트 소개
+# 1. 프로젝트 소개
+ **BANGBANG**은 얼굴인식을 이용하여 방문자의 정보를 어플과 웹페이지를 통해서 알려주는 시스템입니다. **BANGBANG**은 사용자의 또 다른 눈이 되어 집 앞을 보호해줍니다. 실시간으로 집 앞의 상황을 확인할 수 있는 **CCTV기능**과 방문자와 소통할 수 있는 **인터폰 기능**을 함께 제공합니다. 
+인체감지 센서를 이용하여 방문자를 감지하기 때문에, 방문자가 벨을 누르지 않아도 방문자를 감지하여 방문자에게 알림을 보내드립니다. 방문자 알림과 함께 얼굴 인식을 통해 획득한 방문자의 정보도 확인할 수 있습니다. 만약 알림을 확인하지 못한 경우 사용자는 방문기록을 통해 지나간 방문자를 확인할 수 있습니다. 또한, 앱과 웹을 통한 서비스 제공으로 사용자가 외출시에도 편리하게 집 앞 상황을 확인하고 관리할 수 있습니다.
 
- 본 프로젝트는 cctv의 기능을 포함하여 복잡한 전선 연결 없이 설치가 간편하도록 인터폰을 제작한다. 또한, 오픈소스를 이용하여 부가적인 기능을 제외하고 얼굴인식 및 알림 등의 필수 기능만을 최소한으로 구현하여 가격대를 낮추고, 스마트폰뿐만 아니라 웹페이지를 통해서도 서비스를 제공하여 사용자에게 편리하고 효율적인 스마트 인터폰을 만드는 것을 목표로 한다.
+저희 **BANGBANG의 주요 기능**은 다음과 같습니다.
  
-## 2. abstract
+* 방문자 감지 기능: 얼굴 인식과 인체센서를 통해 방문자를 감지 
+* 알림 기능: 방문자가 감지되면 앱을 통해 방문자의 정보를 사용자에게 알림 
+* 방문 기록 기능: 방문 기록 확인 및 관리 기능 제공 
+* CCTV 기능: 앱/웹을 통해 실시간으로 집 앞 상황 확인 가능 
+* 지인 등록 기능: 동영상 촬영을 통한 지인 등록 기능 제공 
+* 날짜별 방문자 수 확인 기능: 방문한 방문자 수 확인 기능 제공
+ 
+ 
+# 2. abstract
 Our **‘JEONGHO-FIVE’** team aims to implement a system named **‘BANGBANG’**, which overcomes the limitations of usual interphone that users can only use inside.
 
 ‘BANGBANG’ includes the function of **CCTV** and is designed to be easy to install **without complex wire connections.** Using **OPENFACE API** that detect faces and determine who he is(or who they are), only essential functions such as **FACE RECOGNITION**, and **NOTIFICATION** are implemented to a minimum.
@@ -18,11 +28,11 @@ If these functions are provided only through mobiles, it is difficult for elderl
 **ANYTIME, ANYWHERE, YOU CAN PROTECT YOUR HOUSE WITH BANGBANG!**
 
 
-## 3. 소개 영상
+# 3. 소개 영상
 https://youtu.be/u1_oJqWSfaQ
 
 
-## 4. 팀 소개
+# 4. 팀 소개
 
 ![sujin](./images/sujin.png)
 
