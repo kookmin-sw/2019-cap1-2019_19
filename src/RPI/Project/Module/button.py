@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*- 
 import RPi.GPIO as GPIO
 import os
+import communication as c
 
 btnPin = 25
 
@@ -21,3 +22,11 @@ def click():
 
 def play():
 	os.system("play Audio/bell.wav")
+
+def button():
+	while True:
+		if click() == 1:
+			play()
+			c.notification()
+
+
