@@ -16,9 +16,9 @@
     $id = $_GET['id'];
     
     if($category == "전체보기"){
-        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}'";
+        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}' ORDER BY rIdx DESC";
     }else{
-        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}' AND belong='${category}'";
+        $sql="SELECT rIdx, name, rDate, belong FROM History WHERE id='${id}' AND belong='${category}' ORDER BY rIdx DESC";
     }
     $result=mysqli_query($link,$sql);
     $data = array();
