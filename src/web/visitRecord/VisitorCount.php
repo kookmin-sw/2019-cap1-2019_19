@@ -10,7 +10,7 @@
     mysqli_set_charset($link,"utf8");
     $id = $_GET['id'];
     $selected_date = $_GET['selected_date'];
-    $sql="SELECT COUNT(*) FROM History WHERE id='${id}' AND DATE_FORMAT(rDate, '%Y-%m-%d') = '${selected_date}'";
+    $sql="SELECT COUNT(*) FROM History WHERE id='${id}' AND DATE_FORMAT(rDate, '%Y-%m-%d') = '${selected_date}' AND name != 'user'";
     $count=mysqli_query($link,$sql);
     $row=mysqli_fetch_array($count);
     $row_result=$row[0];
