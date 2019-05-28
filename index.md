@@ -30,6 +30,7 @@ If these functions are provided only through mobiles, it is difficult for elderl
 
 # 3. 소개 영상
 https://youtu.be/u1_oJqWSfaQ
+[![계획서](https://github.com/kookmin-sw/2019-cap1-2019_19/blob/master/images/계획서발표영상ppt.png)](https://youtu.be/u1_oJqWSfaQ)
 
 
 # 4. 팀 소개
@@ -69,3 +70,12 @@ e-mail: ghkdtmddo01@naver.com
 역할: BOARD & WEB
 ```
 
+
+# 5. 시연 영상
+외부 인터폰 + 어플 알림 : https://youtu.be/ftg1u4shjY4
+
+어플 : https://youtu.be/3byrBOUAuqQ
+
+웹 : https://youtu.be/4cYqvkunBWI
+
+내부 모니터 https://www.youtube.com/watch?v=PzwYaF2FcsA
