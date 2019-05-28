@@ -183,7 +183,6 @@ $result = $mysqli->query("SELECT * FROM `History`");
 		Smart Interphone
     <div class="event">
       <input type="button" id="option" onclick="deselect();" value="선택 해제" />
-      <input type="button" id="add" onclick="add();" value="등록" />
       <input type="button" id="delete" onclick="del();" value="삭제" />
       <input type="button" id="modify" onclick="update();" value="수정" />
     </div>
@@ -210,29 +209,6 @@ $result = $mysqli->query("SELECT * FROM `History`");
 							return;
 						}
 					}
-		    </script>
-
-
-		    <script>
-			    function add() {
-						var chek = document.getElementsByName("chek");
-						var find = false;
-						for(var i=0;  i < chek.length; i++)
-						{
-							if(chek[i].checked)
-							{
-								find = true;
-								location.href="insertPage.php?rIdx=" + index;
-								chek[i].checked = false;
-
-								return;
-							}
-						}
-						if(!find) {
-							alert("등록할 동영상이 없습니다.");
-							return;
-						}
-			    }
 		    </script>
 
 
