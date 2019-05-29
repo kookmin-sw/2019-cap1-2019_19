@@ -13,8 +13,11 @@ while(1):
 	visitor = str(res[5])
 	print("id : {}, timestamp : {}, visitor : {}".format(id, timestamp, visitor))
 	
-	if(visitor == "stranger"):
-		visitor = "외부인"
+	if(visitor == "stranger" or visitor == "default"):
+        visitor = "외부인"
+
+    if(visitor != "외부인" and visitor != "user"):
+        visitor = c.getNameByIndex(id, visitor)
 		
 	s.send(id, visitor)
 	belong = c.getBelong(id, visitor)

@@ -1,5 +1,25 @@
 import pymysql.cursors
 
+def getNameByIndex(id, aIdx):
+        print("지인 이름 가져오기 시작")
+
+        conn = pymysql.connect(host="localhost", user="admin", password="Kookmin1!", db="db")
+        name = '외부인'
+        try:
+                with conn.cursor() as cursor:
+                        sql = 'SELECT * FROM Acquaintance WHERE id = %s AND aIdx = %s'
+                        cursor.execute(sql, (id, aIdx))
+                        if(cursor.rowcount == 1):
+                                res = cursor.fetchall()
+                                name = res[0][2]
+                        elif(cursor.rowcount == 0):
+                                name = "외부인"
+        finally:
+                conn.close()
+        print("지인 이름 가져오기 완료")
+        return name
+
+
 def getBelong(id, visitor):
 	print("방문자 그룹 설정 시작 ")
 
@@ -21,8 +41,10 @@ def getBelong(id, visitor):
 					belong = "외부인"
 	finally:
 		conn.close()
-	return belong
+
 	print("방문자 그룹 설정 완료")
+	return belong
+
 
 def updateHistory(id, timestamp, visitor, belong):
 	print("방문기록 변경 시작")
