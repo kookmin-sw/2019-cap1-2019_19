@@ -40,7 +40,7 @@ public class LoginInfoActivity extends AppCompatActivity {
     private static final String TAG_M_IP = "m_ip";
     private static final String TAG_CUR_PW ="cur_pw";
 
-    Button openBtn, closeBtn, changeBtn;
+    Button openBtn, closeBtn, changeBtn, logoutButton;
     EditText pw_now, pw_change;
 
     TextView idText, ipText, i_ipText, m_ipText;
@@ -74,6 +74,45 @@ public class LoginInfoActivity extends AppCompatActivity {
 
         task = new LoginInfoActivity.GetData();
         task.execute("http://52.78.219.61/UserInfo.php?id="+auto_id);
+
+        logoutButton = (Button) findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(LoginInfoActivity.this);
+                builder.setMessage("정말로 로그아웃하시겠습니까?");
+                builder.setTitle("로그아웃 알림창")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+
+                                Intent intent = new Intent(LoginInfoActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = auto.edit();
+
+                                editor.clear();
+                                editor.commit();
+                                Toast.makeText(LoginInfoActivity.this, "자동 로그인 해제", Toast.LENGTH_SHORT).show();
+                                finish();
+
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.cancel();
+                            }
+                        });
+                android.support.v7.app.AlertDialog alert = builder.create();
+                alert.setTitle("로그아웃 알림창");
+                alert.show();
+
+
+            }
+        });
 
     }
 
@@ -244,5 +283,6 @@ public class LoginInfoActivity extends AppCompatActivity {
     public void back(View view){
         finish();
     }
+
 
 }
