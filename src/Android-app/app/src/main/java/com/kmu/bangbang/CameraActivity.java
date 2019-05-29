@@ -272,4 +272,13 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 
     }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void back(View view){
+        finish();
+    }
 }

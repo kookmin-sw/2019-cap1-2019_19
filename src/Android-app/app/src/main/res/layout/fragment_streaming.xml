@@ -20,35 +20,33 @@
 
     <Button
         android:id="@+id/connectBtn"
-        android:layout_width="124dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="left"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="360dp"
-        android:text="CONNECT"
-        android:background="@drawable/round_yellow_button"/>
+        android:background="@drawable/round_yellow_button"
+        android:text="CONNECT" />
 
     <Button
         android:id="@+id/recordBtn"
-        android:layout_width="124dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="360dp"
-        android:layout_marginRight="20dp"
-        android:text="RECORD"
-        android:visibility="visible"
-        android:background="@drawable/round_yellow_button"/>
+        android:background="@drawable/round_yellow_button"
+        android:text="RECORD" />
 
     <!-- id 바꿀 것 pause -> send -->
     <Button
         android:id="@+id/pauseBtn"
-        android:layout_width="124dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_marginTop="360dp"
         android:layout_marginRight="20dp"
-        android:text="SEND"
-        android:visibility="gone"
-        android:background="@drawable/round_yellow_button"/>
+        android:layout_marginTop="360dp"
+        android:background="@drawable/round_yellow_button"
+        android:text="SEND" />
 
     <EditText
         android:id="@+id/editTextPort"
@@ -56,7 +54,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="3076" />
+        android:text="3076"
+        android:visibility="gone"/>
 
 
     //디버깅

@@ -212,4 +212,13 @@ public class ConnectActivity extends Activity {
             }
         }
     }
+
+    public void backHome(View view){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void back(View view){
+        finish();
+    }
 }

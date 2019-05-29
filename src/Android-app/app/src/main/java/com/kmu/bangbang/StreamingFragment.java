@@ -171,8 +171,8 @@ public class StreamingFragment extends Fragment {
             public void onClick(View v) {
                 record_state = true;
                 killMediaPlayer();
-                recordBtn.setVisibility(View.GONE);
-                pauseBtn.setVisibility(View.VISIBLE);
+//                recordBtn.setVisibility(View.GONE);
+//                pauseBtn.setVisibility(View.VISIBLE);
                 Log.v(TAG, "녹음 시작");
 
                 // 녹음 시작
@@ -204,8 +204,8 @@ public class StreamingFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                pauseBtn.setVisibility(View.GONE);
-                recordBtn.setVisibility(View.VISIBLE);
+//                pauseBtn.setVisibility(View.GONE);
+//                recordBtn.setVisibility(View.VISIBLE);
 
                 // 녹음 정지
                 recorder.stop();
@@ -217,6 +217,8 @@ public class StreamingFragment extends Fragment {
                 record_state = false;
 
                 Log.v(TAG, "녹음 끝");
+                Toast.makeText(getActivity(),
+                        "녹음을 전송합니다.", Toast.LENGTH_LONG).show();
 
                 //send_state = true;
             }
