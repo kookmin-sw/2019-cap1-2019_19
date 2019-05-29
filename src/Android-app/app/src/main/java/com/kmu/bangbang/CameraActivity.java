@@ -103,6 +103,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             public void onClick(View v) {
                 if (v == buttonUpload) {
                     uploadVideo();
+                    Intent intent = new Intent(CameraActivity.this,CameraActivity.class);
+                    startActivity(intent);
                     buttonUpload.setEnabled(false);
 
                 }
