@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -92,8 +93,7 @@ public class StreamingFragment extends Fragment {
 
     MyClientTask myClientTask;
 
-    // DB에서 가져와서 합칠 것
-    final String m_ip = "192.168.0.6";
+    String i_ip;
     int m_port = 3077;
 
     @Override
@@ -150,6 +150,8 @@ public class StreamingFragment extends Fragment {
 
         /*************************** 여기부터 MIC & SPEAKER ***************************/
 
+        i_ip = auto.getString("auto_i_ip", null);
+        Log.v(TAG, "내부 아이피 주소는 "+i_ip);
 
         /* port 설정 */
         editTextPort = (EditText) view.findViewById(R.id.editTextPort);
@@ -159,7 +161,7 @@ public class StreamingFragment extends Fragment {
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyClientTask myClientTask = new MyClientTask(m_ip, Integer.parseInt(editTextPort.getText().toString()));
+                MyClientTask myClientTask = new MyClientTask(i_ip, Integer.parseInt(editTextPort.getText().toString()));
                 myClientTask.execute();
             }
         });
