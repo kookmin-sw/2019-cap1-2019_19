@@ -93,7 +93,7 @@ public class StreamingFragment extends Fragment {
     MyClientTask myClientTask;
 
     // DB에서 가져와서 합칠 것
-    final String m_ip = "172.30.1.11";
+    final String m_ip = "192.168.0.6";
     int m_port = 3077;
 
     @Override
@@ -250,154 +250,162 @@ public class StreamingFragment extends Fragment {
                     Log.v(TAG, "conncet 전송");
                     out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                     out.println("connect");
+                    out.flush();
                     Log.v(TAG, "conncet 전송 완료");
                     Thread.sleep(1000);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                // 첫 녹화 시간 대기 (추후에 수정)
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
                 // state에 따라 send/receive
                 while(true){
+
+                    Log.v(TAG, "1");
 
                     if(close_state == true){
                         // call 메시지 전송
                         out.println("close");
+                        out.flush();
                         Log.v(TAG, "close 신호 보냈다");
                         break;
                         //Thread.sleep(1000);
                     }
 
-                    // state -> send
-                    else if(send_state == true){
+                    Log.v(TAG, "2");
 
-                        Log.v(TAG, "파일 전송");
+                    if(record_state == true && !close_state){
 
-                        try{
-                            File inFile = new File(RECORDED_FILE);
-                            long fileSize = inFile.length();
-                            Log.v(TAG, Long.toString(fileSize));
-                            long totalReadBytes = 0;
-                            int readBytes;
+                        Log.v(TAG, "call 신호 보냈다");
+                        out.println("call");
+                        out.flush();
+                        Thread.sleep(1000);
 
-                            //PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                        while(send_state == false){
+                            Log.v(TAG, "녹음 중");
+                        }
+                        // state -> send
 
-                            // call 메시지 전송
-                            out.println("call");
-                            Log.v(TAG, "call 신호 보냈다");
-                            Thread.sleep(1000);
+                        if(send_state == true){
 
-                            // 전송할 파일 크기 전송
-                            out.println(Long.toString(fileSize));
+                            Log.v(TAG, "파일 전송");
 
-                            Log.v(TAG,"전송할 test_recorded_test.mp3의 크기 = "+Long.toString(fileSize));
 
-                            Thread.sleep(1000);
+                            try{
+                                File inFile = new File(RECORDED_FILE);
+                                long fileSize = inFile.length();
+                                Log.v(TAG, Long.toString(fileSize));
+                                long totalReadBytes = 0;
+                                int readBytes;
 
-                            // 앱 녹음 데이터 input스트림 - 파일 데이터 읽기
-                            dis = new DataInputStream(new FileInputStream(inFile));
-                            // 앱 녹음 데이터 output스트림(앱 -> 인터폰) - 전송
-                            dos = new DataOutputStream(socket.getOutputStream());
+                                Log.v(TAG,"전송할 test_recorded_test.mp3의 크기 = "+Long.toString(fileSize));
+                                Log.v(TAG, "파일 사이즈 보냈다");
+                                // 전송할 파일 크기 전송
+                                out.println(Long.toString(fileSize));
+                                out.flush();
 
-                            byte[] buf = new byte[65536];
+                                Thread.sleep(1000);
 
-                            // 녹음 전송
-                            while((readBytes = dis.read(buf))>0)
-                            {
-                                totalReadBytes += readBytes;
-                                Log.v(TAG, "current ReadBytes = "+Integer.toString(readBytes));
-                                dos.write(buf);
-                                dos.flush();
+                                // 앱 녹음 데이터 input스트림 - 파일 데이터 읽기
+                                dis = new DataInputStream(new FileInputStream(inFile));
+                                // 앱 녹음 데이터 output스트림(앱 -> 인터폰) - 전송
+                                dos = new DataOutputStream(socket.getOutputStream());
+
+                                byte[] buf = new byte[65536];
+
+                                // 녹음 전송
+                                while((readBytes = dis.read(buf))>0)
+                                {
+                                    totalReadBytes += readBytes;
+                                    Log.v(TAG, "current ReadBytes = "+Integer.toString(readBytes));
+                                    dos.write(buf);
+                                    dos.flush();
+                                }
+
+                                Log.v(TAG, "파일 전송 Finished");
+                                Log.v(TAG, "totalReadBytes = "+Long.toString(totalReadBytes));
+
+                                // Thread.sleep(2000);
+                                send_state = false;
+
+                            }
+                            catch(Exception e){
+                                e.printStackTrace();
                             }
 
-                            Log.v(TAG, "파일 전송 Finished");
-                            Log.v(TAG, "totalReadBytes = "+Long.toString(totalReadBytes));
-
-                            // Thread.sleep(2000);
-
                         }
-                        catch(Exception e){
+                    }
+
+                    Log.v(TAG, "3");
+
+                    if(!record_state && !send_state && !close_state){
+                        Log.v(TAG, "파일 받기");
+                        try {
+                            //Thread.sleep(2000);
+
+                            i = Integer.toString((count%3) +1);
+
+                            String fileName = "/sdcard/test_received" + i + ".mp3";
+
+                            Log.v(TAG, "fileName = "+fileName);
+
+                            // File outFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_received.mp3") ;
+                            File outFile = new File(fileName);
+
+                            int cutSize;
+                            int totalSize = 0;
+
+
+                            // 인터폰 녹음 데이터 입력 스트림(인터폰 -> 앱)
+                            diss = new DataInputStream(socket.getInputStream());
+                            // 인터폰 녹음 데이터 fileOutput스트림 - 파일 데이터 쓰기
+                            output = new FileOutputStream(outFile);
+
+                            // 데이터 길이 버퍼
+                            byte[] bs = new byte[5];
+                            // 데이터 버퍼
+                            byte[] bf = new byte[65536];
+
+                            // 데이터의 길이를 받는다.
+                            diss.read(bs);
+                            String s_len = new String(bs);
+                            Log.v(TAG, "전달 받을 파일의 길이는 " + s_len);
+
+                            int len_data = Integer.parseInt(s_len);
+                            Thread.sleep(2000);
+
+                            while ((cutSize = diss.read(bf)) > 0) {
+                                Log.v(TAG, "cutSize = " + Integer.toString(cutSize));
+                                output.write(bf);
+                                output.flush();
+                                totalSize += cutSize;
+                                Log.v(TAG, "현재 totalSize = " + Integer.toString(totalSize));
+
+                                if(totalSize >= len_data){
+                                    break;
+                                }
+                            }
+
+                            Log.v(TAG, "전달 받은 파일의 total size "+i +"= "+ Integer.toString(totalSize));
+
+                            killMediaPlayer();
+
+                            // 전송 받은 녹음 파일 재생
+                            if(record_state == false && send_state == false && close_state  == false){
+                                player = new MediaPlayer();
+                                player.setDataSource(fileName);
+                                player.prepare();
+                                player.start();
+                            }
+                            count++;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-                        send_state = false;
-
                     }
 
-                    Log.v(TAG, "파일 받기");
-                    try {
-                        //Thread.sleep(2000);
-
-                        i = Integer.toString((count%3) +1);
-
-                        String fileName = "/sdcard/test_received" + i + ".mp3";
-
-                        Log.v(TAG, "fileName = "+fileName);
-
-                        // File outFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/test_received.mp3") ;
-                        File outFile = new File(fileName);
-
-                        int cutSize;
-                        int totalSize = 0;
-
-
-                        // 인터폰 녹음 데이터 입력 스트림(인터폰 -> 앱)
-                        diss = new DataInputStream(socket.getInputStream());
-                        // 인터폰 녹음 데이터 fileOutput스트림 - 파일 데이터 쓰기
-                        output = new FileOutputStream(outFile);
-
-                        // 데이터 길이 버퍼
-                        byte[] bs = new byte[5];
-                        // 데이터 버퍼
-                        byte[] bf = new byte[65536];
-
-                        // 데이터의 길이를 받는다.
-                        diss.read(bs);
-                        String s_len = new String(bs);
-                        Log.v(TAG, "전달 받을 파일의 길이는 " + s_len);
-
-                        int len_data = Integer.parseInt(s_len);
-                        Thread.sleep(2000);
-
-                        while ((cutSize = diss.read(bf)) > 0) {
-                            Log.v(TAG, "cutSize = " + Integer.toString(cutSize));
-                            output.write(bf);
-                            output.flush();
-                            totalSize += cutSize;
-                            Log.v(TAG, "현재 totalSize = " + Integer.toString(totalSize));
-
-                            if(totalSize >= len_data){
-                                break;
-                            }
-                        }
-
-                        Log.v(TAG, "전달 받은 파일의 total size "+i +"= "+ Integer.toString(totalSize));
-
-                        response = "test_record"+i+".mp3 수신완료";
-
-                        killMediaPlayer();
-
-                        // 전송 받은 녹음 파일 재생
-                        if(record_state == false && send_state == false && close_state  == false){
-                            player = new MediaPlayer();
-                            player.setDataSource(fileName);
-                            player.prepare();
-                            player.start();
-                        }
-                        count++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
