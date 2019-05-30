@@ -90,7 +90,7 @@ public class StreamingFragment extends Fragment {
     MyClientTask myClientTask;
 
     String i_ip;
-    int m_port = 3077;
+    int m_port = 3075;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,7 +135,7 @@ public class StreamingFragment extends Fragment {
                     i_ip = jsonResponse.getString("i_ip");
                     Log.v(TAG, "내부 아이피 주소는 "+i_ip);
 
-                    User_Addr = "http://" + ip + ":8080/stream/video.mjpeg";
+                    User_Addr = "http://" + i_ip + ":8080/stream/video.mjpeg";
                     mWebView.loadUrl(User_Addr);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -157,7 +157,7 @@ public class StreamingFragment extends Fragment {
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyClientTask myClientTask = new MyClientTask(i_ip, Integer.parseInt(editTextPort.getText().toString()));
+                MyClientTask myClientTask = new MyClientTask(i_ip, m_port);
                 myClientTask.execute();
             }
         });
@@ -268,7 +268,6 @@ public class StreamingFragment extends Fragment {
                         out.flush();
                         Log.v(TAG, "close 신호 보냈다");
                         break;
-                        //Thread.sleep(1000);
                     }
 
                     Log.v(TAG, "2");
@@ -324,7 +323,6 @@ public class StreamingFragment extends Fragment {
                                 Log.v(TAG, "파일 전송 Finished");
                                 Log.v(TAG, "totalReadBytes = "+Long.toString(totalReadBytes));
 
-                                // Thread.sleep(2000);
                                 send_state = false;
 
                             }
@@ -340,7 +338,6 @@ public class StreamingFragment extends Fragment {
                     if(!record_state && !send_state && !close_state){
                         Log.v(TAG, "파일 받기");
                         try {
-                            //Thread.sleep(2000);
 
                             i = Integer.toString((count%3) +1);
 
@@ -363,7 +360,7 @@ public class StreamingFragment extends Fragment {
                             // 데이터 길이 버퍼
                             byte[] bs = new byte[5];
                             // 데이터 버퍼
-                            byte[] bf = new byte[65536];
+                            byte[] bf = new byte[2048];
 
                             // 데이터의 길이를 받는다.
                             diss.read(bs);
@@ -371,7 +368,7 @@ public class StreamingFragment extends Fragment {
                             Log.v(TAG, "전달 받을 파일의 길이는 " + s_len);
 
                             int len_data = Integer.parseInt(s_len);
-                            Thread.sleep(2000);
+                            Thread.sleep(1000);
 
                             while ((cutSize = diss.read(bf)) > 0) {
                                 Log.v(TAG, "cutSize = " + Integer.toString(cutSize));
