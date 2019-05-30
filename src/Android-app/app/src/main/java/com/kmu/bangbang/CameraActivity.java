@@ -69,7 +69,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         buttonUpload = (Button) findViewById(R.id.buttonUpload);
         timer = (TextView)findViewById(R.id.timer);
 //        디버깅
-        textViewResponse = (TextView) findViewById(R.id.textViewResponse);
+       // textViewResponse = (TextView) findViewById(R.id.textViewResponse);
 //        id_C = (TextView)findViewById(R.id.id_c);
         Intent intent = new Intent(this.getIntent());
         name = intent.getStringExtra("text");
@@ -103,7 +103,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             public void onClick(View v) {
                 if (v == buttonUpload) {
                     uploadVideo();
-                    Intent intent = new Intent(CameraActivity.this,CameraActivity.class);
+                    Intent intent = new Intent(CameraActivity.this,MainActivity.class);
                     startActivity(intent);
                     buttonUpload.setEnabled(false);
 
@@ -245,8 +245,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 super.onPostExecute(s);
 //                uploading.dismiss();
                 // 디버깅
-                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
-                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
+//                textViewResponse.setText(Html.fromHtml("<b>Uploaded at <a href='" + s + "'>" + s + "</a></b>"));
+//                textViewResponse.setMovementMethod(LinkMovementMethod.getInstance());
 //                uploading = ProgressDialog.show(CameraActivity.this, "Uploading File", "Please wait...", false, false);
                 Toast.makeText(CameraActivity.this,"등록이 완료되었습니다.",Toast.LENGTH_LONG).show();
                 Log.i("bang bang ","finished ");

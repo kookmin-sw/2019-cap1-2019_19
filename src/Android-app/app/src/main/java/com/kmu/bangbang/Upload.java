@@ -25,9 +25,9 @@ public class Upload {
     public String uploadVideo(String file,String check, String id) {
         String fileName = file.substring(file.lastIndexOf("/")+1);
 
-        if(check.equals("User")){
+        if(check.equals("user")){
 //            UPLOAD_URL= "http://52.78.219.61/testupload.php";
-            fileName ="User.mp4";
+            fileName ="user.mp4";
 //            Log.i("방방", "파일 이름 이것이 실행 했는가...: " + check);
         }
         HttpURLConnection conn = null;
