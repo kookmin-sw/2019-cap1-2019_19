@@ -53,10 +53,6 @@ public class StreamingFragment extends Fragment {
     String users_id;
     String ip;
     TextView text;
-
-
-
-
     /*************************** 여기부터 MIC & SPEAKER ***************************/
     String TAG = "sujin ";
 
@@ -136,6 +132,9 @@ public class StreamingFragment extends Fragment {
                 try{
                     JSONObject jsonResponse = new JSONObject(response);
                     ip = jsonResponse.getString("ip");
+                    i_ip = jsonResponse.getString("i_ip");
+                    Log.v(TAG, "내부 아이피 주소는 "+i_ip);
+
                     User_Addr = "http://" + ip + ":8080/stream/video.mjpeg";
                     mWebView.loadUrl(User_Addr);
                 }catch (Exception e){
@@ -149,9 +148,6 @@ public class StreamingFragment extends Fragment {
         queue.add(ipRequest);
 
         /*************************** 여기부터 MIC & SPEAKER ***************************/
-
-        i_ip = auto.getString("auto_i_ip", null);
-        Log.v(TAG, "내부 아이피 주소는 "+i_ip);
 
         /* port 설정 */
         editTextPort = (EditText) view.findViewById(R.id.editTextPort);

@@ -80,14 +80,12 @@ public class LoginActivity extends AppCompatActivity {
                         try{
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            i_ip = jsonResponse.getString("i_ip");
 
                             if(success){
                                 SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor autoLogin = auto.edit();
                                 autoLogin.putString("auto_id", id);
                                 autoLogin.putString("auto_pw", pw);
-                                autoLogin.putString("auto_i_ip", i_ip);
 
                                 autoLogin.commit();
 

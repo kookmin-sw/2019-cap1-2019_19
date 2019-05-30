@@ -8,7 +8,7 @@ if (mysqli_connect_errno($con))
 
 $ID = $_POST["id"];
 
-$result = mysqli_query($con,"SELECT ip FROM Login where id='$ID'");
+$result = mysqli_query($con,"SELECT ip, i_ip FROM Login where id='$ID'");
 $row = mysqli_fetch_array($result);
 $data = $row[0];
 echo json_encode($row);

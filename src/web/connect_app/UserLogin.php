@@ -5,17 +5,16 @@
     $pw = $_POST["pw"];
     $new_token = $_POST["token"];
     
-    $statement = mysqli_prepare($con, "SELECT id, i_ip FROM Login WHERE id = ? AND pw = ?");
+    $statement = mysqli_prepare($con, "SELECT id FROM Login WHERE id = ? AND pw = ?");
     mysqli_stmt_bind_param($statement, "ss", $id, $pw);
     mysqli_stmt_execute($statement);
     mysqli_stmt_store_result($statement);
-    mysqli_stmt_bind_result($statement, $id, $i_ip);
+    mysqli_stmt_bind_result($statement, $id);
     $response = array();
     $response["success"] = false;
     while(mysqli_stmt_fetch($statement)){
         $response["success"] = true;
         $response["id"] = $id;
-        $response["i_ip"]=$i_ip;
     }
     
     $old_token = mysqli_query($con, "SELECT token FROM Login WHERE id = '$id'");
