@@ -159,8 +159,8 @@ public class RegisterActivity extends Activity {
                                         .create();
                                 dialog.show();
                                 Intent intent = new Intent(RegisterActivity.this,CameraActivity.class);
-                                intent.putExtra("text",String.valueOf("User"));
-                                intent.putExtra("value",String.valueOf("User"));
+                                intent.putExtra("text",String.valueOf("user"));
+                                intent.putExtra("value",String.valueOf("user"));
                                 intent.putExtra("id",String.valueOf(id));
                                 startActivity(intent);
                                 //finish();//액티비티를 종료시킴(회원등록 창을 닫음)
