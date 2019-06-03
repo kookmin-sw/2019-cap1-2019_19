@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StreamingFragment">
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/webView"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal">
+
+    </WebView>
+
+
+    <!--추후에 connect 버튼 없애고 record(MIC ON), send(MIC OFF) 로 나눌 것
+     아니면 connect 버튼을 SPEAKER ON , close를 SPEAKER OFF로 -->
+
+    <Button
+        android:id="@+id/connectBtn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/round_yellow_button"
+        android:text="CONNECT" />
+
+    <Button
+        android:id="@+id/recordBtn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/round_yellow_button"
+        android:text="RECORD" />
+
+    <!-- id 바꿀 것 pause -> send -->
+    <Button
+        android:id="@+id/pauseBtn"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="360dp"
+        android:background="@drawable/round_yellow_button"
+        android:text="SEND" />
+
+    <EditText
+        android:id="@+id/editTextPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="3076"
+        android:visibility="gone"/>
+
+
+    //디버깅
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="here is error"-->
+    <!--android:id="@+id/error_text"/>-->
+
+</FrameLayout>
